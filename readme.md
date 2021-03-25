@@ -45,7 +45,8 @@ The setup below involves making sure the necessary toolchain executables (compil
         * `~\MaximSDK\Tools\OpenOCD`
         * `~\MaximSDK\Tools\GNUTools\bin`
     * If you are using the Maxim LP Micros SDK add the following entries :
-        * TODO
+        * `~\Maxim\Toolchain\msys\1.0\bin`
+        * `~\Maxim\Toolchain\bin`
     * Hit OK to save the changes to the Path variable.
 
 5. Hit OK to save these additions, and Apply/OK in the system properties window to push them to the system.
@@ -113,4 +114,3 @@ There are 4 available build tasks that can be accessed via `Terminal > Run Build
     * Additionally, a PICO programmer must be connected to the target microcontroller.
 
 ### Debugging
-The Debugger 
