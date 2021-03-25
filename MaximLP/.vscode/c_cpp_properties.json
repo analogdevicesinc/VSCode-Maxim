@@ -12,6 +12,7 @@
                 "${Maxim_Path}/Firmware/${target}/Libraries/Boards/Include",
                 "${Maxim_Path}/Firmware/${target}/Libraries/Boards/EvKit_V1/Include",
                 "${Maxim_Path}/Firmware/${target}/Libraries/CMSIS/Device/Maxim/${target}/Include",
+                "${Maxim_Path}/Firmware/${target}/Libraries/CMSIS/Include",
                 "${Maxim_Path}/Libraries/CMSIS/Include"
             ],
             "defines": [
