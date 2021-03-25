@@ -39,14 +39,14 @@ The setup below involves making sure the necessary toolchain executables (compil
         * For the Maxim LP Micros SDK the default is `C:\Maxim`
     * Hit OK to save the variable.
     
-4. Edit your "Path" variable under User variables (or System variables if you have rights) and add the following entries, where ~ indicates the root installation directory of the SDK.  For example, `~\MaximSDK\Tools\MinGW\msys\1.0\bin` would be added as `C:\MaximSDK\Tools\MinGW\msys\1.0\bin` for a default installation located in the root directory of the C drive.
-    * If you are using the Maxim Micros SDK add the following entries :
-        * `~\MaximSDK\Tools\MinGW\msys\1.0\bin`
-        * `~\MaximSDK\Tools\OpenOCD`
-        * `~\MaximSDK\Tools\GNUTools\bin`
-    * If you are using the Maxim LP Micros SDK add the following entries :
-        * `~\Maxim\Toolchain\msys\1.0\bin`
-        * `~\Maxim\Toolchain\bin`
+4. Under User Variables edit your "Path" variable and add the following entries :
+    * If you are using the Maxim Micros SDK :
+        * `%MAXIM_PATH%\Tools\MinGW\msys\1.0\bin`
+        * `%MAXIM_PATH%\Tools\OpenOCD`
+        * `%MAXIM_PATH%\Tools\GNUTools\bin`
+    * If you are using the Maxim LP Micros SDK :
+        * `%MAXIM_PATH%\Toolchain\msys\1.0\bin`
+        * `%MAXIM_PATH%\Toolchain\bin`
     * Hit OK to save the changes to the Path variable.
 
 5. Hit OK to save these additions, and Apply/OK in the system properties window to push them to the system.
