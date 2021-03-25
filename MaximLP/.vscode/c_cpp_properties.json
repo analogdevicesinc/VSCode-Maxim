@@ -1,0 +1,22 @@
+{
+    "env": {
+        "target":"MAX32665",
+        "Maxim_Path":"C:/Maxim"
+    },
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [                
+                "${workspaceFolder}/**",
+                "C:/Maxim/Firmware/${target}/Libraries/${target}PeriphDriver/Include",
+                "C:/Maxim/Firmware/${target}/Libraries/Boards/Include",
+                "C:/Maxim/Firmware/${target}/Libraries/Boards/EvKit_V1/Include",
+                "C:/Maxim/Firmware/${target}/Libraries/CMSIS/Device/Maxim/${target}/Include",
+                "C:/Maxim/Libraries/CMSIS/Include"
+            ],
+            "defines": [
+            ]
+        }
+    ],
+    "version": 4
+}

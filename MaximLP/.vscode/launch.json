@@ -1,0 +1,54 @@
+{
+    "configurations": [
+        {
+            "name": "GDB",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${workspaceFolderBasename}.elf",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/Maxim/Toolchain/binarm-none-eabi-gdb.exe",
+            "miDebuggerArgs": "build/${workspaceFolderBasename}.elf",
+            "preLaunchTask": "flash-${input:targetMicro}",
+            "setupCommands": [
+                {
+                    "description": "Launch OpenOCD from within GDB via pipe connection",
+                    "text": "target remote | openocd -c \"gdb_port pipe;log_output openocd.log\" -s C:/Maxim/Toolchain/share/openocd/scripts -f interface/cmsis-dap.cfg -f target/${input:targetMicro}.cfg -c \"init\"",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "Reset",
+                    "text": "monitor reset halt",
+                    "ignoreFailures": false
+                },
+                {
+                    "Description": "Breakpoint on main",
+                    "text": "break main",
+                    "ignoreFailures": false
+                }
+            ],
+        },
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "targetMicro",
+            "description": "Select a target...",
+            "options":[
+                "MAX3263X",
+                "MAX32520",
+                "MAX32600",
+                "MAX32620",
+                "MAX32625",
+                "MAX32650",
+                "MAX32660",
+                "MAX32665"
+            ],
+            "default": "MAX32665"
+        }
+    ]
+}

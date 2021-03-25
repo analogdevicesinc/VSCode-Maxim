@@ -1,0 +1,23 @@
+{
+    "env": {
+        "target":"MAX32655",
+        "Maxim_Path":"C:/MaximSDK"
+    },
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [                
+                "${workspaceFolder}/src",
+                "${Maxim_Path}/Libraries/PeriphDrivers/Include/${target}",
+                "${Maxim_Path}/Libraries/Boards/${target}/Include",
+                "${Maxim_Path}/Libraries/Boards/${target}/EvKit_V1/Include",
+                "${Maxim_Path}/Libraries/CMSIS/Device/Maxim/${target}/Include",
+                "${Maxim_Path}/Libraries/CMSIS/Include"
+            ],
+            "defines": [
+            ],
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}
