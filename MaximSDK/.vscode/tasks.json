@@ -6,7 +6,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "make -j 8 TARGET=${input:targetMicro} all",
+            "command": "make -j 8 TARGET=${config:target} all",
             "group": "build",
             "problemMatcher": []
         },
@@ -30,184 +30,17 @@
             "command": "openocd",
             "args": [
                 "-s",
-                "C:/MaximSDK/Tools/OpenOCD/scripts",
+                "${env:MAXIM_PATH}/Tools/OpenOCD/scripts",
                 "-f",
                 "interface/cmsis-dap.cfg",
                 "-f",
-                "target/${input:targetMicro}.cfg",
+                "target/${config:target}.cfg",
                 "-c",
-                "program build/${workspaceFolderBasename}.elf verify exit"
+                "program build/${config:target}.elf verify exit"
             ],
             "group": "build",
             "problemMatcher": [],
             "dependsOn":["build"]
-        },
-
-        {
-            "label": "build-MAX32520",
-            "type": "shell",
-            "command": "make -j 8 TARGET=MAX32520 all",
-            "group": "none",
-            "problemMatcher": []
-        },
-        {
-            "label": "flash-MAX32520",
-            "type": "shell",
-            "command": "openocd",
-            "args": [
-                "-s",
-                "C:/MaximSDK/Tools/OpenOCD/scripts",
-                "-f",
-                "interface/cmsis-dap.cfg",
-                "-f",
-                "target/max32520.cfg",
-                "-c",
-                "program build/${workspaceFolderBasename}.elf verify exit"
-            ],
-            "group": "none",
-            "problemMatcher": [],
-            "dependsOn":["build-MAX32520"]
-        },
-        {
-            "label": "build-MAX32570",
-            "type": "shell",
-            "command": "make -j 8 TARGET=MAX32570 all",
-            "group": "none",
-            "problemMatcher": []
-        },
-        {
-            "label": "flash-MAX32570",
-            "type": "shell",
-            "command": "openocd",
-            "args": [
-                "-s",
-                "C:/MaximSDK/Tools/OpenOCD/scripts",
-                "-f",
-                "interface/cmsis-dap.cfg",
-                "-f",
-                "target/max32570.cfg",
-                "-c",
-                "program build/${workspaceFolderBasename}.elf verify exit"
-            ],
-            "group": "none",
-            "problemMatcher": [],
-            "dependsOn":["build-MAX32570"]
-        },
-        {
-            "label": "build-MAX32655",
-            "type": "shell",
-            "command": "make -j 8 TARGET=MAX32655 all",
-            "group": "none",
-            "problemMatcher": []
-        },
-        {
-            "label": "flash-MAX32655",
-            "type": "shell",
-            "command": "openocd",
-            "args": [
-                "-s",
-                "C:/MaximSDK/Tools/OpenOCD/scripts",
-                "-f",
-                "interface/cmsis-dap.cfg",
-                "-f",
-                "target/max32655.cfg",
-                "-c",
-                "program build/${workspaceFolderBasename}.elf verify exit"
-            ],
-            "group": "none",
-            "problemMatcher": [],
-            "dependsOn":["build-MAX32655"]
-        },
-        {
-            "label": "build-MAX32670",
-            "type": "shell",
-            "command": "make -j 8 TARGET=MAX32670 all",
-            "group": "none",
-            "problemMatcher": []
-        },
-        {
-            "label": "flash-MAX32670",
-            "type": "shell",
-            "command": "openocd",
-            "args": [
-                "-s",
-                "C:/MaximSDK/Tools/OpenOCD/scripts",
-                "-f",
-                "interface/cmsis-dap.cfg",
-                "-f",
-                "target/max32670.cfg",
-                "-c",
-                "program build/${workspaceFolderBasename}.elf verify exit"
-            ],
-            "group": "none",
-            "problemMatcher": [],
-            "dependsOn":["build-MAX32670"]
-        },
-        {
-            "label": "build-MAX32675",
-            "type": "shell",
-            "command": "make -j 8 TARGET=MAX32675 all",
-            "group": "none",
-            "problemMatcher": []
-        },
-        {
-            "label": "flash-MAX32675",
-            "type": "shell",
-            "command": "openocd",
-            "args": [
-                "-s",
-                "C:/MaximSDK/Tools/OpenOCD/scripts",
-                "-f",
-                "interface/cmsis-dap.cfg",
-                "-f",
-                "target/max32675.cfg",
-                "-c",
-                "program build/${workspaceFolderBasename}.elf verify exit"
-            ],
-            "group": "none",
-            "problemMatcher": [],
-            "dependsOn":["build-MAX32675"]
-        },
-        {
-            "label": "build-MAX78000",
-            "type": "shell",
-            "command": "make -j 8 TARGET=MAX78000 all",
-            "group": "none",
-            "problemMatcher": []
-        },
-        {
-            "label": "flash-MAX78000",
-            "type": "shell",
-            "command": "openocd",
-            "args": [
-                "-s",
-                "C:/MaximSDK/Tools/OpenOCD/scripts",
-                "-f",
-                "interface/cmsis-dap.cfg",
-                "-f",
-                "target/max78000.cfg",
-                "-c",
-                "program build/${workspaceFolderBasename}.elf verify exit"
-            ],
-            "group": "none",
-            "problemMatcher": [],
-            "dependsOn":["build-MAX78000"]
-        }
-    ],
-    "inputs": [
-        {
-            "type": "pickString",
-            "id": "targetMicro",
-            "description": "Select a target...",
-            "options": [
-                "MAX32520",
-                "MAX32570",
-                "MAX32655",
-                "MAX32670",
-                "MAX23675",
-                "MAX78000"
-            ],
-            "default": "MAX32655"
         }
     ]
 }

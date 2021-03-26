@@ -32,23 +32,40 @@
  #
  ###############################################################################
 
-# This is the name of the build output file
-# ** Change this!! ** 
-# You need to change this to match the name of your project folder (the folder that contains this makefile).
-# This is necessary for the VS Code debugger/flashing to work - it looks for compiled binaries with the name [Project folder].elf
-# Ex:  
-# 	The full path to this makefile is C:\Users\Jake.Carter\Projects\MyProject\Makefile, so line 44 would be PROJECT=MyProject
-ifeq "$(PROJECT)" ""
-PROJECT=changeme!
-endif
+ ###############################################################################
+# Main configuration
+# Below are the most commonly needed configuration options for this Makefile.
+# You shouldn't need to touch anything else unless advanced configuration is required.
 
-# Specify the target processor
+# Source files to compile for this project (add path to VPATH below)
+SRCS += main.c
+
+# Where to find source files for this project
+VPATH += ./src
+
+# Where to find header files for this project
+IPATH += ./src
+
+# Set compiler flags
+PROJ_CFLAGS+=-Wall # Enable warnings
+
+# Set compiler optimization level 
+MXC_OPTIMIZE_CFLAGS=-O0
+
+ ###############################################################################
+
+# Set the MAKE variable.  This eliminates issues with some setups
+MAKE=make
+
+# Default target processor should none be specified from the VS Code settings for some reason
 ifeq "$(TARGET)" ""
 TARGET=MAX32655
 endif
 
-# Set the MAKE variable.  This eliminates issues with some setups
-MAKE=make
+# Set output filename to target micro
+ifeq "$(PROJECT)" ""
+PROJECT=$(TARGET)
+endif
 
 # Create Target name variables
 TARGET_UC:=$(shell echo $(TARGET) | tr a-z A-Z)
@@ -79,22 +96,10 @@ CMSIS_ROOT=$(LIBS_DIR)/CMSIS
 
 #Use this for other library make files so they are all based off the same as root as the project
 export CMSIS_ROOT
-
-# Source files for this test (add path to VPATH below)
-SRCS += main.c
-
-# Where to find source files for this test
-VPATH=./src
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
-
-# Where to find header files for this test
-IPATH = ./src
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 
-
-# Enable all warnings
-PROJ_CFLAGS+=-Wall
 
 # Specify the target revision to override default
 # "A2" in ASCII
@@ -110,9 +115,6 @@ PROJ_CFLAGS+=-Wall
 
 # Point this variable to a startup file to override the default file
 #STARTUPFILE=start.S
-
-# Set MXC_OPTIMIZE to override the default optimization level 
-MXC_OPTIMIZE_CFLAGS=-O0
 
 # Point this variable to a linker file to override the default file
 LINKER=$(TARGET_LC).ld
