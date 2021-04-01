@@ -4,51 +4,28 @@
             "name": "GDB",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/${workspaceFolderBasename}.elf",
+            "program": "${workspaceFolder}/build/${config:target}.elf",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:/Maxim/Toolchain/binarm-none-eabi-gdb.exe",
-            "miDebuggerArgs": "build/${workspaceFolderBasename}.elf",
-            "preLaunchTask": "flash-${input:targetMicro}",
+            "miDebuggerPath": "${env:MAXIM_PATH}/Toolchain/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerArgs": "./build/${config:target}.elf",
+            "preLaunchTask": "flash",
             "setupCommands": [
                 {
                     "description": "Launch OpenOCD from within GDB via pipe connection",
-                    "text": "target remote | openocd -c \"gdb_port pipe;log_output openocd.log\" -s C:/Maxim/Toolchain/share/openocd/scripts -f interface/cmsis-dap.cfg -f target/${input:targetMicro}.cfg -c \"init\"",
+                    "text": "target remote | openocd -c \"gdb_port pipe;log_output openocd.log\" -s ${env:MAXIM_PATH}/Toolchain/share/openocd/scripts -f interface/cmsis-dap.cfg -f target/${config:target}.cfg",
                     "ignoreFailures": false
                 },
                 {
                     "description": "Reset",
                     "text": "monitor reset halt",
                     "ignoreFailures": false
-                },
-                {
-                    "Description": "Breakpoint on main",
-                    "text": "break main",
-                    "ignoreFailures": false
                 }
             ],
         },
-    ],
-    "inputs": [
-        {
-            "type": "pickString",
-            "id": "targetMicro",
-            "description": "Select a target...",
-            "options":[
-                "MAX3263X",
-                "MAX32520",
-                "MAX32600",
-                "MAX32620",
-                "MAX32625",
-                "MAX32650",
-                "MAX32660",
-                "MAX32665"
-            ],
-            "default": "MAX32665"
-        }
     ]
 }
