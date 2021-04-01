@@ -34,21 +34,39 @@
  #
  ###############################################################################
 
-MAKE=make
+ ###############################################################################
+# Main configuration
+# Below are the most commonly needed configuration options for this Makefile.
+# You shouldn't need to touch anything else unless advanced configuration is required.
 
-# This is the name of the build output file
-# ** Change this!! ** 
-# You need to change this to match the name of your project folder (the folder that contains this makefile).
-# This is necessary for the VS Code debugger/flashing to work - it looks for compiled binaries with the name [Project folder].elf
-# Ex:  
-# 	The full path to this makefile is C:\Users\Jake.Carter\Projects\MyProject\Makefile, so line 44 would be PROJECT=MyProject
-ifeq "$(PROJECT)" ""
-PROJECT=changeme!
-endif
+# Source files to compile for this project (add path to VPATH below)
+SRCS += main.c
+
+# Where to find source files for this project
+VPATH += ./src
+
+# Where to find header files for this project
+IPATH += ./src
+
+# Set compiler flags
+PROJ_CFLAGS+=-Wall # Enable warnings
+
+# Set compiler optimization level  
+MXC_OPTIMIZE=-O1
+
+ ###############################################################################
+
+# Set the MAKE variable.  This eliminates issues with some setups
+MAKE=make
 
 # Specify the target processor
 ifeq "$(TARGET)" ""
 TARGET=MAX32665
+endif
+
+# Set output filename to target micro
+ifeq "$(PROJECT)" ""
+PROJECT=$(TARGET)
 endif
 
 # Create Target name variables
@@ -78,18 +96,16 @@ BUILD_SESSION=$(SECURE_BOOT_TOOLS_DIR)/script/build_application.sh
 TEST_KEY=$(SECURE_BOOT_TOOLS_DIR)/key/maximtestcrk.key
 endif
 
-# Source files for this test (add path to VPATH below)
-SRCS  = main.c
 ifeq ($(MAKECMDGOALS),sla)
 SRCS += sla_header.c
 endif
-# Where to find source files for this test
-VPATH=.
+
+VPATH += .
 ifeq ($(MAKECMDGOALS),sla)
 VPATH += $(SECURE_BOOT_TOOLS_DIR)/sla_header
 endif
-# Where to find header files for this test
-IPATH = .
+
+IPATH += .
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 
@@ -107,9 +123,6 @@ PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 
 # Point this variable to a startup file to override the default file
 #STARTUPFILE=start.S
-
-# Set MXC_OPTIMIZE to override the default optimization level 
-MXC_OPTIMIZE=-O1
 
 # Point this variable to a linker file to override the default file
 #LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
