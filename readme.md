@@ -47,7 +47,7 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 7. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
 
-8. Set the `target` variable to the correct microcontroller you are using.
+8. Set the `"target"` variable to the correct microcontroller you are using.
 
 9. That's it!  See [Testing the Setup](<#Testing the Setup>) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](<#Makefile Configuration>) for details on adding source code to the project.
 
@@ -77,7 +77,7 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 7. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
 
-8. Set the `target` variable to the correct microcontroller you are using.
+8. Set the `"target"` variable to the correct microcontroller you are using.
 
 9. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Makefile Configuration](<#Makefile Configuration>) for details on how to do this, [Testing the Setup](<#Testing the Setup>) below for verifying everything is working properly, and [Usage](#Usage) for using the VS Code environment.  
 
@@ -128,10 +128,6 @@ The Makefile is the core file for the build system.  All configuration tasks suc
 * The Makefile looks for source files _only_ in the `\src` directory.  If you would like to use additional source directories, add them with `VPATH += yoursourcedirectory`
 * The Makefile looks for header files _only_ in the `\src` directory.  If you would like to use additional include directories, add them with `IPATH += yourincludedirectory`
 
-### Configuring Include Paths for Intellisense
-* VS Code needs all include paths to be specified in order for the Intellisense engine to work properly.
-* Include paths for intellisense are added via the `.vscode > c_cpp_properties.json` file.  Additional entries can be made in the `configurations > includePath` list.  The `\src` directory and include paths for Maxim's peripheral drivers are set up by default.
-
 ### Compiler Flags
 * Compiler flags can be added/changed via the `PROJ_CFLAGS` variable.
 * Add a new flag to be passed to the compiler with `PROJ_CFLAGS += -yourflag`.  Flags are passed in the order that they are added to the `PROJ_CFLAGS` variable.
@@ -143,3 +139,17 @@ The Makefile is the core file for the build system.  All configuration tasks suc
 
 ### Optimization Level
 * The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
+
+## Project Configuration
+### Setting Include Paths for Intellisense
+VS Code's intellisense engine must be told where to find the header files for your source code.  By default, include paths have been added for Maxim's perpiheral drivers, and all of sub-directories of the workspace will be searched for header files.  If VS Code throws an error on an `#include` statement (and the file exists), then an include path is most likely missing.
+
+To add additional include paths :
+1. Open the `\.vscode\c_cpp_properties.json` file.  
+
+2. Add the include path(s) to the `configurations > includePath` list.
+
+### Changing the Target Microcontroller
+1. Open the `\.vscode\settings.json` file.
+
+2. Change the `"target"` variable to the correct value for your microcontroller.
