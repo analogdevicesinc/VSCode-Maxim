@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "GDB",
+            "name": "GDB (Debug)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/${config:target}.elf",

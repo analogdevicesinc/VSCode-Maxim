@@ -18,13 +18,6 @@
             "problemMatcher": []
         },
         {
-            "label": "clean-hard",
-            "type": "shell",
-            "command": "make -j 8 distclean",
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
             "label": "flash",
             "type": "shell",
             "command": "openocd",
@@ -38,7 +31,7 @@
                 "-c",
                 "program build/${config:target}.elf verify exit"
             ],
-            "group": "build",
+            "group": "none",
             "problemMatcher": [],
             "dependsOn":["build"]
         }
