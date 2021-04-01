@@ -6,12 +6,12 @@
 
     "target":"MAX32655",/*<-- Change to the correct target micro.
                             Options :
-                            "MAX32520"
-                            "MAX32570"
-                            "MAX32655"
-                            "MAX32670"
-                            "MAX23675"
-                            "MAX78000"
+                            MAX32520
+                            MAX32570
+                            MAX32655
+                            MAX32670
+                            MAX23675
+                            MAX78000
                         */ 
 
 }

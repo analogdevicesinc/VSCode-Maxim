@@ -9,8 +9,8 @@
                 "${env:MAXIM_PATH}/Libraries/Boards/${config:target}/EvKit_V1/Include",
                 "${env:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
                 "${env:MAXIM_PATH}/Libraries/CMSIS/Include",
-                "${env:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include", // Std lib
-                "${env:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include" // Std lib 
+                "${env:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
+                "${env:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include"
             ],
             "defines": [
             ],
