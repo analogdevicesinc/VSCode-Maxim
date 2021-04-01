@@ -1,0 +1,19 @@
+{
+    "terminal.integrated.env.windows": {
+        "MAXIM_PATH":"C:/Maxim",
+        "Path":"${env:Path}${env:MAXIM_PATH}\\Toolchain\\bin;${env:MAXIM_PATH}\\Toolchain\\msys\\1.0\\bin;"  
+    },
+
+    "target":"MAX32665",/*<-- Change to the correct target micro.
+                            Options :
+                            MAX3263x
+                            MAX32520
+                            MAX32600
+                            MAX32620
+                            MAX32625
+                            MAX32650
+                            MAX32660
+                            MAX32665-MAX32668 (Set MAX32665 if you are using of these)
+                        */ 
+
+}
