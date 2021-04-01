@@ -18,7 +18,7 @@
             "problemMatcher": []
         },
         {
-            "label": "clean-hard",
+            "label": "clean-periph",
             "type": "shell",
             "command": "make -j 8 distclean",
             "group": "build",
