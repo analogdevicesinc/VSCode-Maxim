@@ -104,7 +104,7 @@ There are 4 available build tasks that can be accessed via `Terminal > Run Build
     * Any compiler errors/warnings will be output to the terminal during the build.
 
 * Clean
-    * This task cleans the build output, removing the `/build` directory and all of its contents.
+    * This task cleans the build output, removing the `\build` directory and all of its contents.
 
 * Clean-Periph
     * This task is the same as 'clean', but it also removes the build output for Maxim's peripheral drivers.  
