@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [                
+                "${workspaceFolder}/**",
+                "${env:MAXIM_PATH}/Firmware/${config:target}/Libraries/${config:target}PeriphDriver/Include",
+                "${env:MAXIM_PATH}/Firmware/${config:target}/Libraries/Boards/Include",
+                "${env:MAXIM_PATH}/Firmware/${config:target}/Libraries/Boards/EvKit_V1/Include",
+                "${env:MAXIM_PATH}/Firmware/${config:target}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
+                "${env:MAXIM_PATH}/Firmware/${config:target}/Libraries/CMSIS/Include",
+                "${env:MAXIM_PATH}/Libraries/CMSIS/Include"
+            ],
+            "defines": [
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${env:MAXIM_PATH}/Toolchain/bin/arm-none-eabi-gcc.exe"
+        }
+    ],
+    "version": 4
+}

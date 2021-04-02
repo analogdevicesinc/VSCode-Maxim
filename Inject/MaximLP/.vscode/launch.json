@@ -1,0 +1,31 @@
+{
+    "configurations": [
+        {
+            "name": "GDB (Debug)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${config:target}.elf",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "${env:MAXIM_PATH}/Toolchain/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerArgs": "./build/${config:target}.elf",
+            "preLaunchTask": "flash",
+            "setupCommands": [
+                {
+                    "description": "Launch OpenOCD from within GDB via pipe connection",
+                    "text": "target remote | openocd -c \"gdb_port pipe;log_output openocd.log\" -s ${env:MAXIM_PATH}/Toolchain/share/openocd/scripts -f interface/cmsis-dap.cfg -f target/${config:target}.cfg",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "Reset",
+                    "text": "monitor reset halt",
+                    "ignoreFailures": false
+                }
+            ],
+        },
+    ]
+}
