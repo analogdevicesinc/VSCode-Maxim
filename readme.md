@@ -1,9 +1,10 @@
 # VSCode-Maxim
-## Introduction
+
+# Introduction
 This is a [Visual Studio Code](https://code.visualstudio.com/)-based development environment for [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.  It builds off of Microsoft's excellent C/C++ extension and leverages Maxim's toolchain into a full-featured IDE for building and debugging embedded code.
 
 
-## Requirements
+# Requirements
 Before getting started, ensure that you have installed all of the dependencies below :
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A) (If you are using any of the micros below)
@@ -25,15 +26,15 @@ Before getting started, ensure that you have installed all of the dependencies b
 * [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for ms-vscode.cpptools)
 
 
-## Setup
-This VS Code environment can be injected into any workspace by copying the correct `.vscode` folder and `Makefile` into the root directory of the workspace.  You can create a new project from scratch by injecting into an empty directory (Option 1), or inject into a project with existing source code (Option 2)
+# Setup
+This VS Code environment can be injected into any workspace by copying the correct `.vscode` folder and `Makefile` into the root directory of the workspace.  You can create a new project from scratch by injecting into an empty directory (Option 1), injecting into a project with existing source code (Option 2), or starting with one of the pre-made project frameworks (Option 3).
 
-### Option 1 - Creating an Empty Workspace
-1. Download the correct injection package from [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) for your SDK.
+## Option 1 - Creating a New Project
+1. Download the correct injection package from [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) for your SDK and extract it to an accessible location.
 
-2. Create your workspace folder.  For example, I might create a workspace for a new project with the path `C:\Users\Jake.Carter\workspace\MyNewProject`.
+2. Create your project folder.  For example, I might create a new project in a workspace folder the path `C:\Users\Jake.Carter\workspace\MyNewProject`.
 
-3. Copy the contents of the release package downloaded in step 1 into the workspace folder created in step 2.  This includes a `.vscode` folder and a `Makefile`.  In the example above, the contents of the 'MyProject' workspace would be the following :
+3. Copy the contents of the release package downloaded in step 1 into the project folder created in step 2.  This includes a `.vscode` folder and a `Makefile`.  In the example above, the contents of the 'MyProject' folder would be the following :
 
         C:\Users\Jake.Carter\workspace\MyNewProject
         +-- \.vscode
@@ -45,18 +46,20 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 6. Browse to the root directory of the workspace folder created in step 2.
 
-7. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
+7. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
 
-8. Set the `"target"` variable to the correct microcontroller you are using.
+8. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
 
-9. That's it!  See [Testing the Setup](<#Testing the Setup>) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](<#Makefile Configuration>) for details on adding source code to the project.
+9. Set the `"target"` variable to the correct microcontroller you are using.
 
-### Option 2 - Injecting into an Existing Project
-1. Download the correct injection package from [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) for your SDK.
+10. That's it!  See [Testing the Setup](<#Testing the Setup>) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](<#Makefile Configuration>) for details on adding source code to the project.
+
+## Option 2 - Injecting into an Existing Project
+1. Download the correct injection package from [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) for your SDK and extract it to an accessible location.
 
 2. Navigate to the root folder of your existing project.  For example, this might be located at `C:\Users\Jake.Carter\workspace\MyExistingProject`.
 
-3. Copy the contents of the release package downloaded in step 1 into the root of the workspace folder from step 2.  This includes a `.vscode` folder and a `Makefile`.  In the example above, the contents of the 'MyExistingProject' workspace might look like the following :
+3. Copy the contents of the release package downloaded in step 1 into the root of the project folder from step 2.  This includes a `.vscode` folder and a `Makefile`.  In the example above, the contents of the 'MyExistingProject' workspace might now look like the following :
 
         C:\Users\Jake.Carter\workspace\MyNewProject
         +-- \.vscode
@@ -75,13 +78,36 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 6. Browse to the root directory of the workspace folder located in step 2.
 
+7. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
+
+8. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
+
+9. Set the `"target"` variable to the correct microcontroller you are using.
+
+10. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Adding Source Files](<#Adding Source Files>) for more details on this.
+
+11. See [Testing the Setup](<#Testing the Setup>) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](<#Makefile Configuration>) for additional configuration options.
+
+## Option 3 - Starting with a Pre-Made Project
+1. Download the correct project framework package from [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) for your SDK.
+
+2. Extract the framework to an accessible location.  This will be the location of your project.
+
+3. Start Visual Studio Code.
+
+4. `File > Open Folder`
+
+5. Browse to the root directory of the extracted framework project from step 2.
+
+6. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
+
 7. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
 
 8. Set the `"target"` variable to the correct microcontroller you are using.
 
-9. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Makefile Configuration](<#Makefile Configuration>) for details on how to do this, [Testing the Setup](<#Testing the Setup>) below for verifying everything is working properly, and [Usage](#Usage) for using the VS Code environment.  
+9. That's it!  See [Testing the Setup](<#Testing the Setup>) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Project Configuration](<#Project Configuration>) for details on configuring the project.
 
-### Testing the Setup
+## Testing the Setup
 After injecting with Option 1 or Option 2, your toolchain should be accessible from the terminal.  To test that everything is working properly : 
 
 * Navigate to the open `TERMINAL` tab on the bottom of the VS Code application.  If a terminal is not open, you can open a new terminal with `Terminal > New Terminal` or (Ctrl+Shift+`).  You should be able to run the following commands to retrieve version numbers successfully from within the terminal :
@@ -92,8 +118,9 @@ After injecting with Option 1 or Option 2, your toolchain should be accessible f
     * `arm-none-eabi-gdb -v`
 
 
-## Usage
-### Building
+# Usage
+
+## Building
 There are 4 available build tasks that can be accessed via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.
 * Build
     * Compiles the code.  
@@ -114,13 +141,15 @@ There are 4 available build tasks that can be accessed via `Terminal > Run Build
     * A programmer/debugger must be connected to the target microcontroller and host PC.
     * After flashing, the reset button on the microcontroller must be pushed or the micro must be power cycled to start execution of the program.
 
-### Debugging
+## Debugging
 The Debugger can be launched with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D).  All standard debugging features are supported - breakpoints, watch variables, pausing, etc.
 * Ensure that a debugger/programmer is attached to the microcontroller and the host PC before launching a debugging session.
 * When a debugging session is launched, the Build task will be launched automatically.  A successful build must be completed before debugging.
 
 
-## Makefile Configuration
+# Project Configuration
+
+## Configuring the Makefile
 The Makefile is the core file for the build system.  All configuration tasks such as adding source files to the build, setting compiler flags, and linking libraries are handled via the Makefile. The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand.
 
 ### Adding Source Files
@@ -140,7 +169,7 @@ The Makefile is the core file for the build system.  All configuration tasks suc
 ### Optimization Level
 * The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
 
-## Project Configuration
+## VS Code Settings
 ### Setting Include Paths for Intellisense
 VS Code's intellisense engine must be told where to find the header files for your source code.  By default, include paths have been added for Maxim's perpiheral drivers, and all of sub-directories of the workspace will be searched for header files.  If VS Code throws an error on an `#include` statement (and the file exists), then an include path is most likely missing.
 
