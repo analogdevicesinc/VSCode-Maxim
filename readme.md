@@ -30,11 +30,11 @@ Before getting started, ensure that you have installed all of the dependencies b
 This VS Code environment can be injected into any workspace by copying the correct `.vscode` folder and `Makefile` into the root directory of the workspace.  You can create a new project from scratch by injecting into an empty directory (Option 1), injecting into a project with existing source code (Option 2), or starting with one of the pre-made project frameworks (Option 3).
 
 ## Option 1 - Creating a New Project
-1. Download the correct injection package from [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) for your SDK and extract it to an accessible location.
+1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
 
 2. Create your project folder.  For example, I might create a new project in a workspace folder the path `C:\Users\Jake.Carter\workspace\MyNewProject`.
 
-3. Copy the contents of the release package downloaded in step 1 into the project folder created in step 2.  This includes a `.vscode` folder and a `Makefile`.  In the example above, the contents of the 'MyProject' folder would be the following :
+3. Copy the contents of the `Inject` folder into the project folder created in step 2.  This includes a `.vscode` folder and a `Makefile`.  In the example above, the contents of the 'MyProject' folder would be the following :
 
         C:\Users\Jake.Carter\workspace\MyNewProject
         +-- \.vscode
@@ -55,11 +55,11 @@ This VS Code environment can be injected into any workspace by copying the corre
 10. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for details on adding source code to the project.
 
 ## Option 2 - Injecting into an Existing Project
-1. Download the correct injection package from [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) for your SDK and extract it to an accessible location.
+1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
 
 2. Navigate to the root folder of your existing project.  For example, this might be located at `C:\Users\Jake.Carter\workspace\MyExistingProject`.
 
-3. Copy the contents of the release package downloaded in step 1 into the root of the project folder from step 2.  This includes a `.vscode` folder and a `Makefile`.  In the example above, the contents of the 'MyExistingProject' workspace might now look like the following :
+3. Copy the contents of the `Inject` folder into the root of the project folder from step 2.  This includes a `.vscode` folder and a `Makefile`.  In the example above, the contents of the 'MyExistingProject' workspace might now look like the following :
 
         C:\Users\Jake.Carter\workspace\MyNewProject
         +-- \.vscode
@@ -84,14 +84,14 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 9. Set the `"target"` variable to the correct microcontroller you are using.
 
-10. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Adding Source Files](<#Adding Source Files>) for more details on this.
+10. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Adding Source Files](#Adding-Source-Files) for more details on this.
 
 11. See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for additional configuration options.
 
 ## Option 3 - Starting with a Pre-Made Project
-1. Download the correct project framework package from [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) for your SDK.
+1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
 
-2. Extract the framework to an accessible location.  This will be the location of your project.
+2. Copy the `New_Project` folder to an accessible location.  This will be the location of your project.  Rename the folder if you'd like.
 
 3. Start Visual Studio Code.
 
