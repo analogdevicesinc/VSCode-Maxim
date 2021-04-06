@@ -171,7 +171,7 @@ The Makefile is the core file for the build system.  All configuration tasks suc
 
 ## VS Code Settings
 ### Setting Include Paths for Intellisense
-VS Code's intellisense engine must be told where to find the header files for your source code.  By default, include paths have been added for Maxim's perpiheral drivers, and all of sub-directories of the workspace will be searched for header files.  If VS Code throws an error on an `#include` statement (and the file exists), then an include path is most likely missing.
+VS Code's intellisense engine must be told where to find the header files for your source code.  By default, include paths have been added for Maxim's perpiheral drivers, and all of the sub-directories of the workspace will be searched for header files.  If VS Code throws an error on an `#include` statement (and the file exists), then an include path is most likely missing.
 
 To add additional include paths :
 1. Open the `\.vscode\c_cpp_properties.json` file.  
