@@ -182,3 +182,9 @@ To add additional include paths :
 1. Open the `\.vscode\settings.json` file.
 
 2. Change the `"target"` variable to the correct value for your microcontroller.
+
+## Known Issues
+### 'An Exception Occurred' on Main
+There is a known issue when debugging where a false exception is thrown on main when the debugger is started.  A temporary workaround can be used to get rid of this false exception message - set a breakpoint on main.
+
+This issue does not affect the functionality of the environment.
