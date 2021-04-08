@@ -1,8 +1,9 @@
 {
     "terminal.integrated.env.windows": {
-        "MAXIM_PATH":"C:/Maxim",
-        "Path":"${env:Path}${env:MAXIM_PATH}\\Toolchain\\bin;${env:MAXIM_PATH}\\Toolchain\\msys\\1.0\\bin;"  
+        "Path":"${env:Path}${config:MAXIM_PATH}\\Toolchain\\bin;${config:MAXIM_PATH}\\Toolchain\\msys\\1.0\\bin;"  
     },
+
+    "MAXIM_PATH":"C:\\Maxim",//<-- This is the root installation directory of the Maxim LP Micros Toolchain.  Change this if you used a non-default installation location.
 
     "target":"MAX32665",/*<-- Change to the correct target micro.
                             Options :
