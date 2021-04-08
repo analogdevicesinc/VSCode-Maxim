@@ -52,7 +52,9 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 9. Set the `"target"` variable to the correct microcontroller you are using.
 
-10. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for details on adding source code to the project.
+10. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
+
+11. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for details on adding source code to the project.
 
 ## Option 2 - Injecting into an Existing Project
 1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
@@ -84,9 +86,11 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 9. Set the `"target"` variable to the correct microcontroller you are using.
 
-10. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Adding Source Files](#Adding-Source-Files) for more details on this.
+10. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
 
-11. See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for additional configuration options.
+11. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Adding Source Files](#Adding-Source-Files) for more details on this.
+
+12. See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for additional configuration options.
 
 ## Option 3 - Starting with a Pre-Made Project
 1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
@@ -105,7 +109,9 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 8. Set the `"target"` variable to the correct microcontroller you are using.
 
-9. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Project Configuration](#Project-Configuration) for details on configuring the project.
+9. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
+
+10. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Project Configuration](#Project-Configuration) for details on configuring the project.
 
 ## Testing the Setup
 After injecting with Option 1 or Option 2, your toolchain should be accessible from the terminal.  To test that everything is working properly : 
