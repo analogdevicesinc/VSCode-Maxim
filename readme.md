@@ -32,7 +32,7 @@ This VS Code environment can be injected into any workspace by copying the corre
 ## Option 1 - Creating a New Project
 1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
 
-2. Create your project folder.  For example, I might create a new project in a workspace folder the path `C:\Users\Jake.Carter\workspace\MyNewProject`.
+2. Create your project folder.  For example, I might create a new project in a workspace folder with the path: `C:\Users\Jake.Carter\workspace\MyNewProject`.
 
 3. Copy the contents of the `Inject` folder into the project folder created in step 2.  This includes a `.vscode` folder and a `Makefile`.  In the example above, the contents of the 'MyProject' folder would be the following :
 
