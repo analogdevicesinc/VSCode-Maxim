@@ -6,14 +6,14 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "make -j 8 TARGET=${config:target} all",
+            "command": "make -j 8 TARGET=${config:target} MAXIM_PATH=${config:MAXIM_PATH} all",
             "group": "build",
             "problemMatcher": []
         },
         {
             "label": "clean",
             "type": "shell",
-            "command": "make -j 8 clean",
+            "command": "make -j 8 clean MAXIM_PATH=${config:MAXIM_PATH}",
             "group": "build",
             "problemMatcher": []
         },
@@ -23,7 +23,7 @@
             "command": "openocd",
             "args": [
                 "-s",
-                "${env:MAXIM_PATH}/Toolchain/share/openocd/scripts",
+                "${config:MAXIM_PATH}/Toolchain/share/openocd/scripts",
                 "-f",
                 "interface/cmsis-dap.cfg",
                 "-f",
