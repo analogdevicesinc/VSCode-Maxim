@@ -46,15 +46,17 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 6. Browse to the root directory of the workspace folder created in step 2.
 
-7. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
+7. Launch a new terminal with `Terminal > New Terminal`.
 
-8. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
+8. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
 
-9. Set the `"target"` variable to the correct microcontroller you are using.
+9. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
 
-10. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
+10. Set the `"target"` variable to the correct microcontroller you are using.
 
-11. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for details on adding source code to the project.
+11. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
+
+12. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for details on adding source code to the project.
 
 ## Option 2 - Injecting into an Existing Project
 1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
@@ -80,17 +82,19 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 6. Browse to the root directory of the workspace folder located in step 2.
 
-7. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
+7. Launch a new terminal with `Terminal > New Terminal`. 
 
-8. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
+8. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
 
-9. Set the `"target"` variable to the correct microcontroller you are using.
+9. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
 
-10. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
+10. Set the `"target"` variable to the correct microcontroller you are using.
 
-11. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Adding Source Files](#Adding-Source-Files) for more details on this.
+11. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
 
-12. See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for additional configuration options.
+12. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Adding Source Files](#Adding-Source-Files) for more details on this.
+
+13. See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for additional configuration options.
 
 ## Option 3 - Starting with a Pre-Made Project
 1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
@@ -103,15 +107,17 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 5. Browse to the root directory of the extracted framework project from step 2.
 
-6. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
+6. Launch a new terminal with `Terminal > New Terminal`. 
 
-7. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
+7. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
 
-8. Set the `"target"` variable to the correct microcontroller you are using.
+8. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
 
-9. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
+9. Set the `"target"` variable to the correct microcontroller you are using.
 
-10. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Project Configuration](#Project-Configuration) for details on configuring the project.
+10. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
+
+11. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Project Configuration](#Project-Configuration) for details on configuring the project.
 
 ## Testing the Setup
 After injecting with Option 1 or Option 2, your toolchain should be accessible from the terminal.  To test that everything is working properly : 
