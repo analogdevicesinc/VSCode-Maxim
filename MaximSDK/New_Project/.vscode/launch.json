@@ -11,7 +11,7 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "${env:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gdb.exe",
             "miDebuggerArgs": "./build/${config:target}.elf",
             "preLaunchTask": "flash",
             "setupCommands": [
