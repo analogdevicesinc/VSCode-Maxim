@@ -17,7 +17,7 @@
             "setupCommands": [
                 {
                     "description": "Launch OpenOCD from within GDB via pipe connection",
-                    "text": "target remote | openocd -c \"gdb_port pipe;log_output openocd.log\" -s ${env:MAXIM_PATH}/Toolchain/share/openocd/scripts -f interface/cmsis-dap.cfg -f target/${config:target}.cfg",
+                    "text": "target remote | openocd -c \"gdb_port pipe;log_output openocd.log\" -s ${config:MAXIM_PATH}/Toolchain/share/openocd/scripts -f interface/cmsis-dap.cfg -f target/${config:target}.cfg",
                     "ignoreFailures": false
                 },
                 {
