@@ -5,7 +5,7 @@ This is a [Visual Studio Code](https://code.visualstudio.com/)-based development
 
 
 # Requirements
-Before getting started, ensure that you have installed all of the dependencies below :
+**Before getting started, ensure that you have installed all of the dependencies below** :
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A) (If you are using any of the micros below)
     * MAX32520
@@ -23,11 +23,43 @@ Before getting started, ensure that you have installed all of the dependencies b
     * MAX32650
     * MAX32660
     * MAX32665-MAX32668
-* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for ms-vscode.cpptools)
+* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for `ms-vscode.cpptools`)
 
 
 # Setup
-This VS Code environment can be injected into any workspace by copying the correct `.vscode` folder and `Makefile` into the root directory of the workspace.  You can create a new project from scratch by injecting into an empty directory (Option 1), injecting into a project with existing source code (Option 2), or starting with one of the pre-made project frameworks (Option 3).
+This VS Code workspace modifies environment variables of the integrated terminal.  **Before proceeding, please enable workspace trust and workspace modifications, and then restart VSCode.**  Open your settings with `File > Preferences > Settings`.
+
+Workspace trust can be enabled with the `security.workspace.trust` settings, as shown below.
+
+<section align="center">
+
+![Workspace Trust Settings Image](img\workspaceTrust.JPG)
+
+</section>
+
+Additionally, workspace modifications must be enabled via the `terminal.integrated.allowWorkspaceConfiguration` setting, as shown below.
+
+<section align="center">
+
+![Workspace Modification Setting Image](img\workspaceModification.JPG)
+
+</section>
+
+When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.  This can be enabled/disabled with the `security.workspace.trust.startupPrompt` settings option.
+
+<section align="center">
+
+![Workspace Trust Prompt Image](img\workspaceTrustPrompt.JPG)
+
+</section>
+
+The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
+
+# Project Setup
+Projects can be created by:
+* (Option 1) Injecting the workspace into an empty directory to create a new project.
+* (Option 2) Injecting the workspace into a directory with existing source code to integrate into an existing project.
+* (Option 3) Starting with a pre-made example project.
 
 ## Option 1 - Creating a New Project
 1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
@@ -46,17 +78,13 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 6. Browse to the root directory of the workspace folder created in step 2.
 
-7. Launch a new terminal with `Terminal > New Terminal`.
+7. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
 
-8. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
+8. Set the `"target"` variable to the correct microcontroller you are using.  See [Changing the Target Microcontroller](#Changing-the-Target-Microcontroller) for value strings.
 
-9. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
+9. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
 
-10. Set the `"target"` variable to the correct microcontroller you are using.
-
-11. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
-
-12. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for details on adding source code to the project.
+10. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Build System Configuration](#Build-System-Configuration) for deeper configuration options such as adding source files, configuring intellisense paths, etc.
 
 ## Option 2 - Injecting into an Existing Project
 1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
@@ -82,19 +110,15 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 6. Browse to the root directory of the workspace folder located in step 2.
 
-7. Launch a new terminal with `Terminal > New Terminal`. 
+7. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
 
-8. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
+8. Set the `"target"` variable to the correct microcontroller you are using. See [Changing the Target Microcontroller](#Changing-the-Target-Microcontroller) for value strings.
 
-9. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
+9. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
 
-10. Set the `"target"` variable to the correct microcontroller you are using.
+10. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Adding Source Files](#Adding-Source-Files) for more details on this.
 
-11. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
-
-12. The VS Code environment is now injected, but you will need to do some additional configuration of the Makefile to add in your existing source code to the build process.  See [Adding Source Files](#Adding-Source-Files) for more details on this.
-
-13. See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Makefile Configuration](#Makefile-Configuration) for additional configuration options.
+11. See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Build System Configuration](#Build-System-Configuration) for deeper configuration options such as adding source files, configuring intellisense paths, etc.
 
 ## Option 3 - Starting with a Pre-Made Project
 1. Download the latest correct version of this repo from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page for your SDK and extract it to an accessible location.
@@ -107,22 +131,18 @@ This VS Code environment can be injected into any workspace by copying the corre
 
 5. Browse to the root directory of the extracted framework project from step 2.
 
-6. Launch a new terminal with `Terminal > New Terminal`. 
+6. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
 
-7. VS Code will prompt 'Do you allow this workspace to modify your terminal shell?'  Click `Allow` and restart VS Code.
+7. Set the `"target"` variable to the correct microcontroller you are using. See [Changing the Target Microcontroller](#Changing-the-Target-Microcontroller) for value strings.
 
-8. From within VS Code, open the `settings.json` file located in the `.vscode` folder.
+8. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
 
-9. Set the `"target"` variable to the correct microcontroller you are using.
-
-10. (Optional) Set the `MAXIM_PATH` variable to to the root directory of your toolchain installation.  This is only necessary if you used a non-default installation location.
-
-11. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Project Configuration](#Project-Configuration) for details on configuring the project.
+9. That's it!  See [Testing the Setup](#Testing-the-Setup) below to verify everything is working properly, [Usage](#Usage) for using the VS Code environment, and [Build System Configuration](#Build-System-Configuration) for deeper configuration options such as adding source files, configuring intellisense paths, etc.
 
 ## Testing the Setup
 After injecting with Option 1 or Option 2, your toolchain should be accessible from the terminal.  To test that everything is working properly : 
 
-* Navigate to the open `TERMINAL` tab on the bottom of the VS Code application.  If a terminal is not open, you can open a new terminal with `Terminal > New Terminal` or (Ctrl+Shift+`).  You should be able to run the following commands to retrieve version numbers successfully from within the terminal :
+* Navigate to the open `TERMINAL` tab on the bottom of the VS Code application.  If a terminal is not open, you can open a new terminal with `Terminal > New Terminal` or (Ctrl+Shift+`).  The following commands to retrieve version numbers should be able to be run successfully from within the terminal :
 
     * `make -v`
     * `openocd -v`
@@ -159,7 +179,7 @@ The Debugger can be launched with `Run > Start Debugging`, with the shortcut `F5
 * When a debugging session is launched, the Build task will be launched automatically.  A successful build must be completed before debugging.
 
 
-# Project Configuration
+# Build System Configuration
 
 ## Configuring the Makefile
 The Makefile is the core file for the build system.  All configuration tasks such as adding source files to the build, setting compiler flags, and linking libraries are handled via the Makefile. The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand.
@@ -181,8 +201,7 @@ The Makefile is the core file for the build system.  All configuration tasks suc
 ### Optimization Level
 * The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
 
-## VS Code Settings
-### Setting Include Paths for Intellisense
+## Setting Include Paths for Intellisense
 VS Code's intellisense engine must be told where to find the header files for your source code.  By default, include paths have been added for Maxim's perpiheral drivers, and all of the sub-directories of the workspace will be searched for header files.  If VS Code throws an error on an `#include` statement (and the file exists), then an include path is most likely missing.
 
 To add additional include paths :
@@ -190,13 +209,30 @@ To add additional include paths :
 
 2. Add the include path(s) to the `configurations > includePath` list.
 
-### Changing the Target Microcontroller
+## Changing the Target Microcontroller
 1. Open the `\.vscode\settings.json` file.
 
 2. Change the `"target"` variable to the correct value for your microcontroller.
+Options for the LP Micros SDK are:
+    * "MAX3263x"
+    * "MAX32520"
+    * "MAX32600"
+    * "MAX32620"
+    * "MAX32625"
+    * "MAX32650"
+    * "MAX32660"
+    * "MAX32665" (for MAX32665-MAX32668)
 
-## Known Issues
-### 'An Exception Occurred' on Main
+and options for the Maxim Micros SDK are:
+    * "MAX32520"
+    * "MAX32570"
+    * "MAX32655"
+    * "MAX32670"
+    * "MAX32675"
+    * "MAX78000"
+
+# Known Issues
+## 'An Exception Occurred' on Main
 There is a known issue when debugging where a false exception is thrown on main when the debugger is started.  A temporary workaround can be used to get rid of this false exception message - set a breakpoint on main.
 
-This issue does not affect the functionality of the environment.
+This issue does not affect the functionality of the debugger.
