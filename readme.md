@@ -33,7 +33,7 @@ Workspace trust can be enabled with the `security.workspace.trust` settings, as 
 
 <section align="center">
 
-![Workspace Trust Settings Image](img\workspaceTrust.JPG)
+![Workspace Trust Settings Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrust.JPG)
 
 </section>
 
@@ -41,7 +41,7 @@ Additionally, workspace modifications must be enabled via the `terminal.integrat
 
 <section align="center">
 
-![Workspace Modification Setting Image](img\workspaceModification.JPG)
+![Workspace Modification Setting Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceModification.JPG)
 
 </section>
 
@@ -49,7 +49,7 @@ When opening workspaces and folders for the first time VSCode will now prompt fo
 
 <section align="center">
 
-![Workspace Trust Prompt Image](img\workspaceTrustPrompt.JPG)
+![Workspace Trust Prompt Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrustPrompt.JPG)
 
 </section>
 
