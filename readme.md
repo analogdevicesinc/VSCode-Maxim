@@ -45,7 +45,7 @@ Additionally, workspace modifications must be enabled via the `terminal.integrat
 
 </section>
 
-When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.  This can be enabled/disabled with the `security.workspace.trust.startupPrompt` settings option.
+When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.
 
 <section align="center">
 
