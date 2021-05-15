@@ -214,22 +214,22 @@ To add additional include paths :
 
 2. Change the `"target"` variable to the correct value for your microcontroller.
 Options for the LP Micros SDK are:
-    * "MAX3263x"
-    * "MAX32520"
-    * "MAX32600"
-    * "MAX32620"
-    * "MAX32625"
-    * "MAX32650"
-    * "MAX32660"
-    * "MAX32665" (for MAX32665-MAX32668)
+* "MAX3263x"
+* "MAX32520"
+* "MAX32600"
+* "MAX32620"
+* "MAX32625"
+* "MAX32650"
+* "MAX32660"
+* "MAX32665" (for MAX32665-MAX32668)
 
 and options for the Maxim Micros SDK are:
-    * "MAX32520"
-    * "MAX32570"
-    * "MAX32655"
-    * "MAX32670"
-    * "MAX32675"
-    * "MAX78000"
+* "MAX32520"
+* "MAX32570"
+* "MAX32655"
+* "MAX32670"
+* "MAX32675"
+* "MAX78000"
 
 # Known Issues
 ## 'An Exception Occurred' on Main
