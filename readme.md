@@ -155,13 +155,13 @@ After injecting with Option 1 or Option 2, your toolchain should be accessible f
 ## Building
 There are 4 available build tasks that can be accessed via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.
 * Build
-    * Compiles the code.  
+    * Compiles the code via the `make all` command.
     * Code will be compiled for the target the microcontroller set in `.vscode\settings.json`.  **Make sure this is set correctly!**
     * The `\build` directory will be created and will contain the output binary, as well as all intermediary object files.
     * Any compiler errors/warnings will be output to the terminal during the build.
 
 * Clean
-    * This task cleans the build output, removing the `\build` directory and all of its contents.
+    * This task cleans the build output via the `make clean` command, removing the `\build` directory and all of its contents.
 
 * Clean-Periph
     * This task is the same as 'clean', but it also removes the build output for Maxim's peripheral drivers.  
@@ -169,7 +169,7 @@ There are 4 available build tasks that can be accessed via `Terminal > Run Build
     * **This option is only present in the MaximSDK environment**
 
 * Flash
-    * This task runs the Build task automatically, and then flashes the output binary to the microcontroller.
+    * This task runs the Build task automatically, and then flashes the output binary to the microcontroller via openOCD.
     * A programmer/debugger must be connected to the target microcontroller and host PC.
     * After flashing, the reset button on the microcontroller must be pushed or the micro must be power cycled to start execution of the program.
 
