@@ -3,6 +3,8 @@
 # Introduction
 This is a [Visual Studio Code](https://code.visualstudio.com/)-based development environment for [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.  It builds off of Microsoft's excellent C/C++ extension and leverages Maxim's toolchain into a full-featured IDE for building and debugging embedded code.
 
+Currently, **only Windows is supported**.  Support for MacOS and Linux toolchains is planned.
+
 
 # Requirements
 **Before getting started, ensure that you have installed all of the dependencies below** :
