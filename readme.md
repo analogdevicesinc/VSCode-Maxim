@@ -8,6 +8,7 @@ Currently, **only Windows is supported**.  Support for MacOS and possibly Linux 
 # TODOs
 * Bring in 'Hello World' example projects for each micro.
 * Add support for additional debuggers other than PICO.
+* Add additional images to the readme.
 
 # Requirements
 **Before getting started, ensure that you have installed all of the dependencies below** :
