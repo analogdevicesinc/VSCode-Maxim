@@ -1,9 +1,9 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${env:Path};${config:MAXIM_PATH}\\Toolchain\\bin;${config:MAXIM_PATH}\\Toolchain\\msys\\1.0\\bin;"  
+        "Path":"${config:MAXIM_PATH}/Toolchain/bin;${config:MAXIM_PATH}/Toolchain/msys/1.0/bin;${env:Path}"  
     },
 
-    "MAXIM_PATH":"C:\\Maxim",
+    "MAXIM_PATH":"C:/Maxim",
 
     "target":"MAX32665"
 
