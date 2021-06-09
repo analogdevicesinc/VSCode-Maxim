@@ -29,8 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-09-04 17:13:32 -0500 (Tue, 04 Sep 2018) $
- * $Revision: 37649 $
  *
  ******************************************************************************/
 
@@ -49,6 +47,7 @@
 #include "tmr_utils.h"
 
 /***** Definitions *****/
+#define LED 0 // LED to flash.  We default to '0', since LED driver definitions may vary across micros.
 
 /***** Globals *****/
 
@@ -62,9 +61,9 @@ int main(void)
     printf("Hello World!\n");
 
     while (1) {
-        LED_On(0);
+        LED_On(LED);
         TMR_Delay(MXC_TMR0, MSEC(500), 0);
-        LED_Off(0);
+        LED_Off(LED);
         TMR_Delay(MXC_TMR0, MSEC(500), 0);
         printf("count = %d\n", count++);
     }
