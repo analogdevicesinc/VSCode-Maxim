@@ -127,7 +127,7 @@ If you have existing source code that you'd like to import, take this option.
 
 4. With the Makefile configured for your existing source code, you'll also want to [set your target microcontroller](#Changing-the-Target-Microcontroller) correctly.
 
-5. That's it!  The project is now configured around your existing source code.  Some common next steps are:
+5. That's it!  The project is now configured around your existing source code, and can be opened with `File > Open Folder` from within VS Code.  Some common next steps are:
     * [Testing the Setup](#Testing-the-Setup)
     * [Building](#Building)
     * [Debugging](#Debugging)
