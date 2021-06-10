@@ -118,7 +118,7 @@ If you have existing source code that you'd like to import, take this option.
     
     Here I've injected the environment into a project where the source code has been organized into a `src` folder.  There is also another sub folder `some_library` that contains the source code to some other library that's part of my project.
 
-3. Modify the Makefile to build your existing source code as necessary.  See [Configuring the Makefile](#Configuring-the-Makefile).  In the example above, I would add the following lines to the Makefile:
+3. Modify the Makefile to build your existing source code as necessary.  See [Configuring the Makefile](#Configuring-the-Makefile).  In the example above, I would add (at minimum) the following lines to the Makefile:
 
         SRCS += mysource.c
         SRCS += theirsource.c
