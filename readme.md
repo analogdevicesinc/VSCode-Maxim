@@ -6,7 +6,6 @@ This is a [Visual Studio Code](https://code.visualstudio.com/)-based development
 Currently, **only Windows is supported**.  Support for MacOS and Linux toolchains is planned once Windows is stabilized.  MacOS has been tested and found to have some bugs.  Linux is untested.
 
 # TODOs
-* Add support for additional debuggers other than PICO.
 * Troubleshoot Pause bug
 * Add additional images to the readme.
 
@@ -28,7 +27,7 @@ Currently, **only Windows is supported**.  Support for MacOS and Linux toolchain
     * MAX32620
     * MAX32625
     * MAX32650
-* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for `ms-vscode.cpptools`)
+* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for `ms-vscode.cpptools` from within the extension manager.)
 * The latest [Release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository.
 
 
@@ -36,33 +35,22 @@ Currently, **only Windows is supported**.  Support for MacOS and Linux toolchain
 ## Enabling Workspace Trust
 The workspaces in this repo set environment variables for the integrated terminal.  In order for this to work, workspace trust must be enabled in your User Settings.  Follow the produre below.  You only need to do this one time per VS Code installation.
 
-1. Open your settings with `File > Preferences > Settings`.
+1. Launch VS Code.
 
-2. Find the `security.workspace.trust` settings (you can paste it into the searchbar), and enable Workspace Trust with the checkbox, as shown below.  It's also a good idea to set the startup prompt to 'always'.
+2. Open your settings with `File > Preferences > Settings`.
 
-<section align="center">
+3. Find the `security.workspace.trust` settings (you can paste it into the searchbar), and enable Workspace Trust with the checkbox, as shown below.  It's also a good idea to set the startup prompt to 'always'.
 
 ![Workspace Trust Settings Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrust.JPG)
 
-</section>
 
-3. Enable `terminal.integrated.allowWorkspaceConfiguration` with the checkbox, as shown below.
+4. Enable `terminal.integrated.allowWorkspaceConfiguration` with the checkbox, as shown below.
 
-    <section align="center">
-
-    ![Workspace Modification Setting Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceModification.JPG)
-
-    </section>
-
-4. That's it!
+![Workspace Modification Setting Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceModification.JPG)
 
 When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.
 
-<section align="center">
-
 ![Workspace Trust Prompt Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrustPrompt.JPG)
-
-</section>
 
 The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
 
@@ -85,7 +73,7 @@ Starting with the pre-made "Hello world" example is a great way to get rolling q
 
 3. Set your target microcontroller correctly.  See [Changing the Target Microcontroller](#Changing-the-Target-Microcontroller), and then return here.
 
-4. That's it!  The "Hello World" project is ready to build, debug, and modify.  Some common next steps are:
+4. That's it!  The "Hello World" project can be opened with `File > Open Folder` from within VS Code and is ready to build, debug, and modify.  Some common next steps are:
     * [Testing the Setup](#Testing-the-Setup)
     * [Adding Source Files](#Adding-Source-Files)
     * [Building](#Building)
@@ -130,7 +118,7 @@ If you have existing source code that you'd like to import, take this option.
     
     Here I've injected the environment into a project where the source code has been organized into a `src` folder.  There is also another sub folder `some_library` that contains the source code to some other library that's part of my project.
 
-3. Modify the Makefile to build your existing source code as necessary.  See [Configuring the Makefile](#Configuring-the-Makefile).  In the example above, I would add the following lines to the Makefile:
+3. Modify the Makefile to build your existing source code as necessary.  See [Configuring the Makefile](#Configuring-the-Makefile).  In the example above, I would add (at minimum) the following lines to the Makefile:
 
         SRCS += mysource.c
         SRCS += theirsource.c
@@ -267,5 +255,5 @@ There is a known issue when debugging where a false exception is thrown on main 
 
 This issue does not affect the functionality of the debugger.
 
-## Pausing Code Exection throws an Error
+## Pausing Code Execution while Debugging Throws an Error
 This is a known issue, and we believe this is related to how the .cpptools extension is sending messages to the core MIEngine.  Investigation is underway.
