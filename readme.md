@@ -145,6 +145,9 @@ After creating and configuring your project, the toolchain should be accessible 
 
 # Building
 There are 4 available build tasks that can be accessed via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.
+
+![Build Tasks Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/buildtasks.JPG)
+
 * Build
     * Compiles the code via the `make all` command.
     * The `./build` directory will be created and will contain the output binary, as well as all intermediary object files.
@@ -254,8 +257,8 @@ If you have installed Maxim's SDK to a non-default installation location, the `M
 2. Set the `MAXIM_PATH` to the root directory of your toolchain installation.  Use `/` (forward slashes) for the path.
 
 # Known Issues
-## Debugger does not Automatically break on main
+## Debugger does not automatically break on main
 A breakpoint on main must be set manually before launching the debugger.
 
-## Pausing Code Execution while Debugging Throws an Error
+## Pausing code execution while debugging throws an error
 This is a known issue on some (not all) micros, and we believe this is related to how the .cpptools extension is sending messages to the core MIEngine.  Investigation is underway.
