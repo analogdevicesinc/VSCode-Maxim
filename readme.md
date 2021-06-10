@@ -255,5 +255,5 @@ There is a known issue when debugging where a false exception is thrown on main 
 
 This issue does not affect the functionality of the debugger.
 
-## Pausing Code Exection throws an Error
+## Pausing Code Execution while Debugging Throws an Error
 This is a known issue, and we believe this is related to how the .cpptools extension is sending messages to the core MIEngine.  Investigation is underway.
