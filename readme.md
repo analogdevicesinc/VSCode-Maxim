@@ -6,7 +6,6 @@ This is a [Visual Studio Code](https://code.visualstudio.com/)-based development
 Currently, **only Windows is supported**.  Support for MacOS and Linux toolchains is planned once Windows is stabilized.  MacOS has been tested and found to have some bugs.  Linux is untested.
 
 # TODOs
-* Add support for additional debuggers other than PICO.
 * Troubleshoot Pause bug
 * Add additional images to the readme.
 
