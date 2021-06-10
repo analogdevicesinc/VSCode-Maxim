@@ -166,8 +166,12 @@ There are 4 available build tasks that can be accessed via `Terminal > Run Build
 
 # Debugging
 The Debugger can be launched with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D).  All standard debugging features are supported - breakpoints, watch variables, etc.  However, there is a known bug with pausing.  At this time, pausing code execution will cause VSCode to throw an error.  Breakpoints should be used as an alternative.
-* Ensure that a debugger/programmer is attached to the microcontroller and the host PC before launching a debugging session.
+* Ensure that a debugger/programmer is attached between the microcontroller's debugger port and the host PC before launching a debugging session.
+    * For the MAX32625PICO debugger that comes with all microcontrollers, use the SWD port.
 * When a debugging session is launched, the Build task will be launched automatically.  A successful build must be completed before debugging.
+* It is recommended to manually set a break-point on main, so that the debugger stops on entry into the source code.
+
+![Breakpoint Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/breakpoint.JPG)
 
 ## Changing the Debug Adapter
 Projects are configured to use the MAX32625PICO debug adapter by default.  **Only the PICO debug adapter has been thoroughly tested at this time.**  To use a different debugger:
