@@ -35,33 +35,22 @@ Currently, **only Windows is supported**.  Support for MacOS and Linux toolchain
 ## Enabling Workspace Trust
 The workspaces in this repo set environment variables for the integrated terminal.  In order for this to work, workspace trust must be enabled in your User Settings.  Follow the produre below.  You only need to do this one time per VS Code installation.
 
-1. Open your settings with `File > Preferences > Settings`.
+1. Launch VS Code.
 
-2. Find the `security.workspace.trust` settings (you can paste it into the searchbar), and enable Workspace Trust with the checkbox, as shown below.  It's also a good idea to set the startup prompt to 'always'.
+2. Open your settings with `File > Preferences > Settings`.
 
-<section align="center">
+3. Find the `security.workspace.trust` settings (you can paste it into the searchbar), and enable Workspace Trust with the checkbox, as shown below.  It's also a good idea to set the startup prompt to 'always'.
 
 ![Workspace Trust Settings Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrust.JPG)
 
-</section>
 
-3. Enable `terminal.integrated.allowWorkspaceConfiguration` with the checkbox, as shown below.
+4. Enable `terminal.integrated.allowWorkspaceConfiguration` with the checkbox, as shown below.
 
-    <section align="center">
-
-    ![Workspace Modification Setting Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceModification.JPG)
-
-    </section>
-
-4. That's it!
+![Workspace Modification Setting Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceModification.JPG)
 
 When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.
 
-<section align="center">
-
 ![Workspace Trust Prompt Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrustPrompt.JPG)
-
-</section>
 
 The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
 
