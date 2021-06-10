@@ -250,10 +250,8 @@ If you have installed Maxim's SDK to a non-default installation location, the `M
 2. Set the `MAXIM_PATH` to the root directory of your toolchain installation.  Use `/` (forward slashes) for the path.
 
 # Known Issues
-## 'An Exception Occurred' on Main
-There is a known issue when debugging where a false exception is thrown on main when the debugger is started.  A temporary workaround can be used to get rid of this false exception message - set a breakpoint on main.
-
-This issue does not affect the functionality of the debugger.
+## Debugger does not Automatically break on main
+A breakpoint on main must be set manually before launching the debugger.
 
 ## Pausing Code Execution while Debugging Throws an Error
 This is a known issue on some (not all) micros, and we believe this is related to how the .cpptools extension is sending messages to the core MIEngine.  Investigation is underway.
