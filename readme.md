@@ -73,7 +73,7 @@ Starting with the pre-made "Hello world" example is a great way to get rolling q
 
 3. Set your target microcontroller correctly.  See [Changing the Target Microcontroller](#Changing-the-Target-Microcontroller), and then return here.
 
-4. That's it!  The "Hello World" project is ready to build, debug, and modify.  Some common next steps are:
+4. That's it!  The "Hello World" project can be opened with `File > Open Folder` from within VS Code and is ready to build, debug, and modify.  Some common next steps are:
     * [Testing the Setup](#Testing-the-Setup)
     * [Adding Source Files](#Adding-Source-Files)
     * [Building](#Building)
