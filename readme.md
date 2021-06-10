@@ -27,7 +27,7 @@ Currently, **only Windows is supported**.  Support for MacOS and Linux toolchain
     * MAX32620
     * MAX32625
     * MAX32650
-* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for `ms-vscode.cpptools`)
+* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for `ms-vscode.cpptools` from within the extension manager.)
 * The latest [Release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository.
 
 
