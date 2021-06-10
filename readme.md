@@ -165,10 +165,13 @@ There are 4 available build tasks that can be accessed via `Terminal > Run Build
     * After flashing, the reset button on the microcontroller must be pushed or the micro must be power cycled to start execution of the program.
 
 # Debugging
-The Debugger can be launched with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D).  All standard debugging features are supported - breakpoints, watch variables, etc.  However, there is a known bug with pausing on _some_ micros.  Additionally, the debugger does not break automatically on entry into main, so a breakpoint must be set manually.  See below.
+The Debugger can be launched with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D).  All standard debugging features are supported - breakpoints, watch variables, etc.  See the [Official Debugger Documentation](https://code.visualstudio.com/docs/editor/debugging) for more details on usage.
+
+There is a known bug with pausing on _some_ micros.  Additionally, the debugger does not break automatically on entry into main, so a breakpoint must be set manually.  See below.
+
 * Ensure that a debugger/programmer is attached between the microcontroller's debugger port and the host PC before launching a debugging session.
     * For the MAX32625PICO debugger that comes with all microcontrollers, use the SWD port.
-* When a debugging session is launched, the Build task will be launched automatically.  A successful build must be completed before debugging.
+* When a debugging session is launched, the Build task will be launched automatically.  A successful build must complete before debugging.
 * It is recommended to manually set a break-point on main, so that the debugger stops on entry into the source code.
 
 ![Breakpoint Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/breakpoint.JPG)
