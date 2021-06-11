@@ -6,7 +6,6 @@ This is a [Visual Studio Code](https://code.visualstudio.com/)-based development
 Currently, **only Windows is supported**.  Support for MacOS and Linux toolchains is planned once Windows is stabilized.  MacOS has been tested and found to have some bugs.  Linux is untested.
 
 # TODOs
-* Troubleshoot Pause bug
 * Add additional images to the readme.
 
 # Requirements
@@ -21,15 +20,17 @@ Currently, **only Windows is supported**.  Support for MacOS and Linux toolchain
     * MAX32672
     * MAX32675
     * MAX78000
+
 * [Maxim LP Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0001500A) (If you are using any of the micros below)
     * MAX3263x
     * MAX32600
     * MAX32620
     * MAX32625
     * MAX32650
-* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for `ms-vscode.cpptools` from within the extension manager.)
-* The latest [Release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository.
 
+* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for `ms-vscode.cpptools` from within the extension manager.)
+
+* The latest [Release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository.
 
 # Initial Setup/Installation
 ## Enabling Workspace Trust
@@ -43,11 +44,6 @@ The workspaces in this repo set environment variables for the integrated termina
 
 ![Workspace Trust Settings Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrust.JPG)
 
-
-4. Enable `terminal.integrated.allowWorkspaceConfiguration` with the checkbox, as shown below.
-
-![Workspace Modification Setting Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceModification.JPG)
-
 When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.
 
 ![Workspace Trust Prompt Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrustPrompt.JPG)
@@ -55,25 +51,36 @@ When opening workspaces and folders for the first time VSCode will now prompt fo
 The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
 
 # Projects
+If you are coming from another IDE (such as Eclipse) you may be familiar with the concept of a "workspace".  In Eclipse, a workspace folder is a requirement, and you must import projects into the workspace to work on them.  
+
+In VS Code, things work a little differently.  Projects are more lightweight, can be self-contained, and are not dependent on a workspace or a lengthy import/export process.  All VS Code needs inside of a project is a `.vscode` folder and a `Makefile`, and then the IDE can open and move between different projects with `File > Open Folder`.
+
+The goal of this type of work-flow is to make the IDE as lightweight as possible, allowing you to focus on developing source code as opposed to battling your tools.
 
 ## Project Creation
-Projects can be created by:
-* (Option 1) Starting with a pre-made example project.
-* (Option 2) Injecting into an empty directory to create a new project.
-* (Option 3) Injecting into a directory with existing source code.
+**If you have not done so already, download the latest [release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository.**
 
-**For the procedures below, you will pull content from the correct sub-folder for your SDK.  For the Maxim Micros SDK, use the contents of the `MaximSDK` folder.  For the LP Micros SDK, use the contents of the `MaximLP` folder.**
+**For the procedures below, you will pull content from the correct sub-folder of the release of this repository.  For the Maxim Micros SDK, use the contents of the `MaximSDK` folder.  For the LP Micros SDK, use the contents of the `MaximLP` folder.**
 
-### Option 1 - Starting with a Pre-Made Project
+Two folders are present inside of the release package for each of the Microcontroller SDKs:  An `Inject` folder and a `New_Project` folder.
+* The `Inject` folder contains an empty project template (without any source code) that you can "inject" into any directory.
+* The `New_Project` folder contains a "Hello World" example project with some basic example source code.
+
+As a result, there are 3 main options for project creation:
+* (Option 1) Starting with the pre-made example project.
+* (Option 2) Injecting the project template into an empty directory.
+* (Option 3) Injecting the project template into a directory with existing source code.
+
+### Option 1.  Starting with the Pre-Made Project
 Starting with the pre-made "Hello world" example is a great way to get rolling quickly.  Take this option if you would like to start with a (mostly) pre-configured project.
 
-1. Copy the `New_Project` folder from the release package to an accessible location.  This will be the location of your project.  
+1. Copy the `New_Project` folder from the release package to an accessible location.  This will be the location of your project.
 
 2. (Optional) Rename the folder.  For example, I might rename the folder to `MyProject`.
 
 3. Set your target microcontroller correctly.  See [Changing the Target Microcontroller](#Changing-the-Target-Microcontroller), and then return here.
 
-4. That's it!  The "Hello World" project can be opened with `File > Open Folder` from within VS Code and is ready to build, debug, and modify.  Some common next steps are:
+4. That's it!  This "Hello World" project can be opened with `File > Open Folder` from within VS Code and is ready to build, debug, and modify.  Some common next steps are:
     * [Testing the Setup](#Testing-the-Setup)
     * [Adding Source Files](#Adding-Source-Files)
     * [Building](#Building)
@@ -263,5 +270,10 @@ If you have installed Maxim's SDK to a non-default installation location, the `M
 ## Debugger does not automatically break on main
 A breakpoint on main must be set manually before launching the debugger.
 
+<<<<<<< HEAD
 ## Pausing code execution while debugging throws an error
 This is a known issue on some (not all) micros, and we believe this is related to how the .cpptools extension is sending messages to the core MIEngine.  Investigation is underway.
+=======
+## Pausing Code Execution while Debugging Throws an Error
+See https://jira.maxim-ic.com/browse/MSDK-361
+>>>>>>> ebe3081e4f819edeef806a634f7900673b3d5d7b
