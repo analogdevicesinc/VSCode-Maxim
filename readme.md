@@ -6,7 +6,6 @@ This is a [Visual Studio Code](https://code.visualstudio.com/)-based development
 Currently, **only Windows is supported**.  Support for MacOS and Linux toolchains is planned once Windows is stabilized.  MacOS has been tested and found to have some bugs.  Linux is untested.
 
 # TODOs
-* Troubleshoot Pause bug
 * Add additional images to the readme.
 
 # Requirements
@@ -261,4 +260,4 @@ If you have installed Maxim's SDK to a non-default installation location, the `M
 A breakpoint on main must be set manually before launching the debugger.
 
 ## Pausing Code Execution while Debugging Throws an Error
-This is a known issue on some (not all) micros, and we believe this is related to how the .cpptools extension is sending messages to the core MIEngine.  Investigation is underway.
+See https://jira.maxim-ic.com/browse/MSDK-361
