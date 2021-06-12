@@ -250,7 +250,10 @@ Options for the LP Micros SDK are:
 The Makefile is the core file for the build system.  All configuration tasks such as adding source files to the build, setting compiler flags, and linking libraries are handled via the Makefile. The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand.
 
 ### Adding Source Files
-* The Makefile is pre-configured for a single `main.c` source file by default.  Add/edit additional source files to the build with additional `SRCS += yourfile.c`
+* The Makefile is pre-configured for a single `main.c` source file by default.
+* Create a new source file by right clicking in the Explorer and selecting `New file`.
+* Existing source files can be dragged and dropped into the Explorer.
+* Add the created or imported source file to the Makefile with `SRCS += yourfile.c`
 * The Makefile looks for source files _only_ in the `\src` directory by default.  If you would like to use additional source directories, add them with `VPATH += yoursourcedirectory`
 * The Makefile looks for header files _only_ in the `\src` directory by default.  If you would like to use additional include directories, add them with `IPATH += yourincludedirectory`
 
