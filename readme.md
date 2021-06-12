@@ -287,6 +287,7 @@ If you have installed Maxim's SDK to a non-default installation location, the `M
 # Known Issues
 ## Debugger does not automatically break on main
 A breakpoint on main must be set manually before launching the debugger.
+
 ![Breakpoint Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/breakpoint.JPG)
 
 ## Pausing code execution while debugging throws an error
