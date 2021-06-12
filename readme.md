@@ -42,7 +42,7 @@ The workspaces in this repo set environment variables for the integrated termina
 
 2. Open your settings with `File > Preferences > Settings`.
 
-3. Find the `security.workspace.trust` settings (you can paste it into the searchbar), and enable Workspace Trust with the checkbox, as shown below.  It's also a good idea to set the startup prompt to 'always'.
+3. Find the `security.workspace.trust` settings (you can copy+paste it into the searchbar), and enable Workspace Trust with the checkbox, as shown below.  It's also a good idea to set the startup prompt to 'always'.
 
 ![Workspace Trust Settings Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrust.JPG)
 
@@ -60,21 +60,27 @@ In VS Code, things work a little differently.  Projects are more lightweight, ca
 The goal of this type of work-flow is to make the IDE as lightweight as possible, allowing you to focus on developing source code as opposed to battling your tools.
 
 ## Project Creation
-**If you have not done so already, download the latest [release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository.**
+**If you have not done so already, download the latest [release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository and extract it to an accessible location.**
 
-**For the procedures below, you will pull content from the correct sub-folder of the release of this repository.  For the Maxim Micros SDK, use the contents of the `MaximSDK` folder.  For the LP Micros SDK, use the contents of the `MaximLP` folder.**
+**For the procedures below, you will pull content from the correct sub-folder of the release of this repository.**  
+**For the Maxim Micros SDK, use the contents of the `MaximSDK` folder.**  
+**For the LP Micros SDK, use the contents of the `MaximLP` folder.**
+
+![Release folders image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/Release_folders.JPG)
 
 Two folders are present inside of the release package for each of the Microcontroller SDKs:  An `Inject` folder and a `New_Project` folder.
 * The `Inject` folder contains an empty project template (without any source code) that you can "inject" into any directory.
 * The `New_Project` folder contains a "Hello World" example project with some basic example source code.
 
-As a result, there are 3 main options for project creation:
-* (Option 1) Starting with the pre-made example project.
-* (Option 2) Injecting the project template into an empty directory.
-* (Option 3) Injecting the project template into a directory with existing source code.
+![Sub-folders image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/Inject_and_NewProject.JPG)
 
-### Option 1.  Starting with the Pre-Made Project
-Starting with the pre-made "Hello world" example is a great way to get rolling quickly.  Take this option if you would like to start with a (mostly) pre-configured project.
+As a result, there are 3 main options for project creation:
+* (Option 1) Copying the pre-made "Hello World" example project.
+* (Option 2) Creating a new empty project by injecting the project template into an empty directory.
+* (Option 3) Injecting the project template into existing source code.
+
+### Option 1.  Copying the Pre-Made Project
+Copying the pre-made "Hello world" example is a great way to get rolling quickly.  Take this option if you would like to start with a (mostly) pre-configured project.
 
 1. Copy the `New_Project` folder from the release package to an accessible location.  This will be the location of your project.
 
@@ -144,13 +150,20 @@ If you have existing source code that you'd like to import, take this option.
 ## Testing the Setup
 After creating and configuring your project, the toolchain should be accessible from the integrated terminal.  To test that everything is working properly : 
 
-* Navigate to the open `TERMINAL` tab on the bottom of the VS Code application.  If a terminal is not open, you can open a new terminal with `Terminal > New Terminal` or (Ctrl+Shift+`).  The following commands to retrieve version numbers should be able to be run successfully from within the terminal :
+1. Navigate to the open `TERMINAL` tab on the bottom of the VS Code application.  If a terminal is not open, you can open a new terminal with `Terminal > New Terminal` or (Ctrl+Shift+`).  
+
+   ![Terminal image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/Terminal.JPG)
+
+2. The following commands to retrieve version numbers should be able to be run successfully from within the terminal :
 
     * `make -v`
     * `openocd -v`
     * `arm-none-eabi-gcc -v`
     * `arm-none-eabi-gdb -v`
-
+    
+   For example, the `make -v` command should look like the following:
+   
+   ![Make -v example output](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/make_test.JPG)
 
 # Building
 There are 4 available build tasks that can be accessed via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.
