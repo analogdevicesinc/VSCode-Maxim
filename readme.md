@@ -148,7 +148,7 @@ If you have existing source code that you'd like to import, take this option.
     * [Debugging](#Debugging)
 
 ## Testing the Setup
-After creating and configuring your project, the toolchain should be accessible from the integrated terminal.  To test that everything is working properly : 
+After creating, configuring, and opening your project with `File > Open Folder` the toolchain should be accessible from the integrated terminal.  To test that everything is working properly : 
 
 1. Navigate to the open `TERMINAL` tab on the bottom of the VS Code application.  If a terminal is not open, you can open a new terminal with `Terminal > New Terminal` or (Ctrl+Shift+`).  
 
@@ -192,7 +192,7 @@ There are 4 available build tasks that can be accessed via `Terminal > Run Build
 # Debugging
 The Debugger can be launched with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D).  All standard debugging features are supported - breakpoints, watch variables, etc.
 
-There is a known bug with pausing on _some_ micros.  Additionally, the debugger does not break automatically on entry into main, so a breakpoint must be set manually.  See below.
+At the moment, there is a known issue with the debugger.  It doesn't automatically break on entry into main, so a breakpoint must be set manually.  See below.
 
 * Ensure that a debugger/programmer is attached between the microcontroller's debugger port and the host PC before launching a debugging session.
     * For the MAX32625PICO debugger that comes with all microcontrollers, use the SWD port.
@@ -270,7 +270,7 @@ The Makefile is the core file for the build system.  All configuration tasks suc
 * The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
 
 ## Setting Include Paths for Intellisense
-VS Code's intellisense engine must be told where to find the header files for your source code.  By default, include paths have been added for Maxim's perpiheral drivers, and all of the sub-directories of the workspace will be searched for header files.  If VS Code throws an error on an `#include` statement (and the file exists), then an include path is most likely missing.
+VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then an include path is most likely missing.
 
 To add additional include paths :
 1. Open the `.vscode/c_cpp_properties.json` file.  
@@ -293,4 +293,4 @@ A breakpoint on main must be set manually before launching the debugger.
 ## Pausing code execution while debugging throws an error
 See https://jira.maxim-ic.com/browse/MSDK-361
 
-Run "clean-periph" and then re-build.
+Solution: Run "clean-periph" and then re-build.
