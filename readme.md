@@ -55,7 +55,7 @@ The .JSON source files within the .vscode folders of this repo contain all of th
 # Projects
 If you are coming from another IDE (such as Eclipse) you may be familiar with the concept of a "workspace".  In Eclipse, a workspace folder is a requirement, and you must import projects into the workspace to work on them.  
 
-In VS Code, things work a little differently.  Projects are more lightweight, can be self-contained, and are not dependent on a workspace or a lengthy import/export process.  All VS Code needs inside of a project is a `.vscode` folder and a `Makefile`, and then the IDE can open and move between different projects with `File > Open Folder`.
+In VS Code, things work a little differently.  Projects are more lightweight, can be self-contained, and are not dependent on a workspace or a lengthy import/export process.  All VS Code needs inside of a project is a `.vscode` folder and a `Makefile`, and then the IDE can open and move between different projects with `File > Open Folder`.  The main configuration that happens "behind the scenes" in the project settings is to make the SDK toolchain accessible from VS Code's integrated terminal.  The build system (based on [Tasks](https://code.visualstudio.com/Docs/editor/tasks) ) wraps around the terminal and offers the convenience features you would expect.  
 
 The goal of this type of work-flow is to make the IDE as lightweight as possible, allowing you to focus on developing source code as opposed to battling your tools.
 
