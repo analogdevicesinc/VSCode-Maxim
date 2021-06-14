@@ -63,8 +63,8 @@ The goal of this type of work-flow is to make the IDE as lightweight as possible
 **If you have not done so already, download the latest [release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository and extract it to an accessible location.**
 
 **For the procedures below, you will pull content from the correct sub-folder of the release of this repository.**  
-**For the Maxim Micros SDK, use the contents of the `MaximSDK` folder.**  
-**For the LP Micros SDK, use the contents of the `MaximLP` folder.**
+* For the Maxim Micros SDK, use the contents of the `MaximSDK` folder. 
+* For the LP Micros SDK, use the contents of the `MaximLP` folder.
 
 ![Release folders image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/Release_folders.JPG)
 
