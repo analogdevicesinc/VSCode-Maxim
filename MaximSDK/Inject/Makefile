@@ -50,7 +50,7 @@ IPATH += ./src
 PROJ_CFLAGS+=-Wall # Enable warnings
 
 # Set compiler optimization level 
-MXC_OPTIMIZE_CFLAGS=-O0
+MXC_OPTIMIZE_CFLAGS=-Og
 
  ###############################################################################
 
