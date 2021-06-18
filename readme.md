@@ -11,6 +11,7 @@ Currently, **only Windows is supported**.  Support for MacOS and Linux toolchain
 * Add additional images to the readme.
 
 # Requirements
+Please download and install the following software dependencies:
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A) (If you are using any of the micros below)
     * MAX32520
@@ -31,8 +32,6 @@ Currently, **only Windows is supported**.  Support for MacOS and Linux toolchain
     * MAX32650
 
 * [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for `ms-vscode.cpptools` from within the extension manager.)
-
-* The latest [Release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository.
 
 # Initial Setup/Installation
 ## Enabling Workspace Trust
