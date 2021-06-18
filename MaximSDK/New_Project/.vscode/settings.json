@@ -18,6 +18,12 @@
     "MAX78000"
     */ 
 
+    "board":"EvKit_V1",/*<-- Select target board.
+    Options:
+    "EvKit_V1",
+    "FTHR_RevA"
+    */
+
     "debugger":"cmsis-dap",/*<-- Debugger to use.  
     Options :
     "cmsis-dap" (for PICO)
