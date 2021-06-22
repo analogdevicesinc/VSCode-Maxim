@@ -57,7 +57,7 @@ MXC_OPTIMIZE_CFLAGS=-Og
 # Set the MAKE variable.  This eliminates issues with some setups
 MAKE=make
 
-# Default target processor should none be specified from the VS Code settings for some reason
+# Default target processor.  This is overridden in settings.json
 ifeq "$(TARGET)" ""
 TARGET=MAX32655
 endif
@@ -74,7 +74,7 @@ TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
 # Select 'GCC' or 'IAR' compiler
 COMPILER=GCC
 
-# Specify the board used
+# Default board used.  This is overridden in settings.json
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
 #BOARD=FTHR_RevA

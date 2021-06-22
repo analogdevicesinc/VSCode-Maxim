@@ -59,7 +59,7 @@ MXC_OPTIMIZE=-Og
 # Set the MAKE variable.  This eliminates issues with some setups
 MAKE=make
 
-# Specify the target processor
+# Default target processor.  This is overridden in settings.json
 ifeq "$(TARGET)" ""
 TARGET=MAX32665
 endif
@@ -76,7 +76,7 @@ TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
 # Select 'GCC' or 'IAR' compiler
 COMPILER=GCC
 
-# Specify the board used
+# Default board used.  This is overridden in settings.json
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
 endif
