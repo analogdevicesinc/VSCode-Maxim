@@ -41,6 +41,7 @@ def release(version):
     # Clean up
     print("Cleaning up...")
     ps(f"Remove-Item {r_dir}/readme.md")
+    ps(f"Remove-Item {r_dir}/LICENSE.txt")
     ps(f"Remove-Item {r_dir}/MaximLP -Recurse")
     ps(f"Remove-Item {r_dir}/MaximSDK -Recurse")
 
