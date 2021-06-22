@@ -30,7 +30,7 @@ Please download and install the following software dependencies:
 
 # Initial Setup/Installation
 ## Enabling Workspace Trust
-The workspaces in this repo set environment variables for the integrated terminal.  In order for this to work, workspace trust must be enabled in your User Settings.  Follow the produre below.  You only need to do this one time per VS Code installation.
+The workspaces in this repo set environment variables for the integrated terminal.  In order for this to work, workspace trust must be enabled in your User Settings.  Follow the procedure below.  You only need to do this one time per VS Code installation.
 
 1. Launch VS Code.
 
@@ -209,7 +209,7 @@ Projects are configured to use the MAX32625PICO debug adapter by default.  **Onl
     * "ftdi/olimex-arm-usb-tiny-h" (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
     * "ftdi/olimex-jtag-tiny" (for http://www.olimex.com/dev/arm-usb-tiny.html)
 
-# Advanced Configuration
+# Configuration
 
 ## Changing the Target Microcontroller
 The default target microcontrollers are the MAX32655 (for the Maxim SDK) and the MAX32665 (for the LP SDK).  If you are using a different microcontroller, the target setting must be changed.  Follow the procedure below:
@@ -280,7 +280,9 @@ A breakpoint on main must be set manually before launching the debugger.
 
 ![Breakpoint Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/breakpoint.JPG)
 
-## Pausing code execution while debugging throws an error
-See https://jira.maxim-ic.com/browse/MSDK-361
+## Pausing code execution throws an "Unable to open..." error
+![Pause Error Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/pause_error.jpg)
 
-Solution: Run "clean-periph" and then re-build.
+This is an internally reported and tracked error.  It's related to how the peripheral driver libraries are currently shipped with the SDK.  
+
+Solution: Run "clean-periph" and then re-build.  The peripheral driver libraries will be re-compiled from scratch with the correct filepaths set in the library file.
