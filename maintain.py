@@ -32,6 +32,7 @@ def release(version):
     ps(f"Copy-Item ./MaximSDK/* {r_dir}/MaximSDK/ -force -Recurse")
 
     ps(f"Copy-Item ./readme.md {r_dir}/ -force")
+    ps(f"Copy-Item ./LICENSE.txt {r_dir}/ -force")
 
     #Archive release
     print("Archiving...")
