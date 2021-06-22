@@ -1,14 +1,9 @@
 # VSCode-Maxim
 
 # Introduction
-This is a [Visual Studio Code](https://code.visualstudio.com/)-based development environment for [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.  It builds off of Microsoft's C/C++ extension and leverages Maxim's toolchain into a full-featured IDE for building and debugging embedded code.
+This is a [Visual Studio Code](https://code.visualstudio.com/)-based development environment for [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.  It builds off of Microsoft's C/C++ extension and leverages Maxim's toolchain into a full-featured IDE for building and debugging embedded code.  Currently, **only Windows is supported**.
 
-The readme below assumes some familiarity with VS Code, Make, and microcontroller development in general.
-
-Currently, **only Windows is supported**.  Support for MacOS and Linux toolchains is planned once Windows is stabilized.  MacOS has been tested and found to have some bugs.  Linux is untested.
-
-# TODOs
-* Add additional images to the readme.
+**Note:** This is an advanced IDE implementation that is very close to the command-line.  Some familiarity with Make, GCC, and the command-line is expected, as well as an understanding of microcontroller fundamentals.
 
 # Requirements
 Please download and install the following software dependencies:
@@ -41,7 +36,7 @@ The workspaces in this repo set environment variables for the integrated termina
 
 2. Open your settings with `File > Preferences > Settings`.
 
-3. Find the `security.workspace.trust` settings (you can copy+paste it into the searchbar), and enable Workspace Trust with the checkbox, as shown below.  It's also a good idea to set the startup prompt to 'always'.
+3. Find the `security.workspace.trust` settings (you can copy+paste this into the searchbar), and enable Workspace Trust with the checkbox, as shown below.  It's also a good idea to set the startup prompt to 'always'.
 
 ![Workspace Trust Settings Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrust.JPG)
 
@@ -52,9 +47,9 @@ When opening workspaces and folders for the first time VSCode will now prompt fo
 The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
 
 # Projects
-If you are coming from another IDE (such as Eclipse) you may be familiar with the concept of a "workspace".  In Eclipse, a workspace folder is a requirement, and you must import projects into the workspace to work on them.  
+If you are coming from another IDE (such as Eclipse) you may be familiar with the concept of a "workspace".  In Eclipse, a workspace folder is a requirement, and you must import projects into the workspace.  
 
-In VS Code, things work a little differently.  Projects are more lightweight, can be self-contained, and are not dependent on a workspace or a lengthy import/export process.  All VS Code needs inside of a project is a `.vscode` folder and a `Makefile`, and then the IDE can open and move between different projects with `File > Open Folder`.  The main configuration that happens "behind the scenes" in the project settings is to make the SDK toolchain accessible from VS Code's integrated terminal.  The build system (based on [Tasks](https://code.visualstudio.com/Docs/editor/tasks) ) wraps around the terminal and offers the convenience features you would expect.  
+In VS Code, things work a little differently.  Projects are more lightweight, can be self-contained, and are not dependent on a workspace or a lengthy import/export process.  The main mechanism for opening Projects is `File > Open Folder`.  If a `.vscode` folder is inside of VS Code's working directory (set by `File > Open Folder`), then it will look inside the `.vscode` folder for settings to use.  The `.vscode` folders in this repository contain a [Tasks](https://code.visualstudio.com/Docs/editor/tasks)-based implementation that integrates with Maxim's SDKs through the core project `Makefile`.  
 
 The goal of this type of work-flow is to make the IDE as lightweight as possible, allowing you to focus on developing source code as opposed to battling your tools.
 
@@ -208,15 +203,11 @@ Projects are configured to use the MAX32625PICO debug adapter by default.  **Onl
 2. Change the `"debugger"` variable.  Options are:
 
     * "cmsis-dap" (for default PICO adapter)
-    * "olimex-arm-usb-ocd" (for http://www.olimex.com/dev/arm-usb-ocd.html)
-    * "olimex-arm-usb-ocd-h" (for http://www.olimex.com/dev/arm-usb-ocd.html)
-    * "olimex-arm-usb-tiny-h" (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
-    * "olimex-jtag-tiny" (for http://www.olimex.com/dev/arm-usb-tiny.html)
-    * "ftdi/olimex-arm-jtag-swd" (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/ w/ ftdi interface)
-    * "ftdi/olimex-arm-usb-ocd" (for http://www.olimex.com/dev/arm-usb-ocd.html w/ ftdi interface)
-    * "ftdi/olimex-arm-usb-ocd-h" (for http://www.olimex.com/dev/arm-usb-ocd-h.html w/ ftdi interface)
-    * "ftdi/olimex-arm-usb-tiny-h" (for http://www.olimex.com/dev/arm-usb-tiny-h.html w/ ftdi interface)
-    * "ftdi/olimex-jtag-tiny" (for http://www.olimex.com/dev/arm-usb-tiny.html w/ ftdi interface)
+    * "ftdi/olimex-arm-jtag-swd" (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/)
+    * "ftdi/olimex-arm-usb-ocd" (for http://www.olimex.com/dev/arm-usb-ocd.html)
+    * "ftdi/olimex-arm-usb-ocd-h" (for http://www.olimex.com/dev/arm-usb-ocd-h.html)
+    * "ftdi/olimex-arm-usb-tiny-h" (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
+    * "ftdi/olimex-jtag-tiny" (for http://www.olimex.com/dev/arm-usb-tiny.html)
 
 # Advanced Configuration
 
