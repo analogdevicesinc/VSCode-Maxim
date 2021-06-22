@@ -17,16 +17,13 @@
     "board":"EvKit_V1",/*<-- Select target board.
     Options:
     "EvKit_V1",
-    "FTHR_RevA"
+    "FTHR",
+    etc. Find the right path in your SDK and set accordingly.  FTHR board paths are not standardized.
     */
 
     "debugger":"cmsis-dap",/*<-- Debugger to use.  
     Options :
     "cmsis-dap" (for PICO)
-    "olimex-arm-usb-ocd" (for http://www.olimex.com/dev/arm-usb-ocd.html)
-    "olimex-arm-usb-ocd-h" (for http://www.olimex.com/dev/arm-usb-ocd.html)
-    "olimex-arm-usb-tiny-h" (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
-    "olimex-jtag-tiny" (for http://www.olimex.com/dev/arm-usb-tiny.html)
     "ftdi/olimex-arm-jtag-swd" (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/ w/ ftdi interface)
     "ftdi/olimex-arm-usb-ocd" (for http://www.olimex.com/dev/arm-usb-ocd.html w/ ftdi interface)
     "ftdi/olimex-arm-usb-ocd-h" (for http://www.olimex.com/dev/arm-usb-ocd-h.html w/ ftdi interface)
