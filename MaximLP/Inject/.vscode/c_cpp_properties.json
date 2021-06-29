@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**",
                 "${config:MAXIM_PATH}/Firmware/${config:target}/Libraries/${config:target}PeriphDriver/Include",
                 "${config:MAXIM_PATH}/Firmware/${config:target}/Libraries/Boards/Include",
-                "${config:MAXIM_PATH}/Firmware/${config:target}/Libraries/Boards/EvKit_V1/Include",
+                "${config:MAXIM_PATH}/Firmware/${config:target}/Libraries/Boards/${config:board}/Include",
                 "${config:MAXIM_PATH}/Firmware/${config:target}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
                 "${config:MAXIM_PATH}/Firmware/${config:target}/Libraries/CMSIS/Include",
                 "${config:MAXIM_PATH}/Libraries/CMSIS/Include"
