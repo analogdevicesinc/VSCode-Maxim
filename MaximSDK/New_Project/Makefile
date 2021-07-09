@@ -46,6 +46,7 @@ IPATH += ./src
 
 # Set compiler flags
 PROJ_CFLAGS+=-Wall # Enable warnings
+PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE # Enable assertion checking for development
 
 # Set compiler optimization level 
 MXC_OPTIMIZE_CFLAGS=-Og
@@ -55,12 +56,11 @@ MXC_OPTIMIZE_CFLAGS=-Og
 # Set the MAKE variable.  This eliminates issues with some setups
 MAKE=make
 
-# Default target processor.  This is overridden in settings.json
 ifeq "$(TARGET)" ""
-TARGET=MAX32655
+$(error target must be specified!  Set the TARGET variable.)
 endif
 
-# Set output filename to target micro
+# Set output filename
 ifeq "$(PROJECT)" ""
 PROJECT=$(PROJECT_NAME)
 endif
@@ -74,8 +74,7 @@ COMPILER=GCC
 
 # Default board used.  This is overridden in settings.json
 ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
+$(error board must be specified!  Set the BOARD variable.)
 endif
 
 # This is the path to the CMSIS root directory
@@ -87,33 +86,10 @@ endif
 #LIBS_DIR = ./Libraries
 
 CMSIS_ROOT=$(LIBS_DIR)/CMSIS
-# SECURE_BOOT_TOOLS_DIR=$(LIBS_DIR)/../Tools/SBT
-# CA_SIGN_BUILD=$(SECURE_BOOT_TOOLS_DIR)/bin/sign_app
-# BUILD_SESSION=$(SECURE_BOOT_TOOLS_DIR)/bin/build_scp_session
-# TEST_KEY=$(SECURE_BOOT_TOOLS_DIR)/devices/$(TARGET_UC)/keys/maximtestcrk.key
-# SCP_PACKETS=scp_packets
 
 #Use this for other library make files so they are all based off the same as root as the project
 export CMSIS_ROOT
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
-
-# Enable assertion checking for development
-PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 
-
-# Specify the target revision to override default
-# "A2" in ASCII
-# TARGET_REV=0x4132
-
-# Use this variables to specify and alternate tool path
-#TOOL_DIR=/opt/gcc-arm-none-eabi-4_8-2013q4/bin
-
-
-# Use these variables to add project specific tool options
-#PROJ_CFLAGS+=--specs=nano.specs
-#PROJ_LDFLAGS+=--specs=nano.specs
-
-# Point this variable to a startup file to override the default file
-#STARTUPFILE=start.S
 
 # Point this variable to a linker file to override the default file
 LINKER=$(TARGET_LC).ld
@@ -137,18 +113,13 @@ export PERIPH_DRIVER_DIR
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 
 all:
-# 	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -R .sig -O binary $(BUILD_DIR)/$(PROJECT).bin
-# 	$(CA_SIGN_BUILD) $(BUILD_DIR)/$(PROJECT).bin $(TEST_KEY)
-# 	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).bin.sig
+# 	Extend the functionality of the "all" recipe here
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
 	
 clean: 
-#	rm -r ${SCP_PACKETS}/
+#	Extend the functionality of the "clean" recipe here
 
 # The rule to clean out all the build products.
-distclean: clean libclean slaclean
-
-sla: all
-#	$(BUILD_SESSION) -c $(TARGET_UC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin
+distclean: clean libclean
