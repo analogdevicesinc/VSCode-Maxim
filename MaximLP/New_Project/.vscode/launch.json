@@ -4,7 +4,7 @@
             "name": "GDB (Debug)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/${config:target}.elf",
+            "program": "${workspaceFolder}/build/${config:project_name}.elf",
             "args": [],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
@@ -12,7 +12,7 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "miDebuggerPath": "${config:MAXIM_PATH}/Toolchain/bin/arm-none-eabi-gdb.exe",
-            "miDebuggerArgs": "./build/${config:target}.elf",
+            "miDebuggerArgs": "./build/${config:project_name}.elf",
             "preLaunchTask": "flash",
             "setupCommands": [
                 {

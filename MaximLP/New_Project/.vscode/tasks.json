@@ -6,14 +6,14 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "make -j 8 TARGET=${config:target} BOARD=${config:board} MAXIM_PATH=${config:MAXIM_PATH} all",
+            "command": "make -j 8 TARGET=${config:target} BOARD=${config:board} MAXIM_PATH=${config:MAXIM_PATH} PROJECT_NAME=${config:project_name} all",
             "group": "build",
             "problemMatcher": []
         },
         {
             "label": "clean",
             "type": "shell",
-            "command": "make -j 8 clean TARGET=${config:target} BOARD=${config:board} MAXIM_PATH=${config:MAXIM_PATH}",
+            "command": "make -j 8 clean TARGET=${config:target} BOARD=${config:board} MAXIM_PATH=${config:MAXIM_PATH} PROJECT_NAME=${config:project_name}",
             "group": "build",
             "problemMatcher": []
         },

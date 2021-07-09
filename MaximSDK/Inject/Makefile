@@ -62,7 +62,7 @@ endif
 
 # Set output filename to target micro
 ifeq "$(PROJECT)" ""
-PROJECT=$(TARGET)
+PROJECT=$(PROJECT_NAME)
 endif
 
 # Create Target name variables
