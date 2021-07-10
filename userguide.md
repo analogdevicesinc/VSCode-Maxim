@@ -118,7 +118,6 @@ Save your changes with `CTRL+S`.  Now VS Code is ready to edit, build, and debug
 <hr>
 
 ### 7 - Open the Source Code
-<hr>
 Open `main.c`, which can be found in the `src` folder.  Here we can see the source code for a simple "Hello world" program.
 
 ![main.c](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/main.JPG)    
