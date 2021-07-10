@@ -201,7 +201,8 @@ Run one (or both) build tasks now to see how they work.
 <hr>
 
 ### 13 - Wrapping Up
-Here, we've gotten started with a basic project configuration, the available build tasks, and have debugged a Hello World program.  The `New_Project` folder is intended as a project template to get you started, and you can freely copy this project around and re-configure it for different target platforms.  Renaming the folder will change the name of the build output file (ie. renaming the folder to `MyProject` will produce an output binary called `MyProject.elf`).
-
-Consult the readme 
+Here, we've gotten started with a basic project configuration, the available build tasks, and have debugged a Hello World program.  The `New_Project` folder is intended as a project template to get you started, and you can freely copy this project around and re-configure it for different target platforms.  Renaming the folder will change the name of the build output file (ie. renaming the folder to `MyProject` will produce an output binary called `MyProject.elf`).  As you build on the template project you'll want to consult the readme for things like: 
+* [Adding Source Files](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#adding-source-files)
+* [Changing the Optimization Level](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#optimization-level)
+* [Linking Libraries](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#linking-libraries), etc.
 
