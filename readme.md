@@ -202,12 +202,12 @@ Projects are configured to use the MAX32625PICO debug adapter by default.  **Onl
 
 2. Change the `"debugger"` variable.  Options are:
 
-    * `"cmsis-dap"` (for default PICO adapter)
-    * `"ftdi/olimex-arm-jtag-swd"` (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/)
-    * `"ftdi/olimex-arm-usb-ocd"` (for http://www.olimex.com/dev/arm-usb-ocd.html)
-    * `"ftdi/olimex-arm-usb-ocd-h"` (for http://www.olimex.com/dev/arm-usb-ocd-h.html)
-    * `"ftdi/olimex-arm-usb-tiny-h"` (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
-    * `"ftdi/olimex-jtag-tiny"` (for http://www.olimex.com/dev/arm-usb-tiny.html)
+    * `"debugger":"cmsis-dap"` (for default PICO adapter)
+    * `"debugger":"ftdi/olimex-arm-jtag-swd"` (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/)
+    * `"debugger":"ftdi/olimex-arm-usb-ocd"` (for http://www.olimex.com/dev/arm-usb-ocd.html)
+    * `"debugger":"ftdi/olimex-arm-usb-ocd-h"` (for http://www.olimex.com/dev/arm-usb-ocd-h.html)
+    * `"debugger":"ftdi/olimex-arm-usb-tiny-h"` (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
+    * `"debugger":"ftdi/olimex-jtag-tiny"` (for http://www.olimex.com/dev/arm-usb-tiny.html)
 
 # Configuration
 
@@ -219,28 +219,28 @@ The default target microcontrollers are the MAX32655 (for the Maxim SDK) and the
 2. Change the `"target"` variable to the correct value for your microcontroller.
 
 Options for the Maxim Micros SDK are:
-* `"MAX32520"`
-* `"MAX32570"`
-* `"MAX32655"`
-* `"MAX32660"`
-* `"MAX32665"` (for MAX32665-MAX32668)
-* `"MAX32670"`
-* `"MAX32672"`
-* `"MAX32675"`
-* `"MAX78000"`
+* `"target":"MAX32520"`
+* `"target":"MAX32570"`
+* `"target":"MAX32655"`
+* `"target":"MAX32660"`
+* `"target":"MAX32665"` (for MAX32665-MAX32668)
+* `"target":"MAX32670"`
+* `"target":"MAX32672"`
+* `"target":"MAX32675"`
+* `"target":"MAX78000"`
 
 Options for the LP Micros SDK are:
-* `"MAX3263x"`
-* `"MAX32600"`
-* `"MAX32620"`
-* `"MAX32625"`
-* `"MAX32650"`
+* `"target":"MAX3263x"`
+* `"target":"MAX32600"`
+* `"target":"MAX32620"`
+* `"target":"MAX32625"`
+* `"target":"MAX32650"`
 
 ## Configuring the Makefile
 The Makefile is the core file for the build system.  All configuration tasks such as adding source files to the build, setting compiler flags, and linking libraries are handled via the Makefile. The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand.
 
 ### Adding Source Files
-* The Makefile is pre-configured for a single `main.c` source file by default.
+* The included Makefile is pre-configured for a single `main.c` source file by default.
 * Create a new source file by right clicking in the Explorer and selecting `New file`.
 * Existing source files can be dragged and dropped into the Explorer.
 * Add the created or imported source file to the Makefile with `SRCS += yourfile.c`
