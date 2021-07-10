@@ -202,12 +202,12 @@ Projects are configured to use the MAX32625PICO debug adapter by default.  **Onl
 
 2. Change the `"debugger"` variable.  Options are:
 
-    * "cmsis-dap" (for default PICO adapter)
-    * "ftdi/olimex-arm-jtag-swd" (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/)
-    * "ftdi/olimex-arm-usb-ocd" (for http://www.olimex.com/dev/arm-usb-ocd.html)
-    * "ftdi/olimex-arm-usb-ocd-h" (for http://www.olimex.com/dev/arm-usb-ocd-h.html)
-    * "ftdi/olimex-arm-usb-tiny-h" (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
-    * "ftdi/olimex-jtag-tiny" (for http://www.olimex.com/dev/arm-usb-tiny.html)
+    * `"cmsis-dap"` (for default PICO adapter)
+    * `"ftdi/olimex-arm-jtag-swd"` (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/)
+    * `"ftdi/olimex-arm-usb-ocd"` (for http://www.olimex.com/dev/arm-usb-ocd.html)
+    * `"ftdi/olimex-arm-usb-ocd-h"` (for http://www.olimex.com/dev/arm-usb-ocd-h.html)
+    * `"ftdi/olimex-arm-usb-tiny-h"` (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
+    * `"ftdi/olimex-jtag-tiny"` (for http://www.olimex.com/dev/arm-usb-tiny.html)
 
 # Configuration
 
@@ -219,22 +219,22 @@ The default target microcontrollers are the MAX32655 (for the Maxim SDK) and the
 2. Change the `"target"` variable to the correct value for your microcontroller.
 
 Options for the Maxim Micros SDK are:
-* "MAX32520"
-* "MAX32570"
-* "MAX32655"
-* "MAX32660"
-* "MAX32665" (for MAX32665-MAX32668)
-* "MAX32670"
-* "MAX32672"
-* "MAX32675"
-* "MAX78000"
+* `"MAX32520"`
+* `"MAX32570"`
+* `"MAX32655"`
+* `"MAX32660"`
+* `"MAX32665"` (for MAX32665-MAX32668)
+* `"MAX32670"`
+* `"MAX32672"`
+* `"MAX32675"`
+* `"MAX78000"`
 
 Options for the LP Micros SDK are:
-* "MAX3263x"
-* "MAX32600"
-* "MAX32620"
-* "MAX32625"
-* "MAX32650"
+* `"MAX3263x"`
+* `"MAX32600"`
+* `"MAX32620"`
+* `"MAX32625"`
+* `"MAX32650"`
 
 ## Configuring the Makefile
 The Makefile is the core file for the build system.  All configuration tasks such as adding source files to the build, setting compiler flags, and linking libraries are handled via the Makefile. The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand.
