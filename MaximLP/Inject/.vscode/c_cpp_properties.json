@@ -14,7 +14,14 @@
             "defines": [
             ],
             "intelliSenseMode": "gcc-arm",
-            "compilerPath": "${config:MAXIM_PATH}/Toolchain/bin/arm-none-eabi-gcc.exe"
+            "compilerPath": "${config:MAXIM_PATH}/Toolchain/bin/arm-none-eabi-gcc.exe",
+            "browse": {
+                "path": [
+                    "${config:MAXIM_PATH}/Firmware/${config:target}/Libraries/${config:target}PeriphDriver/Include",
+                    "${config:MAXIM_PATH}/Firmware/${config:target}/Libraries/Boards/Source",
+                    "${config:MAXIM_PATH}/Firmware/${config:target}/Libraries/Boards/${config:board}/Include"
+                ]
+            }
         }
     ],
     "version": 4
