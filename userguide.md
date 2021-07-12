@@ -214,11 +214,11 @@ When writing code for Maxim's Microcontrollers you might want to reference examp
 
 In the MaximSDK examples can be found under the `~\MaximSDK\Examples\<Target Platform>` folder, and in the LP SDK they can be found under the `~\Maxim\Firmware\<Target Platform>\Applications\EvKitExamples` folder.  For instance, the MAX32670 has the following examples available:
 
-![Examples folder](img\examples_folder.JPG)
+![Examples folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/examples_folder.JPG)
 
 Opening up the GPIO example reveals the following contents:
 
-![GPIO Contents](img\gpio_contents.JPG)
+![GPIO Contents](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_contents.JPG)
 
 There are a couple components inside the project:
 * A `main.c` file with the example code
@@ -228,23 +228,22 @@ There are a couple components inside the project:
 
 A quick way to reference the example code is to drag and drop it into VS Code's editor while you have an active project open.  Intellisense settings for the active project will be used even when editing external files.  For example, dragging the `main.c` file from the GPIO example for the 32670 into the "Hello World" project we configured in the previous section allows for simultaneous viewing.
 
-![GPIO Imported](img\gpio_imported.JPG)
+![GPIO Imported](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_imported.JPG)
 
 This provides a convenient way to reference the example code for your own application, and since Intellisense look-ups are loaded from our currently active project go-to definitions are supported.  For example, we can open the header file for the GPIO driver itself...
 
 (Right click on `"gpio.h"` -> Go to Definition)
 
-![GPIO Goto](img\gpio_goto.JPG)
+![GPIO Goto](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_goto.JPG)
 
 ... and see that the correct header file from the peripheral drivers is opened.
 
-![GPIO Header](img\gpio_header.JPG)
+![GPIO Header](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_header.JPG)
 
 If you want to dig in deeper and see how the peripheral driver functions are implemented at the register level, you can do so as well.  For example, we can look at the implementation of the `MXC_GPIO_Init` function.
 
-![GPIO Init](img\gpio_init_rightclick.JPG)
+![GPIO Init](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_init_rightclick.JPG)
 
 The implementation file for the correct die-type of the microcontroller needs to be selected (in the case of the MAX32670 that's the ME21), and then the function definition can be viewed.  Double click on the function definition to open up the full file view.
 
-![GPIO Implementation File](img\gpio_init_implementation.JPG)
-
+![GPIO Implementation File](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_init_implementation.JPG)
