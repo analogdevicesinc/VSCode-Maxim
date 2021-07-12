@@ -226,7 +226,9 @@ There are a couple components inside the project:
 * Eclipse configuration files and debugger profile (`.cproject`, `.project`, `GPIO.launch`)
 * A readme
 
-A quick way to reference the example code is to drag and drop it into VS Code's editor while you have an active project open.  Intellisense settings for the active project will be used even when editing external files.  For example, dragging the `main.c` file from the GPIO example for the 32670 into the "Hello World" project we configured in the previous section allows for simultaneous viewing.
+A quick way to reference the example code is to drag and drop it into VS Code's editor while you have an active project open.  Intellisense settings for the active project will be used even when editing external files.  For example, dragging the `main.c` file from the GPIO example for the MAX32670 into the "Hello World" project we configured in the previous section allows for simultaneous viewing.
+
+![GPIO Copy](img\GPIO_copy.JPG)
 
 ![GPIO Imported](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_imported.JPG)
 
@@ -247,3 +249,5 @@ If you want to dig in deeper and see how the peripheral driver functions are imp
 The implementation file for the correct die-type of the microcontroller needs to be selected (in the case of the MAX32670 that's the ME21), and then the function definition can be viewed.  Double click on the function definition to open up the full file view.
 
 ![GPIO Implementation File](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_init_implementation.JPG)
+
+Using this method you can quickly and easily reference example code for your own applications.  
