@@ -102,7 +102,7 @@ Run the other commands for OpenOCD, GCC, and GDB to verify that the integrated t
 
 <hr>
 
-### 6 - Edit settings.json
+### 6 - Set the Target Platform
 Open `settings.json`.  This is the main configuration file for the vscode setup, and can be found inside of the `.vscode` folder.  The other configuration files (`c_cpp_properties.json`, `launch.json`, `tasks.json`) reference values set here, and it's here that we set our target platform.
 
 ![Opening settings.json](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/settings.JPG)
@@ -113,7 +113,9 @@ Set the `"target"`, `"board"`, and `"debugger"` variables for your target platfo
 * `"debugger":"cmsis-dap"` (leaving at default)
     * The value "cmsis-dap" is used for the MAX32625PICO debugger adapter, which comes with our EVKITs and is used in the platforms with integrated debuggers such as the MAX32670EVKIT.  Unless you're using a different adapter, such as an Olimex, leave this value at its default.
 
-Save your changes with `CTRL+S`.  Now VS Code is ready to edit, build, and debug source code for the target platform.
+Save your changes with `CTRL+S` and restart VS Code.  A restart is necessary after changing the target platform so that VS Code re-parses the config file and re-loads Intellisense from scratch.  The command `Reset Intellisense Database` command should, in theory, work (via the command bar `Ctrl+Shift+P`), but in practice doesn't always fully re-parse the config file.  A full restart is guaranteed to get Intellisense reset for the new target platform.
+
+Now VS Code is ready to edit, build, and debug source code for the target platform.
 
 <hr>
 
@@ -201,8 +203,48 @@ Run one (or both) build tasks now to see how they work.
 <hr>
 
 ### 13 - Wrapping Up
-Here, we've gotten started with a basic project configuration, the available build tasks, and have debugged a Hello World program.  The `New_Project` folder is intended as a project template to get you started, and you can freely copy this project around and re-configure it for different target platforms.  Renaming the folder will change the name of the build output file (ie. renaming the folder to `MyProject` will produce an output binary called `MyProject.elf`).  As you build on the template project you'll want to consult the readme for things like: 
-* [Adding Source Files](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#adding-source-files)
-* [Changing the Optimization Level](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#optimization-level)
-* [Linking Libraries](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#linking-libraries), etc.
+Here, we've gotten started with a basic project configuration, the available build tasks, and have debugged a Hello World program.  The `New_Project` folder is intended as a project template to get you started, and you can freely copy this project around and re-configure it for different target platforms.  Renaming the folder will change the name of the build output file (ie. renaming the folder to `MyProject` will produce an output binary called `MyProject.elf`).
+
+You should now have a good basic understanding of how VS Code works and how Maxim's toolchain is integrated.  The next sections cover more advanced subjects.
+
+<hr>
+
+## Working with Example Code
+When writing code for Maxim's Microcontrollers you might want to reference example code to see how to use our peripheral drivers.
+
+In the MaximSDK examples can be found under the `~\MaximSDK\Examples\<Target Platform>` folder, and in the LP SDK they can be found under the `~\Maxim\Firmware\<Target Platform>\Applications\EvKitExamples` folder.  For instance, the MAX32670 has the following examples available:
+
+![Examples folder](img\examples_folder.JPG)
+
+Opening up the GPIO example reveals the following contents:
+
+![GPIO Contents](img\gpio_contents.JPG)
+
+There are a couple components inside the project:
+* A `main.c` file with the example code
+* A project `Makefile` for building the example code
+* Eclipse configuration files and debugger profile (`.cproject`, `.project`, `GPIO.launch`)
+* A readme
+
+A quick way to reference the example code is to drag and drop it into VS Code's editor while you have an active project open.  Intellisense settings for the active project will be used even when editing external files.  For example, dragging the `main.c` file from the GPIO example for the 32670 into the "Hello World" project we configured in the previous section allows for simultaneous viewing.
+
+![GPIO Imported](img\gpio_imported.JPG)
+
+This provides a convenient way to reference the example code for your own application, and since Intellisense look-ups are loaded from our currently active project go-to definitions are supported.  For example, we can open the header file for the GPIO driver itself...
+
+(Right click on `"gpio.h"` -> Go to Definition)
+
+![GPIO Goto](img\gpio_goto.JPG)
+
+... and see that the correct header file from the peripheral drivers is opened.
+
+![GPIO Header](img\gpio_header.JPG)
+
+If you want to dig in deeper and see how the peripheral driver functions are implemented at the register level, you can do so as well.  For example, we can look at the implementation of the `MXC_GPIO_Init` function.
+
+![GPIO Init](img\gpio_init_rightclick.JPG)
+
+The implementation file for the correct die-type of the microcontroller needs to be selected (in the case of the MAX32670 that's the ME21), and then the function definition can be viewed.  Double click on the function definition to open up the full file view.
+
+![GPIO Implementation File](img\gpio_init_implementation.JPG)
 
