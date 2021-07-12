@@ -32,6 +32,7 @@ def release(version):
     ps(f"Copy-Item ./MaximSDK/* {r_dir}/MaximSDK/ -force -Recurse")
 
     ps(f"Copy-Item ./readme.md {r_dir}/ -force")
+    ps(f"Copy-Item ./userguide.md {r_dir}/ -force")
     ps(f"Copy-Item ./LICENSE.txt {r_dir}/ -force")
 
     #Archive release
@@ -41,6 +42,7 @@ def release(version):
     # Clean up
     print("Cleaning up...")
     ps(f"Remove-Item {r_dir}/readme.md")
+    ps(f"Remove-Item {r_dir}/userguide.md")
     ps(f"Remove-Item {r_dir}/LICENSE.txt")
     ps(f"Remove-Item {r_dir}/MaximLP -Recurse")
     ps(f"Remove-Item {r_dir}/MaximSDK -Recurse")
