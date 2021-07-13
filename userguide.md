@@ -1,12 +1,12 @@
-# How to Use Visual Studio Code with Maxim's Microntrollers (Windows)
+# How to Use Visual Studio Code with Maxim's Microcontrollers (Windows)
 IDEs targeted at microcontrollers can oftentimes come with a lot of overhead.  They have a tendency to be bulky, unwieldy programs that can take up a lot of hard-drive space, and when something isn't configured properly they can be a pain to troubleshoot.  No one likes digging into project settings for hours trying to get their Intellisense working, or troubleshooting 5 different configuration options just to link a library.
 
-[Visual Studio Code](https://code.visualstudio.com/) is a lightweight, powerful, and customizable editor that can serve as a great free alternative to the more traditional micro IDEs like Eclipse, Code-Composer Studio, IAR, Keil uVision, etc.  This app note outlines step-by-step how to get started with [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim), a development environment for Maxim's Microcontrollers targeted specifically at VS Code.  As VSCode-Maxim moves the user a little closer to Maxim's toolchain, a detailed overview of it is provided to facilitate understanding and ease of use.
+[Visual Studio Code](https://code.visualstudio.com/) is a lightweight, powerful, and customizable editor that can serve as a great free alternative to the more traditional micro IDEs like Eclipse, Code-Composer Studio, IAR, Keil uVision, etc.  This app note outlines step-by-step how to get started with [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim), a development environment for Maxim's Microcontrollers targeted specifically at VS Code.  Since VSCode-Maxim makes calls directly into Maxim's toolchain, a detailed overview of it is provided to facilitate understanding and ease of use.
 
 ## De-Mystifying the SDK Toolchain
-Currently, Maxim maintains two Software Development Kits (SDKs) for microcontroller development - one for our Lower Power (LP) microcontrollers and one for everything else.  The SDK you'll use will depend on the microcontroller you're targeting, but everything is being consolidated into the [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A).  
+Currently, Maxim maintains two Software Development Kits (SDKs) for microcontroller development - one for our earlier Low Power (LP) microcontrollers and one for the rest of Maxim's line of Arm MCUs.  The SDK you'll use will depend on the microcontroller you're targeting, but everything is being consolidated into the [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A).  
 
-Before digging into the VS Code setup it will help to understand how the SDK works.  Install the SDK for your microcontroller (if you're not sure which to use see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#requirements)) and we'll take a look under the hood.  
+Before digging into the VS Code setup it will help to understand how the SDK works.  Install the SDK for your microcontroller  and we'll take a look under the hood.  (if you're not sure which to use see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#requirements)) 
 
 Maxim's SDKs contain all of the tools necessary to build, flash, and debug code on our Microcontrollers.  This collection of tools is called a toolchain, and it's what Integrated Development Environments (IDEs) build off of.  The toolchain is really just a collection of program binaries and typically includes compiler, linker, and debugger executables.  It also may include utility programs and build systems to make using these more lower level programs more convenient.
 
@@ -31,14 +31,14 @@ Now that we have some understanding of the toolchain, let's see how we can integ
 ## Integrating the Toolchain
 Visual Studio Code provides the [Tasks](https://code.visualstudio.com/Docs/editor/tasks) for integrating external tools.  To use the Maxim SDK toolchain via Tasks, the toolchain binaries must be made accessible from the command line.  Additionally, the correct board and peripheral driver files for a target platform must be loaded for compilation and source code development.  When those conditions are met, then Tasks can be created to conveniently implement the features that you would expect from an IDE:  building, cleaning, flashing, and debugging.
 
-[VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim) handles this for you and offers simple, clear configuration options for changing the target platform.  It leverages the fact that VS Code will look for a `.vscode` folder inside of its working directory to load settings from.  The `.vscode` folder in the repo makes the toolchain accessible from the integrated terminal and contains the core Tasks for use with a project Makefile.  It also configures the debugger and Intellisense properly.
+[VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim) handles this for you and offers simple, clear configuration options for changing the target platform.  It leverages the fact that VS Code will look for a `.vscode` folder inside of its working directory from which to load settings.  The `.vscode` folder in the repo makes the toolchain accessible from the integrated terminal and contains the core Tasks for use with a project Makefile.  It also configures the debugger and Intellisense properly.
 
 Let's get started setting it up.  The procedure below is a demonstration for the MAX32670EVKIT, but the same procedure can apply to all micros.
 
 ## Getting Started with VSCode-Maxim
 
 ### 1 - Install Software Requirements
-First, ensure sure you've met the Software [Requirements](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#requirements) listed in the readme.  This includes VS Code itself, the correct SDK for your microcontroller, and the official C/C++ extension for VS Code.
+First, ensure you have met the Software [Requirements](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#requirements) listed in the readme.  This includes VS Code itself, the correct SDK for your microcontroller, and the official C/C++ extension for VS Code.
 
 If you're not sure which SDK to use for your platform, see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#requirements).  It's recommended to install all of the SDK components and use the default installation path.
 
