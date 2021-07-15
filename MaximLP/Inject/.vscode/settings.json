@@ -5,8 +5,6 @@
 
     "MAXIM_PATH":"C:/Maxim", //<-- This is the root installation directory of the Maxim Micros Toolchain.  Change this if you used a non-default installation location.
 
-    "project_name":"${workspaceFolderBasename}",
-
     "target":"MAX32665",/*<-- Change to the correct target micro.
     Options :
     "MAX3263x"

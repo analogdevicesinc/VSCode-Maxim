@@ -62,7 +62,7 @@ endif
 
 # Set output filename
 ifeq "$(PROJECT)" ""
-PROJECT=$(PROJECT_NAME)
+PROJECT=$(TARGET)
 endif
 
 # Create Target name variables
