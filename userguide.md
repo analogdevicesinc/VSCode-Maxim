@@ -115,7 +115,7 @@ Set the `"target"`, `"board"`, and `"debugger"` variables for your target platfo
 
 Save your changes with `CTRL+S` and reload the VS Code window.  A reload is necessary after changing the target platform so that VS Code re-parses the config file and re-loads Intellisense from scratch to use the correct updated filepaths.  The window can be re-loaded with the `Reload Window` developer command.  Use `Ctrl + Shift + P` to open up the developer command prompt.
 
-![Reload window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reset_intellisense.JPG)
+![Reload window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
 
 Now VS Code is ready to edit, build, and debug source code for the target platform.
 
