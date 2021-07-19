@@ -113,7 +113,9 @@ Set the `"target"`, `"board"`, and `"debugger"` variables for your target platfo
 * `"debugger":"cmsis-dap"` (leaving at default)
     * The value "cmsis-dap" is used for the MAX32625PICO debugger adapter, which comes with our EVKITs and is used in the platforms with integrated debuggers such as the MAX32670EVKIT.  Unless you're using a different adapter, such as an Olimex, leave this value at its default.
 
-Save your changes with `CTRL+S` and restart VS Code.  A restart is necessary after changing the target platform so that VS Code re-parses the config file and re-loads Intellisense from scratch.  The command `Reset Intellisense Database` command should, in theory, work (via the command bar `Ctrl+Shift+P`), but in practice doesn't always fully re-parse the config file.  A full restart is guaranteed to get Intellisense reset for the new target platform.
+Save your changes with `CTRL+S` and reload the VS Code window.  A reload is necessary after changing the target platform so that VS Code re-parses the config file and re-loads Intellisense from scratch to use the correct updated filepaths.  The window can be re-loaded with the `Reload Window` developer command.  Use `Ctrl + Shift + P` to open up the developer command prompt.
+
+![Reload window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reset_intellisense.JPG)
 
 Now VS Code is ready to edit, build, and debug source code for the target platform.
 
@@ -126,8 +128,15 @@ Open `main.c`, which can be found in the `src` folder.  Here we can see the sour
 
 <hr>
 
-### 8 - Build the Program
-To build this program, open the build tasks menu with `Ctrl+Shift+B` or `Terminal > Run Build Task...`
+### 8 - Clean the Program
+First, let's ensure that we're starting from a clean slate.  Open the build tasks menu with `Ctrl+Shift+B` or `Terminal > Run Build Task...` and select the "clean-periph" option.  This cleans out the build products from the current project as well as the peripheral drivers in the SDK.  This ensures that the next step compiles everything from scratch.
+
+![Cleaning the program](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/clean-periph.jpg)
+
+<hr>
+
+### 9 - Build the Program
+Next, we'll build the source code.  Open the build tasks menu again with `Ctrl+Shift+B` or `Terminal > Run Build Task...`
 
 ![Build Tasks](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
 
@@ -149,7 +158,7 @@ See ["Configuring the Makefile"](https://github.com/MaximIntegratedTechSupport/V
 
 <hr>
 
-### 9 - Debug the Program
+### 10 - Debug the Program
 Now that we've seen the program build successfully, let's flash it onto the microcontroller and debug it.
 
 First, open the `main.c` source file and set a breakpoint on the `int main(void)` function.  This is the entry-point into the program and ensures that the debugger will break once the program starts execution.
@@ -170,7 +179,7 @@ Once the debugger connects you should see the breakpoint set on main hit.  VS Co
 
 <hr>
 
-### 10 (optional) - Open a Serial Port to the Micro
+### 11 (optional) - Open a Serial Port to the Micro
 Before we continue the program execution, you'll need to open a serial port to the platform to see the "Hello world!" message and count printed.
 
 Default serial communication settings are:
@@ -182,7 +191,7 @@ Default serial communication settings are:
 
 <hr>
 
-### 11 - Continue the Program
+### 12 - Continue the Program
 Press `F5` or hit the continue button in the debugger menu to continue the program past the breakpoint.
 
 ![Continue button](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/continue_button.JPG)
@@ -192,13 +201,6 @@ You should see the LED on your microcontroller blinking.  If you have a terminal
 ![Hello World Terminal](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/helloworld_terminal.JPG)
 
 Feel free to play around in the debugger here (setting different breakpoints, watch variables, stepping into and out of functions, etc.) to get familiar.  When you're ready, you can hit the stop button to quit debugging.
-
-<hr>
-
-### 12 - Clean the Program
-At some point, you'll probably want to clean out the build directory and recompile everything.  You can do so with the `clean` build task.  Additionally, you can force a rebuild of the peripheral drivers on the next build with `clean-periph`.
-
-Run one (or both) build tasks now to see how they work.
 
 <hr>
 
