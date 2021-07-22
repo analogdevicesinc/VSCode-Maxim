@@ -258,7 +258,7 @@ Using this method you can quickly and easily reference example code for your own
 Using example code as a reference is great, but what if we want to work with it directly?  That's where the `Inject` folder in the VSCode-Maxim release package comes in.  In the example below, we'll inject the VS Code setup into the Maxim SDK GPIO example and build it.
 
 ### 1 - Locate the Example Project
-Again, example projects can be found under the `~\MaximSDK\Examples\<Target Platform>` folder for the Maxim SDK and in the LP SDK they can be found under the `~\Maxim\Firmware\<Target Platform>\Applications\EvKitExamples` folder.  For the sake of this example, the a working copy of the GPIO example has been copied over into a separate folder.
+Example projects can be found under the `~\MaximSDK\Examples\<Target Platform>` folder for the Maxim SDK and in the LP SDK they can be found under the `~\Maxim\Firmware\<Target Platform>\Applications\EvKitExamples` folder.  For the sake of this example, the a working copy of the GPIO example has been copied over into a separate folder.
 
 ![GPIO Contents](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_contents.JPG)
 
@@ -310,7 +310,7 @@ Open `settings.json` inside of the `.vscode` folder and configure the project se
 * `"board":"EvKit_V1"`
 * `"debugger":"cmsis-dap"`
 
-`CTRL+S` to save the changes to the file, and then reload the VS Code window with `CTRL + SHIFT + P` > `Developer: Reload Window`.  Again, this is necessary so that VS Code re-parses all file-paths for our new target platform.
+`CTRL+S` to save the changes to the file, and then reload the VS Code window with `CTRL + SHIFT + P` > `Developer: Reload Window`.  This is necessary so that VS Code re-parses all file-paths for our new target platform.
 
 ![Reload Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_reload_window.JPG)
 
