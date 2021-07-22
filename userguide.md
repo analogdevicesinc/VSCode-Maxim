@@ -205,7 +205,7 @@ Feel free to play around in the debugger here (setting different breakpoints, wa
 <hr>
 
 ### 13 - Wrapping Up
-Here, we've gotten started with a basic project configuration, the available build tasks, and have debugged a Hello World program.  The `New_Project` folder is intended as a project template to get you started, and you can freely copy this project around and re-configure it for different target platforms.  Renaming the folder will change the name of the build output file (ie. renaming the folder to `MyProject` will produce an output binary called `MyProject.elf`).
+Here, we've gotten started with a basic project configuration, the available build tasks, and have debugged a Hello World program.  The `New_Project` folder is intended as a project template to get you started, and you can freely copy this project around and re-configure it for different target platforms.
 
 You should now have a good basic understanding of how VS Code works and how Maxim's toolchain is integrated.  The next sections cover more advanced subjects.
 
