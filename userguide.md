@@ -254,11 +254,13 @@ The implementation file for the correct die-type of the microcontroller needs to
 
 Using this method you can quickly and easily reference example code for your own applications.  This method works for any external code, provided that the search paths for Intellisense are configured properly.  For more details on configuration of those search paths, see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md).
 
-## Injecting into Example Code
-Using example code as a reference is great, but what if we want to work with it directly?  That's where the `Inject` folder in the VSCode-Maxim release package comes in.  In the example below, we'll inject the VS Code setup into the Maxim SDK GPIO example and build it.
+## Injecting into Existing Source Code
+Using example code as a reference is great, but what if we want to work with it directly, or inject the VS Code setup into a different project that's not in the MaximSDK?  That's where the `Inject` folder in the VSCode-Maxim release package comes in.  In the example below, we'll inject the VS Code setup into the Maxim SDK GPIO example, but this procedure fundamentally applies to any existing source code.
 
-### 1 - Locate the Example Project
-Example projects can be found under the `~\MaximSDK\Examples\<Target Platform>` folder for the Maxim SDK and in the LP SDK they can be found under the `~\Maxim\Firmware\<Target Platform>\Applications\EvKitExamples` folder.  For the sake of this example, the a working copy of the GPIO example has been copied over into a separate folder.
+### 1 - Locate the Existing Project
+Example projects can be found under the `~\MaximSDK\Examples\<Target Platform>` folder for the Maxim SDK and in the LP SDK they can be found under the `~\Maxim\Firmware\<Target Platform>\Applications\EvKitExamples` folder.  For the sake of this example, a working copy of the GPIO example has been copied over into a separate folder.
+
+The contents of this GPIO example are as follows:
 
 ![GPIO Contents](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_contents.JPG)
 
@@ -281,7 +283,7 @@ Rename the existing `Makefile` to `Makefile-old` to keep a reference copy.  By r
 <hr>
 
 ### 4 - Inject the VS Code Environment
-Copy the _contents_ of the `Inject` folder for your SDK into the example project.  In this example we're working with the MAX32670 which uses the MaximSDK.  
+Copy the _contents_ of the `Inject` for your SDK from VSCode-Maxim into the example project.  In this example we're working with the MAX32670, so we'll use the `Inject` folder inside of the `MaximSDK` folder.  
 
 ![GPIO Inject](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/inject_gpio.JPG)
 
@@ -327,7 +329,7 @@ Open the `Makefile` in the editor.
 
 Here, we can see a "Main Configuration" section highlighting some common options that, collectively, handle the configuration needed for most projects.  The first thing to check is that all of the source files have been added to the `SRCS` variable.  The GPIO project only has a single `main.c` file, and the Makefile comes pre-configured for a `main.c` file by default.  So we're good to go there.
 
-However, if we take a look at the next options `VPATH` and `IPATH` we can see some modifications are required.  `VPATH` controls where Make will look for the source files (.c) specified by the `SRCS` variable, and `IPATH` controls where it will look for header files (.h).  The GPIO example has placed the `main.c` folder right in the root directory of the project but the Makefile is only configured to look inside of a `src` folder by default.  So we have two options:
+However, if we take a look at the next options `VPATH` and `IPATH` we can see some modifications are required.  `VPATH` controls where Make will look for the source files (.c) specified by the `SRCS` variable, and `IPATH` controls where it will look for header files (.h).  The GPIO example has placed the `main.c` file right in the root directory of the project but the Makefile is only configured to look inside of a `src` folder by default.  So we have two options:
 1. Re-organize the existing source code to match the Makefile.
     * Create a new folder inside of the project called `src`
     * Drag `main.c` inside of that folder
@@ -352,13 +354,15 @@ Then, run a `build` task to compile the GPIO example.  Remember - build tasks ca
 
 ![Build Tasks](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
 
-Monitor the terminal for any errors as the Makefile builds the periphal drivers and the GPIO example source code.  A successful build will look something like this...
+Monitor the terminal for any errors as the Makefile builds the periphal drivers and the GPIO example source code.  A successful build will look something like this, ultimately linking everything into our final `.elf` file...
 
 ![GPIO Build](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_build.JPG)
 
-... with our build products and final program binary being output inside of a `build` folder.
+... with our build products and final program binary output inside of a `build` folder.
 
 ![GPIO Build Products](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_build_products.JPG)
+
+<hr>
 
 ### 9 - Wrapping Up
 From here, the example is ready to be flashed to the target microcontroller, debugged, edited, and explored further.  This same process can be applied to injecting the VS Code setup into any example project or existing source code.  
@@ -368,3 +372,5 @@ To summarize, you will...
 2. Open the root directory of the project folder from within VS Code
 3. Configure `settings.json` to match your target platform
 4. Configure the Build system by editing the Makefile and/or re-organizing the source code.
+
+<hr>
