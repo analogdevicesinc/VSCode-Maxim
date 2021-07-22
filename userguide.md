@@ -267,7 +267,7 @@ Again, example projects can be found under the `~\MaximSDK\Examples\<Target Plat
 ### 2 - Delete Eclipse Project Files
 The `.cproject`, `.project`, and `GPIO.launch` files are all Eclipse-related project files.  Since we're working with VS Code these can be deleted to clean up the project.
 
-![GPIO Contents Cleaned](img\gpio_contents_clean.JPG)
+![GPIO Contents Cleaned](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_contents_clean.JPG)
 
 <hr>
 
@@ -276,18 +276,18 @@ In step #4, we'll inject the VS Code setup into the project folder and this will
 
 Rename the existing `Makefile` to `Makefile-old` to keep a reference copy.  By renaming the file, it won't interfere with our new one.
 
-![Rename Makefile](img\rename_makefile.JPG)
+![Rename Makefile](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/rename_makefile.JPG)
 
 <hr>
 
 ### 4 - Inject the VS Code Environment
 Copy the _contents_ of the `Inject` folder for your SDK into the example project.  In this example we're working with the MAX32670 which uses the MaximSDK.  
 
-![GPIO Inject](img\inject_gpio.JPG)
+![GPIO Inject](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/inject_gpio.JPG)
 
 The contents of the project should now look something like this, with our `.vscode` folder and new `Makefile`.
 
-![GPIO Injected](img\inject_gpio_finished.JPG)
+![GPIO Injected](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/inject_gpio_finished.JPG)
 
 <hr>
 
@@ -296,11 +296,11 @@ The GPIO is now ready to be opened from within VS Code, and from here we'll foll
 
 Launch VS Code.  Open the project folder with `File > Open Folder...` and browse to the root directory of the project.
 
-![GPIO Root](img\gpio_root.JPG)
+![GPIO Root](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_root.JPG)
 
 VS Code should prompt for workspace trust.  Select _Trust folder and enable all features_.
 
-![Workspace Trust Prompt](img\workspaceTrustPrompt.JPG)
+![Workspace Trust Prompt](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrustPrompt.JPG)
 
 <hr>
 
@@ -312,7 +312,7 @@ Open `settings.json` inside of the `.vscode` folder and configure the project se
 
 `CTRL+S` to save the changes to the file, and then reload the VS Code window with `CTRL + SHIFT + P` > `Developer: Reload Window`.  Again, this is necessary so that VS Code re-parses all file-paths for our new target platform.
 
-![Reload Window](img\gpio_reload_window.JPG)
+![Reload Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_reload_window.JPG)
 
 <hr>
 
@@ -323,7 +323,7 @@ However, in order to actually build this project we'll need to configure the bui
 
 Open the `Makefile` in the editor.
 
-![Open Makefile](img\gpio_open_makefile.JPG)
+![Open Makefile](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_open_makefile.JPG)
 
 Here, we can see a "Main Configuration" section highlighting some common options that, collectively, handle the configuration needed for most projects.  The first thing to check is that all of the source files have been added to the `SRCS` variable.  The GPIO project only has a single `main.c` file, and the Makefile comes pre-configured for a `main.c` file by default.  So we're good to go there.
 
@@ -332,14 +332,14 @@ However, if we take a look at the next options `VPATH` and `IPATH` we can see so
     * Create a new folder inside of the project called `src`
     * Drag `main.c` inside of that folder
 
-    ![GPIO Reorganized](img\gpio_reorganized.JPG)
+    ![GPIO Reorganized](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_reorganized.JPG)
 
 or...
 
 2. Re-configure the Makefile to match the existing source code.  
     * Set `VPATH` and `IPATH` to `.` to search the root directory for source and header files.
 
-    ![Makefile Edited](img\gpio_makefile_edited.JPG)
+    ![Makefile Edited](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_makefile_edited.JPG)
 
 <hr>
 
@@ -350,15 +350,15 @@ As always, with a new project it's best to run a `clean-periph` first to ensure 
 
 Then, run a `build` task to compile the GPIO example.  Remember - build tasks can be accessed via `Terminal > Run Build Task...` or `Ctrl+Shift+B`.
 
-![Build Tasks](img\buildtasks.JPG)
+![Build Tasks](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
 
 Monitor the terminal for any errors as the Makefile builds the periphal drivers and the GPIO example source code.  A successful build will look something like this...
 
-![GPIO Build](img\gpio_build.JPG)
+![GPIO Build](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_build.JPG)
 
 ... with our build products and final program binary being output inside of a `build` folder.
 
-![GPIO Build Products](img\gpio_build_products.JPG)
+![GPIO Build Products](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_build_products.JPG)
 
 ### 9 - Wrapping Up
 From here, the example is ready to be flashed to the target microcontroller, debugged, edited, and explored further.  This same process can be applied to injecting the VS Code setup into any example project or existing source code.  
