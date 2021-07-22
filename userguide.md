@@ -252,4 +252,119 @@ The implementation file for the correct die-type of the microcontroller needs to
 
 ![GPIO Implementation File](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_init_implementation.JPG)
 
-Using this method you can quickly and easily reference example code for your own applications.  
+Using this method you can quickly and easily reference example code for your own applications.  This method works for any external code, provided that the search paths for Intellisense are configured properly.  For more details on configuration of those search paths, see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md).
+
+## Injecting into Example Code
+Using example code as a reference is great, but what if we want to work with it directly?  That's where the `Inject` folder in the VSCode-Maxim release package comes in.  In the example below, we'll inject the VS Code setup into the Maxim SDK GPIO example and build it.
+
+### 1 - Locate the Example Project
+Again, example projects can be found under the `~\MaximSDK\Examples\<Target Platform>` folder for the Maxim SDK and in the LP SDK they can be found under the `~\Maxim\Firmware\<Target Platform>\Applications\EvKitExamples` folder.  For the sake of this example, the a working copy of the GPIO example has been copied over into a separate folder.
+
+![GPIO Contents](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_contents.JPG)
+
+<hr>
+
+### 2 - Delete Eclipse Project Files
+The `.cproject`, `.project`, and `GPIO.launch` files are all Eclipse-related project files.  Since we're working with VS Code these can be deleted to clean up the project.
+
+![GPIO Contents Cleaned](img\gpio_contents_clean.JPG)
+
+<hr>
+
+### 3 - (Optional) Rename the Existing Makefile
+In step #4, we'll inject the VS Code setup into the project folder and this will replace the existing Makefile.  It may good idea to keep the existing Makefile around for reference, especially for more complicated projects.
+
+Rename the existing `Makefile` to `Makefile-old` to keep a reference copy.  By renaming the file, it won't interfere with our new one.
+
+![Rename Makefile](img\rename_makefile.JPG)
+
+<hr>
+
+### 4 - Inject the VS Code Environment
+Copy the _contents_ of the `Inject` folder for your SDK into the example project.  In this example we're working with the MAX32670 which uses the MaximSDK.  
+
+![GPIO Inject](img\inject_gpio.JPG)
+
+The contents of the project should now look something like this, with our `.vscode` folder and new `Makefile`.
+
+![GPIO Injected](img\inject_gpio_finished.JPG)
+
+<hr>
+
+### 5 - Open the Project
+The GPIO is now ready to be opened from within VS Code, and from here we'll follow a similar process as the one outlined in the "Getting Started" section of this User Guide.  You'll open the project folder and configure `settings.json` for your target platform.  However, since we're injecting into existing source code we'll need to configure the build system a bit as well.  We'll get into that, but first things first...
+
+Launch VS Code.  Open the project folder with `File > Open Folder...` and browse to the root directory of the project.
+
+![GPIO Root](img\gpio_root.JPG)
+
+VS Code should prompt for workspace trust.  Select _Trust folder and enable all features_.
+
+![Workspace Trust Prompt](img\workspaceTrustPrompt.JPG)
+
+<hr>
+
+### 6 - Configure Project Settings & Reload
+Open `settings.json` inside of the `.vscode` folder and configure the project settings for your target platform.  For example, settings for the MAX32670 would be...
+* `"target":"MAX32670"`
+* `"board":"EvKit_V1"`
+* `"debugger":"cmsis-dap"`
+
+`CTRL+S` to save the changes to the file, and then reload the VS Code window with `CTRL + SHIFT + P` > `Developer: Reload Window`.  Again, this is necessary so that VS Code re-parses all file-paths for our new target platform.
+
+![Reload Window](img\gpio_reload_window.JPG)
+
+<hr>
+
+### 7 - Configure the Build System
+With the project settings configured, everything should be working in the editor.  The `main.c` file can be opened and Intellisense will work properly.
+
+However, in order to actually build this project we'll need to configure the build system to match the existing source code.  This involves editing the core project `Makefile`.
+
+Open the `Makefile` in the editor.
+
+![Open Makefile](img\gpio_open_makefile.JPG)
+
+Here, we can see a "Main Configuration" section highlighting some common options that, collectively, handle the configuration needed for most projects.  The first thing to check is that all of the source files have been added to the `SRCS` variable.  The GPIO project only has a single `main.c` file, and the Makefile comes pre-configured for a `main.c` file by default.  So we're good to go there.
+
+However, if we take a look at the next options `VPATH` and `IPATH` we can see some modifications are required.  `VPATH` controls where Make will look for the source files (.c) specified by the `SRCS` variable, and `IPATH` controls where it will look for header files (.h).  The GPIO example has placed the `main.c` folder right in the root directory of the project but the Makefile is only configured to look inside of a `src` folder by default.  So we have two options:
+1. Re-organize the existing source code to match the Makefile.
+    * Create a new folder inside of the project called `src`
+    * Drag `main.c` inside of that folder
+
+    ![GPIO Reorganized](img\gpio_reorganized.JPG)
+
+or...
+
+2. Re-configure the Makefile to match the existing source code.  
+    * Set `VPATH` and `IPATH` to `.` to search the root directory for source and header files.
+
+    ![Makefile Edited](img\gpio_makefile_edited.JPG)
+
+<hr>
+
+### 8 - Clean & Build the GPIO Example
+With the Makefile configured, we're ready to build the project.
+
+As always, with a new project it's best to run a `clean-periph` first to ensure we're starting from scratch.  
+
+Then, run a `build` task to compile the GPIO example.  Remember - build tasks can be accessed via `Terminal > Run Build Task...` or `Ctrl+Shift+B`.
+
+![Build Tasks](img\buildtasks.JPG)
+
+Monitor the terminal for any errors as the Makefile builds the periphal drivers and the GPIO example source code.  A successful build will look something like this...
+
+![GPIO Build](img\gpio_build.JPG)
+
+... with our build products and final program binary being output inside of a `build` folder.
+
+![GPIO Build Products](img\gpio_build_products.JPG)
+
+### 9 - Wrapping Up
+From here, the example is ready to be flashed to the target microcontroller, debugged, edited, and explored further.  This same process can be applied to injecting the VS Code setup into any example project or existing source code.  
+
+To summarize, you will...
+1. Copy the contents of the `Inject` folder into the root directory of the existing project (optionally renaming any existing Makefile for later reference).
+2. Open the root directory of the project folder from within VS Code
+3. Configure `settings.json` to match your target platform
+4. Configure the Build system by editing the Makefile and/or re-organizing the source code.
