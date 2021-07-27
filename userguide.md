@@ -404,7 +404,7 @@ To start, create a new folder for the project.  The only requirements for this f
 
 In this example, I've created a folder called `MyProject`.
 
-![My Project](img\myproject_empty.JPG)
+![My Project](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_empty.JPG)
 
 <hr>
 
@@ -413,11 +413,11 @@ Next, copy the contents of the `Inject` folder for your target platform from [VS
 
 In the example below, I'll be building a project for the MAX32670.  So the `Inject` folder from `MaximSDK` will be used.
 
-![Inject into MyProject](img\myproject_inject.JPG)
+![Inject into MyProject](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_inject.JPG)
 
 The contents of the new project should now look as follows...
 
-![Injected into MyProject](img\myproject_injected.JPG)
+![Injected into MyProject](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_injected.JPG)
 
 <hr>
 
@@ -443,15 +443,15 @@ Open `settings.json` inside of the `.vscode` folder and configure the project se
 ### 5 - Create a 'src' Directory
 Next, create a folder inside of the project called `src`.  The Makefile is pre-configured to look for source files inside of this folder by default.  It's recommended to use this configuration, but if you would like you can change the `VPATH` and `IPATH` assignments inside of the project `Makefile`.
 
-![VPATH and IPATH](img\vpath_ipath.JPG)
+![VPATH and IPATH](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/vpath_ipath.JPG)
 
 Right click in VS Code's explorer and select "New Folder".
 
-![New Folder](img\myproject_newfolder.JPG)
+![New Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_newfolder.JPG)
 
 Name the folder "src" to match the Makefile configuration.
 
-![Src Folder](img\myproject_src.JPG)
+![Src Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_src.JPG)
 
 <hr>
 
@@ -460,7 +460,7 @@ Next, create a `main.c` file inside of the newly created `src` folder.  This fil
 
 Right click on the `src` folder and select "New File".
 
-![New File](img\myproject_newfile.JPG)
+![New File](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_newfile.JPG)
 
 Name it `main.c` and hit Enter.  It should open in the editor.
 
@@ -469,7 +469,7 @@ Name it `main.c` and hit Enter.  It should open in the editor.
 ### 7 - Define a 'main' Function
 Define the standard `main` function that will be the entry-point to the program.
 
-![Main function](img\myproject_main_empty.JPG)
+![Main function](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_main_empty.JPG)
 
 Fundamentally, that's it.  The project is ready to be built, debugged, and expanded.  Remember:  When starting a new project, it's a good idea to run `clean-periph` once to ensure you're building the peripheral drivers from scratch.
 
@@ -487,24 +487,24 @@ There are some general rules that can be followed for configuring the `Makefile`
 
 For example, let's say I add the following source code in its own folder called `mylibrary`, with a `hellolibrary` header (.h) and implementation (.c) file.
 
-![Hello Library h](img\myproject_hellolibrary_h.JPG)
+![Hello Library h](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_hellolibrary_h.JPG)
 
-![Hello Library c](img\myproject_hellolibrary_c.JPG)
+![Hello Library c](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_hellolibrary_c.JPG)
 
 All this library does is contain a function called `myfunction` that prints a string to the console.  Our main file can `#include` the header file and call `myfunction()`, which will print "Hello function!" to the console.
 
-![Hello Library main](img\myproject_hellolibrary_main.JPG)
+![Hello Library main](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_hellolibrary_main.JPG)
 
 For this source code, we'll then modify the `Makefile` to add it to the build as follows:
 * `SRCS += hellolibrary.c` to add the implementation file to the build
 * `VPATH += ./src/mylibrary` so the `Makefile` knows where to find the implementation file
 * `VPATH += ./src/mylibrary` so the `Makefile` knows where to find the header file.
 
-![Hello Library Makefile](img\myproject_hellolibrary_makefile.JPG)
+![Hello Library Makefile](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_hellolibrary_makefile.JPG)
 
 Now, when we run the `Build` task we can see the hellolibrary.c file added to the build successfully and compiled.  The program is ready to be flashed to the microcontroller and debugged, where it will print "Hello function!" once to the serial port before exiting.
 
-![MyProject Build](img\myproject_build.JPG)
+![MyProject Build](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_build.JPG)
 
 <hr>
 
