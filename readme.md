@@ -259,13 +259,15 @@ The Makefile is the core file for the build system.  All configuration tasks suc
 ### Optimization Level
 * The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
 
-## Setting Include Paths for Intellisense
-VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then an include path is most likely missing.
+## Setting Search Paths for Intellisense
+VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
 
-To add additional include paths :
+To add additional search paths :
 1. Open the `.vscode/c_cpp_properties.json` file.  
 
-2. Add the include path(s) to the `configurations > includePath` list.
+2. Add the include path(s) to the `configurations > includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
+
+3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".  
 
 ## Using with a Non-Default SDK Installation Location
 If you have installed Maxim's SDK to a non-default installation location, the `MAXIM_PATH` variable must be set accordingly.  To do so:
