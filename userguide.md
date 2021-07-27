@@ -1,4 +1,17 @@
 # How to Use Visual Studio Code with Maxim's Microcontrollers (Windows)
+
+## Table of Contents
+_If this is your first time with this document, it's recommended that the sections below be worked through in order._
+
+* [Introduction](#introduction)
+* [De-Mystifying the SDK Toolchain](#de-mystifying-the-sdk-toolchain)
+* [Integrating the Toolchain](#integrating-the-toolchain)
+* [Getting Started with VSCode-Maxim](#getting-started-with-vscode-maxim)
+* [Referencing Example Code](#referencing-example-code)
+* [Injecting into Existing Source Code](#injecting-into-existing-source-code)
+* [Creating a Project from Scratch](#creating-a-project-from-scratch)
+
+## Introduction
 IDEs targeted at microcontrollers can oftentimes come with a lot of overhead.  They have a tendency to be bulky, unwieldy programs that can take up a lot of hard drive space, and when something isn't configured properly they can be a pain to troubleshoot.  No one likes digging into project settings for hours trying to get their include paths working or troubleshooting five different configuration options just to link a library.
 
 [Visual Studio Code](https://code.visualstudio.com/) is a lightweight, powerful, and customizable editor that can serve as a great free alternative to the more traditional micro IDEs like Eclipse, Code-Composer Studio, IAR, Keil uVision, etc.  This app note outlines step-by-step how to get started with [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim), a development environment for Maxim's Microcontrollers targeted specifically at VS Code.  Since VSCode-Maxim makes calls directly into Maxim's toolchain, a detailed overview of it is provided to facilitate understanding and ease of use.
