@@ -3,7 +3,11 @@
         "Path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin;${config:MAXIM_PATH}/Tools/OpenOCD;${config:MAXIM_PATH}/Tools/GNUTools/bin;${env:Path}"  
     },
 
-    "MAXIM_PATH":"C:/MaximSDK", //<-- This is the root installation directory of the Maxim Micros Toolchain.  Change this if you used a non-default installation location.
+    "terminal.integrated.env.linux": {
+        "PATH":"${config:MAXIM_PATH}/Tools/OpenOCD:/${config:MAXIM_PATH}/Tools/GNUTools/bin:${env:PATH}"
+    },
+
+    "MAXIM_PATH":"/home/jcarter/MaximSDK", //<-- This is the root installation directory of the Maxim Micros Toolchain.  Change this if you used a non-default installation location.
 
     "target":"MAX32655",/*<-- Change to the correct target micro.
     Options :
