@@ -218,6 +218,14 @@ Default serial communication settings are:
 * Stop bits : 1 bit
 * Flow control : none
 
+[TeraTerm](https://ttssh2.osdn.jp/index.html.en) and [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) are good serial terminal program options.  To open a serial port to the microcontroller with one of these programs you'll first need to find the COM port associated with the debugger.  On Windows, this will show up as a generic USB Serial Device:
+
+![COM port](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_COM_port.JPG)
+
+From there, steps will be program-specific to the serial terminal you're using.  For example, using TeraTerm I can navigate to `Setup -> Serial port...` to enter the communication settings above and open the connection.
+
+![TeraTerm](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/TeraTerm.JPG)
+
 <hr>
 
 ### 12 - Continue the Program
