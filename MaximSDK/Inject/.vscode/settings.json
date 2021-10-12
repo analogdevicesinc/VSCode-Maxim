@@ -7,7 +7,7 @@
         "PATH":"${config:MAXIM_PATH}/Tools/OpenOCD:/${config:MAXIM_PATH}/Tools/GNUTools/bin:${env:PATH}"
     },
 
-    "MAXIM_PATH":"/home/jcarter/MaximSDK",
+    "MAXIM_PATH":"C:/MaximSDK",
 
     "target":"MAX78000",
 
