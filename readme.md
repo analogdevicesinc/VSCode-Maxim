@@ -1,9 +1,9 @@
 # VSCode-Maxim
 
 # Introduction
-This is a [Visual Studio Code](https://code.visualstudio.com/)-based development environment for [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.  It builds off of Microsoft's C/C++ extension and leverages Maxim's toolchain into a full-featured IDE for building and debugging embedded code.  Currently, **only Windows is supported**.
+This is a [Visual Studio Code](https://code.visualstudio.com/)-based development environment for [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.  It builds off of Microsoft's C/C++ extension and leverages Maxim's toolchain into a full-featured IDE for building and debugging embedded code.  Windows and Linux are supported, though only Windows 10 and Ubuntu 20.04 LTS are officially tested.
 
-**Note:** This repository now contains a full [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md).  The readme below is intended as a comprehensive list of all available configuration options and requirements.  The User Guide contains step-by-step walkthroughs for getting started, configuring sample code, creating projects from scratch, etc. and is a great way to get started.
+**Note:** This repository now contains a full [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md).  If this is your first time with this software, start there.
 
 # Requirements
 Please download and install the following software dependencies:
@@ -30,7 +30,7 @@ Please download and install the following software dependencies:
 
 # Initial Setup/Installation
 ## Enabling Workspace Trust
-The workspaces in this repo set environment variables for the integrated terminal.  In order for this to work, workspace trust must be enabled in your User Settings.  Follow the procedure below.  You only need to do this one time per VS Code installation.
+The workspaces in this repo set environment variables for the integrated terminal.  In order for this to work, workspace trust must be enabled in your User Settings.  It should be by default, but not follow the procedure below to enable it.  You only need to do this one time per VS Code installation.
 
 1. Launch VS Code.
 
@@ -47,11 +47,13 @@ When opening workspaces and folders for the first time VSCode will now prompt fo
 The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
 
 # Projects
-If you are coming from another IDE (such as Eclipse) you may be familiar with the concept of a "workspace".  In Eclipse, a workspace folder is a requirement, and you must import projects into the workspace.  
+The main mechanism for opening a project in Visual Studio Code is `File > Open Folder`.  When a folder is opened, VS Code will look for a `.vscode` folder inside of it to load settings from.
 
-In VS Code, things work a little differently.  Projects are more lightweight, can be self-contained, and are not dependent on a workspace or a lengthy import/export process.  The main mechanism for opening Projects is `File > Open Folder`.  If a `.vscode` folder is inside of VS Code's working directory (set by `File > Open Folder`), then it will look inside the `.vscode` folder for settings to use.  The `.vscode` folders in this repository contain a [Tasks](https://code.visualstudio.com/Docs/editor/tasks)-based implementation that integrates with Maxim's SDKs through the core project `Makefile`.  
+As such, a VSCode-Maxim project contains two components:  A `Makefile` and a `.vscode` folder.  
+* The Makefile describes how to use Maxim's toolchain to build a project's source code.
+* The .vscode folder contains .json files that tell Visual Studio Code how to use the Makefile.  It also tells VS Code how to use the toolchain to flash and debug the project on the target microcontroller.
 
-The goal of this type of work-flow is to make the IDE as lightweight as possible, allowing you to focus on developing source code as opposed to battling your tools.
+The main mechanism for _creating_ VSCode-Maxim projects is "injecting" the .vscode folder from this repository into another "receiver" folder.  This "receiver" folder may or may not have existing source code in it.  Both scenarios are discussed in more detail below, and in the [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md)
 
 ## Project Creation
 **If you have not done so already, download the latest [release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository and extract it to an accessible location.**
@@ -226,7 +228,7 @@ The Makefile is the core file for the build system.  All configuration tasks suc
 * The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
 
 ## Setting Search Paths for Intellisense
-VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
+VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the C standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
 
 To add additional search paths :
 1. Open the `.vscode/c_cpp_properties.json` file.  
@@ -265,8 +267,6 @@ The Debugger can be launched with `Run > Start Debugging`, with the shortcut `F5
 Currently, there is a known issue that causes it not to automatically break on entry into main - a breakpoint must be set manually.
 
 ![Breakpoint Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/breakpoint.JPG)
-<<<<<<< HEAD
-=======
 
 To debug a project:
 * Ensure that a debugger/programmer is attached between the microcontroller's debugger port and the host PC before launching a debugging session.
@@ -280,4 +280,3 @@ To debug a project:
 A breakpoint on main must be set manually before launching the debugger.
 
 ![Breakpoint Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/breakpoint.JPG)
->>>>>>> 888ee7d... Update User Guide and readme
