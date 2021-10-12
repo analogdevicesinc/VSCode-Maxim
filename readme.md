@@ -159,6 +159,82 @@ After creating, configuring, and opening your project with `File > Open Folder` 
    
    ![Make -v example output](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/make_test.JPG)
 
+# Configuration
+## Project Config Options - settings.json
+`settings.json`, found inside of the `.vscode` folder, is the main project configuration file.  Values set here are parsed into the other .json config files.  **When a change is made to this file, VS Code should be restarted (or alternatively reloaded with CTRL+SHIFT+P -> Reload Window) to force a re-parse.**
+
+### `terminal.integrated.env.[platform]:Path`
+* This prepends the location of toolchain binaries to the system `Path` used by VSCode's integrated terminal.  Don't touch unless you know what you're doing :)
+
+### `MAXIM_PATH`
+* This must be set to the root installation directory of Maxim's SDK.  If you are using a non-default installation location or Linux, this must be changed accordingly.
+
+### `target`
+* This sets the target microcontroller for the project.
+* Options for the Maxim Micros SDK are:
+    * `"MAX32520"`
+    * `"MAX32570"`
+    * `"MAX32655"`
+    * `"MAX32660"`
+    * `"MAX32665"` (for MAX32665-MAX32668)
+    * `"MAX32670"`
+    * `"MAX32672"`
+    * `"MAX32675"`
+    * `"MAX78000"`
+
+* Options for the LP Micros SDK are:
+    * `"MAX3263x"`
+    * `"MAX32600"`
+    * `"MAX32620"`
+    * `"MAX32625"`
+    * `"MAX32650"`
+    
+### `board`
+* This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
+* The available options will depend on your target microcontroller, and can be found under `~/MaximSDK/Libraries/Boards/[target]` for the MaximSDK or `~/Maxim/Firmware/[target]/Libraries/Boards` for the LP SDK.  
+* For example, the supported options for the MAX78000 are `EvKit_V1`, `FTHR_RevA`, and `MAXREFDES178`.
+![MAX78000 Boards](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/78000_boards.JPG)
+
+### `debugger`
+* This sets the debug adapter to use with OpenOCD and VSCode's integrated GDB client.  Options are:
+    * `"cmsis-dap"` (for default MAX32625PICO adapter.  If your micro has an integrated debugger, this is the correct option)
+    * `"ftdi/olimex-arm-jtag-swd"` (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/)
+    * `"ftdi/olimex-arm-usb-ocd"` (for http://www.olimex.com/dev/arm-usb-ocd.html)
+    * `"ftdi/olimex-arm-usb-ocd-h"` (for http://www.olimex.com/dev/arm-usb-ocd-h.html)
+    * `"ftdi/olimex-arm-usb-tiny-h"` (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
+    * `"ftdi/olimex-jtag-tiny"` (for http://www.olimex.com/dev/arm-usb-tiny.html)
+
+## Configuring the Makefile
+The Makefile is the core file for the build system.  All configuration tasks such as adding source files to the build, setting compiler flags, and linking libraries are handled via the Makefile. The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand.
+
+### Adding Source Files
+* The included Makefile is pre-configured for a single `main.c` source file by default.
+* Additional source files can be added to the build with `SRCS += yourfile.c`
+* The Makefile looks for source files _only_ in the `/src` directory by default.  If you would like to use additional source directories, add them with `VPATH += yoursourcedirectory`
+* The Makefile looks for header files _only_ in the `/src` directory by default.  If you would like to use additional include directories, add them with `IPATH += yourincludedirectory`
+
+### Compiler Flags
+* Compiler flags can be added/changed via the `PROJ_CFLAGS` variable.
+* Add a new flag to be passed to the compiler with `PROJ_CFLAGS += -yourflag`.  Flags are passed in the order that they are added to the `PROJ_CFLAGS` variable.
+
+### Linking Libraries
+* Additional libraries can be linked via the `PROJ_LIBS` variable.  Add a new library to the build with `PROJ_LIBS += yourlibraryname`.
+    * Note : Do not include the 'lib' part of the library name, or the file extension.  For example, to link `libarm_cortexM4lf_math.a` set `PROJ_LIBS += arm_cortexM4lf_math`.
+* Tell the linker where to find the library with the '-L' linker flag.  Set `PROJ_LDFLAGS += -Lpathtoyourlibrary`.  For example, set `PROJ_LDFLAGS += -L./lib` to search a 'lib' directory inside of the project for libraries. 
+
+### Optimization Level
+* The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
+
+## Setting Search Paths for Intellisense
+VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
+
+To add additional search paths :
+1. Open the `.vscode/c_cpp_properties.json` file.  
+
+2. Add the include path(s) to the `configurations > includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
+
+3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".  
+
 # Building
 There are 4 available build tasks that can be accessed via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.
 
@@ -184,100 +260,24 @@ There are 4 available build tasks that can be accessed via `Terminal > Run Build
     * After flashing, the reset button on the microcontroller must be pushed or the micro must be power cycled to start execution of the program.
 
 # Debugging
-The Debugger can be launched with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D).  All standard debugging features are supported - breakpoints, watch variables, etc.
+The Debugger can be launched with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D).  All standard debugging features are supported - breakpoints, watch variables, etc.  A more detailed usage guide on the debugger can be found [here](https://code.visualstudio.com/Docs/editor/debugging#_debug-actions).
 
-At the moment, there is a known issue with the debugger.  It doesn't automatically break on entry into main, so a breakpoint must be set manually.  See below.
-
-* Ensure that a debugger/programmer is attached between the microcontroller's debugger port and the host PC before launching a debugging session.
-    * For the MAX32625PICO debugger that comes with all microcontrollers, use the SWD port.
-* When a debugging session is launched, the Build task will be launched automatically.  A successful build must complete before debugging.
-* It is recommended to manually set a break-point on main, so that the debugger stops on entry into the source code.
+Currently, there is a known issue that causes it not to automatically break on entry into main - a breakpoint must be set manually.
 
 ![Breakpoint Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/breakpoint.JPG)
+<<<<<<< HEAD
+=======
 
-## Changing the Debug Adapter
-Projects are configured to use the MAX32625PICO debug adapter by default.  **Only the PICO debug adapter has been thoroughly tested at this time.**  To use a different debugger:
-
-1. Open the `.vscode/settings.json` file.
-
-2. Change the `"debugger"` variable.  Options are:
-
-    * `"debugger":"cmsis-dap"` (for default PICO adapter)
-    * `"debugger":"ftdi/olimex-arm-jtag-swd"` (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/)
-    * `"debugger":"ftdi/olimex-arm-usb-ocd"` (for http://www.olimex.com/dev/arm-usb-ocd.html)
-    * `"debugger":"ftdi/olimex-arm-usb-ocd-h"` (for http://www.olimex.com/dev/arm-usb-ocd-h.html)
-    * `"debugger":"ftdi/olimex-arm-usb-tiny-h"` (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
-    * `"debugger":"ftdi/olimex-jtag-tiny"` (for http://www.olimex.com/dev/arm-usb-tiny.html)
-
-# Configuration
-
-## Changing the Target Microcontroller
-The default target microcontrollers are the MAX32655 (for the Maxim SDK) and the MAX32665 (for the LP SDK).  If you are using a different microcontroller, the target setting must be changed.  Follow the procedure below:
-
-1. Open the `.vscode/settings.json` file.
-
-2. Change the `"target"` variable to the correct value for your microcontroller.
-
-Options for the Maxim Micros SDK are:
-* `"target":"MAX32520"`
-* `"target":"MAX32570"`
-* `"target":"MAX32655"`
-* `"target":"MAX32660"`
-* `"target":"MAX32665"` (for MAX32665-MAX32668)
-* `"target":"MAX32670"`
-* `"target":"MAX32672"`
-* `"target":"MAX32675"`
-* `"target":"MAX78000"`
-
-Options for the LP Micros SDK are:
-* `"target":"MAX3263x"`
-* `"target":"MAX32600"`
-* `"target":"MAX32620"`
-* `"target":"MAX32625"`
-* `"target":"MAX32650"`
-
-## Configuring the Makefile
-The Makefile is the core file for the build system.  All configuration tasks such as adding source files to the build, setting compiler flags, and linking libraries are handled via the Makefile. The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand.
-
-### Adding Source Files
-* The included Makefile is pre-configured for a single `main.c` source file by default.
-* Create a new source file by right clicking in the Explorer and selecting `New file`.
-* Existing source files can be dragged and dropped into the Explorer.
-* Add the created or imported source file to the Makefile with `SRCS += yourfile.c`
-* The Makefile looks for source files _only_ in the `\src` directory by default.  If you would like to use additional source directories, add them with `VPATH += yoursourcedirectory`
-* The Makefile looks for header files _only_ in the `\src` directory by default.  If you would like to use additional include directories, add them with `IPATH += yourincludedirectory`
-
-### Compiler Flags
-* Compiler flags can be added/changed via the `PROJ_CFLAGS` variable.
-* Add a new flag to be passed to the compiler with `PROJ_CFLAGS += -yourflag`.  Flags are passed in the order that they are added to the `PROJ_CFLAGS` variable.
-
-### Linking Libraries
-* Additional libraries can be linked via the `PROJ_LIBS` variable.  Add a new library to the build with `PROJ_LIBS += yourlibraryname`.
-    * Note : Do not include the 'lib' part of the library name, or the file extension.  For example, to link `libarm_cortexM4lf_math.a` set `PROJ_LIBS += arm_cortexM4lf_math`.
-* Tell the linker where to find the library with the '-L' linker flag.  Set `PROJ_LDFLAGS += -Lpathtoyourlibrary`.  For example, set `PROJ_LDFLAGS += -L./lib` to search a 'lib' directory inside of the project for libraries. 
-
-### Optimization Level
-* The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
-
-## Setting Search Paths for Intellisense
-VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
-
-To add additional search paths :
-1. Open the `.vscode/c_cpp_properties.json` file.  
-
-2. Add the include path(s) to the `configurations > includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
-
-3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".  
-
-## Using with a Non-Default SDK Installation Location
-If you have installed Maxim's SDK to a non-default installation location, the `MAXIM_PATH` variable must be set accordingly.  To do so:
-
-1. Open the `.vscode/settings.json` file.
-
-2. Set the `MAXIM_PATH` to the root directory of your toolchain installation.  Use `/` (forward slashes) for the path.
+To debug a project:
+* Ensure that a debugger/programmer is attached between the microcontroller's debugger port and the host PC before launching a debugging session.
+    * For the MAX32625PICO debugger, use the SWD port.
+* Ensure that the `debugger` project config option in `settings.json` is set properly.
+* Launch the debugger with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D)
+* When a debugging session is launched, the Build task will be launched automatically.  A successful build must complete before debugging.
 
 # Known Issues
 ## Debugger does not automatically break on main
 A breakpoint on main must be set manually before launching the debugger.
 
 ![Breakpoint Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/breakpoint.JPG)
+>>>>>>> 888ee7d... Update User Guide and readme

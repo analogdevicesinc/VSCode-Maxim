@@ -1,8 +1,6 @@
-# How to Use Visual Studio Code with Maxim's Microcontrollers (Windows)
+# How to Use Visual Studio Code with Maxim's Microcontrollers (Windows & Linux)
 
 ## Table of Contents
-_If this is your first time with this document, it's recommended that the sections below be worked through in order._
-
 * [Introduction](#introduction)
 * [De-Mystifying the SDK Toolchain](#de-mystifying-the-sdk-toolchain)
 * [Integrating the Toolchain](#integrating-the-toolchain)
@@ -53,7 +51,9 @@ Let's get started setting it up.  The procedure below is a demonstration for the
 ### 1 - Install Software Requirements
 First, ensure you have met the Software [Requirements](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#requirements) listed in the readme.  This includes VS Code itself, the correct SDK for your microcontroller, and the official C/C++ extension for VS Code.
 
-If you're not sure which SDK to use for your platform, see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#requirements).  It's recommended to install all of the SDK components and use the default installation path.
+If you're not sure which SDK to use for your platform, see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#requirements).  
+
+It's recommended to install all of the SDK components (Eclipse is optional) and use the default installation path.  **On Linux**:  Do not select "Eclipse".  
 
 ![MaximSDK Installer Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/MaximSDK_Installer.JPG)
 
@@ -64,7 +64,7 @@ The C/C++ extension can be installed from within VS Code from the built-in Exten
 <hr>
 
 ### 2 - Enable Workspace Trust
-Enable workspace trust following the [procedure](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#enabling-workspace-trust) in the readme.  This is necessary to load the configuration settings from VSCode-Maxim.
+Enable workspace trust following the [procedure](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#enabling-workspace-trust) in the readme.  This is necessary to load the configuration settings from VSCode-Maxim, and should be enabled by default.
 
 ![Workspace Trust Settings](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrust.JPG)
 
@@ -96,6 +96,18 @@ VSCode will prompt for trust the first time.  Select _Trust folder and enable al
 
 <hr>
 
+### (Optional) Set MAXIM_PATH
+If you installed the SDK to a non-default location or are using Linux you'll need to update the MAXIM_PATH variable inside of `.vscode/settings.json` to point to the right installation directory of the SDK.
+
+Open settings.json, and edit the `MAXIM_PATH` variable to point to the root directory of the SDK.
+![Settings](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/settings-json.JPG)
+
+For example, on Linux I might set `"MAXIM_PATH":"/home/jcarter/MaximSDK"`
+
+After using CTRL+S to save the changes to settings.json, restart VS Code.  The project folder will open back up automatically and you can pick up again on step 5 - now with the toolchain accessible.
+
+<hr>
+
 ### 5 - See the Tools Working in the Terminal
 VS Code should now look something like this:
 
@@ -111,7 +123,10 @@ For example, running `make -v` in the terminal should output a version # for Mak
 
 ![Make Test](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/make_test.JPG)
 
-Run the other commands for OpenOCD, GCC, and GDB to verify that the integrated terminal has been configured correctly from our `.vscode` folder settings.
+Run the other commands for OpenOCD, GCC, and GDB to verify that the integrated terminal has been configured correctly from our `.vscode` folder settings.  These should all run successfully.
+* `openocd -v`
+* `arm-none-eabi-gcc -v`
+* `arm-none-eabi-gdb -v`
 
 <hr>
 
@@ -120,13 +135,14 @@ Open `settings.json`.  This is the main configuration file for the vscode setup,
 
 ![Opening settings.json](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/settings.JPG)
 
-Set the `"target"`, `"board"`, and `"debugger"` variables for your target platform.  For example, for the MAX32670 I would set:
+Set the `"target"`, `"board"`, and `"debugger"` variables for your target platform.  See the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md) if you're unsure what to set here.  
+For example, for the MAX32670 I would set:
 * `"target":"MAX32670"`
 * `"board":"EvKit_V1"`
 * `"debugger":"cmsis-dap"` (leaving at default)
     * The value "cmsis-dap" is used for the MAX32625PICO debugger adapter, which comes with our EVKITs and is used in the platforms with integrated debuggers such as the MAX32670EVKIT.  Unless you're using a different adapter, such as an Olimex, leave this value at its default.
 
-Save your changes with `CTRL+S` and reload the VS Code window.  A reload is necessary after changing the target platform so that VS Code re-parses the config file and re-loads Intellisense from scratch to use the correct updated filepaths.  The window can be re-loaded with the `Reload Window` developer command.  Use `Ctrl + Shift + P` to open the developer command prompt.
+Save your changes with `CTRL+S` and reload the VS Code window.  A reload is necessary after changing any options in `settings.json`. The VS Code window can be re-loaded quickly with the `Ctrl + Shift + P` -> `Reload Window` developer command.
 
 ![Reload window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
 
@@ -283,7 +299,7 @@ The contents of this GPIO example are as follows:
 
 <hr>
 
-### 2 - Delete Eclipse Project Files
+### 2 - (Optional) Delete Eclipse Project Files
 The `.cproject`, `.project`, and `GPIO.launch` files are all Eclipse-related project files.  Since we're working with VS Code these can be deleted to clean up the project.
 
 ![GPIO Contents Cleaned](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_contents_clean.JPG)
@@ -324,7 +340,8 @@ VS Code should prompt for workspace trust.  Select _Trust folder and enable all 
 <hr>
 
 ### 6 - Set the Target Platform & Reload
-Open `settings.json` inside of the `.vscode` folder and configure the project settings for your target platform.  For example, settings for the MAX32670 would be...
+Open `settings.json` inside of the `.vscode` folder and configure the project settings for your target platform.  See the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md) if you are unsure what to set here.  
+For example, settings for the MAX32670EVKIT would be...
 * `"target":"MAX32670"`
 * `"board":"EvKit_V1"`
 * `"debugger":"cmsis-dap"`
@@ -411,7 +428,7 @@ In this example, I've created a folder called `MyProject`.
 ### 2 - Inject VSCode-Maxim into the Project Folder
 Next, copy the contents of the `Inject` folder for your target platform from [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) into the newly created project folder.  If you're unsure which folder to use (`MaximLP` vs `MaximSDK`) consult the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md).
 
-In the example below, I'll be building a project for the MAX32670.  So the `Inject` folder from `MaximSDK` will be used.
+In the example below, I'll be building a project for the MAX32670EVKIT.  So the `Inject` folder from `MaximSDK` will be used.
 
 ![Inject into MyProject](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_inject.JPG)
 
@@ -429,7 +446,8 @@ VS Code should prompt for trust the first time you open the project.  Select _Tr
 <hr>
 
 ### 4 - Set the Target Platform & Reload
-Open `settings.json` inside of the `.vscode` folder and configure the project settings for your target platform.  For example, settings for the MAX32670 would be...
+Open `settings.json` inside of the `.vscode` folder and configure the project settings for your target platform.  See the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md) if you are unsure what to set here.  
+For example, settings for the MAX32670EVKIT would be...
 * `"target":"MAX32670"`
 * `"board":"EvKit_V1"`
 * `"debugger":"cmsis-dap"`
