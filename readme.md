@@ -72,8 +72,8 @@ Two folders are present inside of the release package for each of the Microcontr
 
 As a result, there are 3 main options for project creation:
 * (Option 1) Copying the pre-made "Hello World" example project.
-* (Option 2) Creating a new empty project by injecting the project template into an empty directory.
-* (Option 3) Injecting the project template into existing source code.
+* (Option 2) Creating a new project from scratch.
+* (Option 3) Injecting into existing source code.
 
 ### Option 1.  Copying the Pre-Made Project
 Copying the pre-made "Hello world" example is a great way to get rolling quickly.  Take this option if you would like to start with a (mostly) pre-configured project.
