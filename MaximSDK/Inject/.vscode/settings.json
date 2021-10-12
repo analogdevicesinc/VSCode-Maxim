@@ -11,7 +11,7 @@
 
     "target":"MAX78000",
 
-    "board":"FTHR_RevA",
+    "board":"EvKit_V1",
 
     "debugger":"cmsis-dap",
 }
