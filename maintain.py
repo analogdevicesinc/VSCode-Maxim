@@ -105,7 +105,7 @@ def test(targets=None, boards=None, projects=None):
     
     else:
         assert(type(targets) is list)
-        log(f"[TARGETS] Testing {targets}")
+        log(f"[TARGETS] Testing {targets}", logfile)
 
     # Enforce alphabetical ordering
     targets = sorted(targets)
@@ -160,19 +160,6 @@ def test(targets=None, boards=None, projects=None):
                 log(f"\t[{board}]", logfile)
                 success = True
 
-                # Test clean (make clean)
-                clean_cmd = f"make clean TARGET={target} MAXIM_PATH={MAXIM_PATH} BOARD={board} MAKE=make"
-
-                log(f"{timestamp()}\t\t[CLEAN]", logfile) # Log build command
-                res = ps(clean_cmd, env=env) # Run clean command
-
-                # Error check clean command
-                if res.returncode != 0:
-                    log(f"{timestamp()}\t\t[FAILED] {res.stderr}", logfile)
-                    success = False
-                else:
-                    log(f"{timestamp()}\t\t[SUCCESS] {round(duration, 4)}s", logfile)
-
                 # Test build (make all)
                 build_cmd = f"make all TARGET={target} MAXIM_PATH={MAXIM_PATH} BOARD={board} MAKE=make"
 
@@ -198,7 +185,20 @@ def test(targets=None, boards=None, projects=None):
                             f.write(line + '\n')
 
                 else:
-                    log(f"{timestamp()}\t\t[SUCCESS] {round(duration, 4)}s", logfile)                
+                    log(f"{timestamp()}\t\t[SUCCESS] {round(duration, 4)}s", logfile)   
+
+                # Test clean (make clean)
+                clean_cmd = f"make clean TARGET={target} MAXIM_PATH={MAXIM_PATH} BOARD={board} MAKE=make"
+
+                log(f"{timestamp()}\t\t[CLEAN]", logfile) # Log build command
+                res = ps(clean_cmd, env=env) # Run clean command
+
+                # Error check clean command
+                if res.returncode != 0:
+                    log(f"{timestamp()}\t\t[FAILED] {res.stderr}", logfile)
+                    success = False
+                else:
+                    log(f"{timestamp()}\t\t[SUCCESS] {round(duration, 4)}s", logfile)             
 
                 # Add any failed projects to running list
                 if not success and project not in failed: failed.append(project)
