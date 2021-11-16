@@ -125,7 +125,7 @@ def test(targets=None, boards=None, projects=None):
 
     # Create subfolders for target-specific logfiles
     for t in targets: 
-        try: os.mkdir(f"{LOG_DIR}/{t}")
+        try: os.mkdir(f"{LOG_DIR}/buildlogs/{t}")
         except FileExistsError: pass
 
     # Track failed projects for end summary
@@ -190,7 +190,7 @@ def test(targets=None, boards=None, projects=None):
                     log(f"{timestamp()}[{board}] --- [BUILD]\t[FAILED] Return code {res.returncode}.  See buildlogs/{buildlog}", logfile)            
                     
                     # Log detailed output to separate output file
-                    with open(f"{LOG_DIR}/buildlogs/{buildlog}", 'w') as f:
+                    with open(f"{LOG_DIR}/buildlogs/{target}/{buildlog}", 'w') as f:
                         f.write("===============\n")
                         f.write(timestamp() + '\n')
                         f.write(f"[PROJECT] {project}\n")
