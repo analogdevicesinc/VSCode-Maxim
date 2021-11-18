@@ -38,6 +38,8 @@ from subprocess import run
 import platform
 import time
 
+curplatform = platform.system() # Get OS
+
 def log(string, file):
     print(string)
     file.write(f"{string}\n")
@@ -54,25 +56,22 @@ def time_me(f):
         start = time.time() # Start timer
         res = f(*args, **kwargs)
         end = time.time() # Stop timer
-        global duration
+        global duration # Use global duration variable so main script can access elapsed time
         duration = end - start # Calculate duration
         
         return res
 
     return wrapper
 
+# Run powershell command.  On linux, run a shell command
 @time_me
 def ps(cmd, env=None):
-    # Windows
-    # if env is None:
-    #     result = run(["powershell", cmd], capture_output=True)
-    
-    # else:
-    #     result = run(["powershell", cmd], env=env, capture_output=True)
-
-    # Linux
-    if env is None: result = run(cmd, capture_output=True, shell=True)
-    else: result = run(cmd, env=env, capture_output=True, shell=True)
+    if curplatform == 'Linux':
+        if env is None: result = run(cmd, capture_output=True, shell=True)
+        else: result = run(cmd, env=env, capture_output=True, shell=True)
+    elif curplatform == 'Windows':
+        if env is None: result = run(["powershell", cmd], capture_output=True)
+        else: result = run(["powershell", cmd], env=env, capture_output=True)
 
     return result
 
@@ -120,7 +119,6 @@ def release(version):
 # Tests cleaning and compiling example projects for target platforms.  If no targets, boards, projects, etc. are specified then it will auto-detect
 def test(targets=None, boards=None, projects=None):
     env = os.environ.copy()
-    curplatform = platform.system()
 
     # Simulate the VS Code terminal by appending to the Path
     MAXIM_PATH = ""

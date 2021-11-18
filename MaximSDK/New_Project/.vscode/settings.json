@@ -1,6 +1,6 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin;${config:MAXIM_PATH}/Tools/OpenOCD;${config:MAXIM_PATH}/Tools/GNUTools/bin;${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin;${env:Path}"  
+        "Path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin;${config:MAXIM_PATH}/Tools/OpenOCD;${config:MAXIM_PATH}/Tools/GNUTools/bin;${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin;${env:Path}"   
     },
 
     "terminal.integrated.env.linux": {
