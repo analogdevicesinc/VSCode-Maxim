@@ -100,7 +100,7 @@ def release(version):
 
     ps(f"Copy-Item ./readme.md {r_dir}/ -force")
     ps(f"Copy-Item ./userguide.md {r_dir}/ -force")
-    ps(f"Copy-Item ./LICENSE.txt {r_dir}/ -force")
+    ps(f"Copy-Item ./LICENSE.md {r_dir}/ -force")
 
     #Archive release
     print("Archiving...")
@@ -110,14 +110,14 @@ def release(version):
     print("Cleaning up...")
     ps(f"Remove-Item {r_dir}/readme.md")
     ps(f"Remove-Item {r_dir}/userguide.md")
-    ps(f"Remove-Item {r_dir}/LICENSE.txt")
+    ps(f"Remove-Item {r_dir}/LICENSE.md")
     ps(f"Remove-Item {r_dir}/MaximLP -Recurse")
     ps(f"Remove-Item {r_dir}/MaximSDK -Recurse")
 
     print("Done!")
 
 # Tests cleaning and compiling example projects for target platforms.  If no targets, boards, projects, etc. are specified then it will auto-detect
-def test(targets=None, boards=None, projects=None):
+def test(targets=None, boards=None, projects=None, searchdir=None):
     env = os.environ.copy()
 
     # Simulate the VS Code terminal by appending to the Path
@@ -130,6 +130,8 @@ def test(targets=None, boards=None, projects=None):
         env["PATH"] = f"{MAXIM_PATH}/Tools/MinGW/msys/1.0/bin;{MAXIM_PATH}/Tools/OpenOCD;{MAXIM_PATH}/Tools/GNUTools/bin;{MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin;" + env["PATH"] # Windows
     
     LOG_DIR = os.getcwd()
+
+    if searchdir is None: searchdir = f"{MAXIM_PATH}/Examples" # Search examples in SDK by default by default
 
     # Create log file
     try: os.mkdir(f"{LOG_DIR}/buildlogs")
@@ -144,7 +146,7 @@ def test(targets=None, boards=None, projects=None):
     if targets is None:
         targets = []
 
-        for dir in os.scandir(f"{MAXIM_PATH}/Examples"):
+        for dir in os.scandir(searchdir):
             targets.append(dir.name) # Append subdirectories of Examples to list of target micros
 
         log(f"[TARGETS] Detected targets {targets}", logfile)
@@ -180,14 +182,14 @@ def test(targets=None, boards=None, projects=None):
 
         else:
             assert(type(boards) is list)
-            log(f"[BOARDS] Testing {boards}")
+            log(f"[BOARDS] Testing {boards}", logfile)
 
         boards = sorted(boards) # Enforce alphabetical ordering
                 
         # Get list of examples for this target.  If a Makefile is in the root directory it's an example.
         if projects is None:
             projects = []
-            for dirpath, subdirs, items in os.walk(f"{MAXIM_PATH}/Examples/{target}"):
+            for dirpath, subdirs, items in os.walk(searchdir):
                 if 'Makefile' in items:
                     projects.append(dirpath)  
 
@@ -263,4 +265,4 @@ def test(targets=None, boards=None, projects=None):
         log(f"[{pinfo['target']}] {pinfo['project']} for {pinfo['board']}...  see {pinfo['logfile']}", logfile)
 
 if __name__ == "__main__":
-    test(targets=["MAX32520"], projects=["C:/MaximSDK/Examples/MAX32520/AES"])
+    pass
