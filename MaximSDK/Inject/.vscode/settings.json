@@ -1,10 +1,12 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin;${config:MAXIM_PATH}/Tools/OpenOCD;${config:MAXIM_PATH}/Tools/GNUTools/bin;${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin;${env:Path}"   
+        "Path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin;${config:MAXIM_PATH}/Tools/OpenOCD;${config:MAXIM_PATH}/Tools/GNUTools/bin;${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin;${env:Path}",
+        "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
 
     "terminal.integrated.env.linux": {
-        "PATH":"${config:MAXIM_PATH}/Tools/OpenOCD:/${config:MAXIM_PATH}/Tools/GNUTools/bin:${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin:${env:PATH}"
+        "PATH":"${config:MAXIM_PATH}/Tools/OpenOCD:/${config:MAXIM_PATH}/Tools/GNUTools/bin:${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin:${env:PATH}",
+        "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
 
     "MAXIM_PATH":"C:/MaximSDK",
