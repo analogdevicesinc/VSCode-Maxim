@@ -60,6 +60,11 @@ ifeq "$(TARGET)" ""
 $(error target must be specified!  Set the TARGET variable.)
 endif
 
+# Add command line variable for setting output filename
+ifneq "$(PROJ_OVERRIDE)" ""
+PROJECT = $(PROJ_OVERRIDE)
+endif
+
 # Set output filename
 ifeq "$(PROJECT)" ""
 PROJECT=$(TARGET)

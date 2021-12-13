@@ -15,5 +15,11 @@
 
     "board":"EvKit_V1",
 
-    "debugger":"cmsis-dap",
+    "proj_name":"${workspaceFolderBasename}",
+
+    "prog_file":"${config:proj_name}.elf",
+
+    "OCD_interface_file":"cmsis-dap.cfg",
+
+    "OCD_target_file":"${config:target}.cfg"
 }
