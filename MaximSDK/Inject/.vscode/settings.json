@@ -16,7 +16,7 @@
 
     "project_name":"${workspaceFolderBasename}",
 
-    "program_file":"${config:program_file}.elf",
+    "program_file":"${config:project_name}.elf",
     "symbol_file":"${config:program_file}",
 
     "M4_OCD_interface_file":"cmsis-dap.cfg",
