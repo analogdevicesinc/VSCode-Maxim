@@ -12,14 +12,15 @@
     "MAXIM_PATH":"C:/MaximSDK",
 
     "target":"MAX78000",
-
     "board":"EvKit_V1",
 
-    "proj_name":"${workspaceFolderBasename}",
+    "project_name":"${workspaceFolderBasename}",
 
-    "prog_file":"${config:proj_name}.elf",
+    "program_file":"${config:program_file}.elf",
+    "symbol_file":"${config:program_file}",
 
-    "OCD_interface_file":"cmsis-dap.cfg",
-
-    "OCD_target_file":"${config:target}.cfg"
+    "M4_OCD_interface_file":"cmsis-dap.cfg",
+    "M4_OCD_target_file":"${config:target}.cfg",
+    "RV_OCD_interface_file":"ftdi/olimex-arm-usb-ocd-h.cfg",
+    "RV_OCD_target_file":"${config:target}-riscv.cfg"
 }
