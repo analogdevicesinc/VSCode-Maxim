@@ -26,7 +26,6 @@
                 { "text":"symbol-file build/${config:symbol_file}", "ignoreFailures": false },
                 { "text": "monitor reset halt", "ignoreFailures": false },
                 { "text":"load", "ignoreFailures": false },
-                { "text": "monitor reset halt", "ignoreFailures": false }
             ]
         },
         {
