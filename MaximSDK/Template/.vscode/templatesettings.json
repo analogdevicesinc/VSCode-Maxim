@@ -11,7 +11,7 @@
 
     "MAXIM_PATH":"##__MAXIM_PATH__##",
 
-    "target":"##__TARGET_UC__##",
+    "target":"##__TARGET__##",
     "board":"##__BOARD__##",
 
     "project_name":"${workspaceFolderBasename}",
