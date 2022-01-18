@@ -17,6 +17,7 @@
             "windows": {
                 "miDebuggerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gdb.exe"
             },
+            "preLaunchTask": "build",
             "miDebuggerArgs": "",
             "setupCommands": [
                 { "text":"cd ${workspaceFolder}" },
