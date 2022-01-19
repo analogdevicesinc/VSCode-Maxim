@@ -3,15 +3,7 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
-                "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
-                "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
-                "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
-                "${config:MAXIM_PATH}/Libraries/CMSIS/Include",
-                "${config:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
-                "${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include",
-                "##__ADDITIONAL_INCLUDES__##"
+                "##__I_PATHS__##"
             ],
             "defines": [
                 "##__DEFINES__##"
@@ -19,27 +11,15 @@
             "intelliSenseMode": "gcc-arm",
             "compilerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gcc.exe",
             "browse": {
-                "path": [
-                    "${workspaceFolder}",
-                    "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
-                    "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
-                    "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source",
-                    "##__ADDITIONAL_SOURCES__##"
+                "path": [                    
+                    "##__V_PATHS__##"
                 ]
             }
         },
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
-                "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
-                "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
-                "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
-                "${config:MAXIM_PATH}/Libraries/CMSIS/Include",
-                "${config:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
-                "${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include",
-                "##__ADDITIONAL_INCLUDES__##"
+                "##__I_PATHS__##"
             ],
             "defines": [
                 "##__DEFINES__##"
@@ -48,11 +28,7 @@
             "compilerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gcc",
             "browse": {
                 "path": [
-                    "${workspaceFolder}",
-                    "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
-                    "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
-                    "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source",
-                    "##__ADDITIONAL_SOURCES__##"
+                    "##__V_PATHS__##"
                 ]
             }
         }

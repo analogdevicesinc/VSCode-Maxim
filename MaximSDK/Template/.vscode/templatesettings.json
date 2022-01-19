@@ -5,7 +5,7 @@
     },
 
     "terminal.integrated.env.linux": {
-        "PATH":"${config:MAXIM_PATH}/Tools/OpenOCD:/${config:MAXIM_PATH}/Tools/GNUTools/bin:${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin:${env:PATH}",
+        "PATH":"${config:MAXIM_PATH}/Tools/OpenOCD:${config:MAXIM_PATH}/Tools/GNUTools/bin:${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
 
