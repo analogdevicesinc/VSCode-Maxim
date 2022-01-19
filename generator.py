@@ -1,14 +1,32 @@
 import os
 import shutil
+import platform
 
 defaults = {
-    "MAXIM_PATH":"C:/MaximSDK", 
+    "MAXIM_PATH":"${env:MAXIM_PATH}", 
     "PROGRAM_FILE":"${config:project_name}.elf",
     "SYMBOL_FILE":"${config:program_file}",
     "M4_OCD_INTERFACE_FILE":"cmsis-dap.cfg",
     "M4_OCD_TARGET_FILE":"${config:target}.cfg",
     "RV_OCD_INTERFACE_FILE":"ftdi/olimex-arm-usb-ocd-h.cfg",
-    "RV_OCD_TARGET_FILE":"${config:target}-riscv.cfg"
+    "RV_OCD_TARGET_FILE":"${config:target}-riscv.cfg",
+    "DEFINES":[],
+    "I_PATHS":[
+        "${workspaceFolder}/**",
+        "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
+        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
+        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
+        "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
+        "${config:MAXIM_PATH}/Libraries/CMSIS/Include",
+        "${config:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
+        "${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include"
+        ],
+    "V_PATHS":[
+        "${workspaceFolder}",
+        "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
+        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
+        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source"
+    ]
 }
 
 def create_project(
@@ -22,16 +40,16 @@ def create_project(
     M4_OCD_target_file: str = defaults["M4_OCD_TARGET_FILE"],
     RV_OCD_interface_file: str = defaults["RV_OCD_INTERFACE_FILE"],
     RV_OCD_target_file: str = defaults["RV_OCD_TARGET_FILE"],
-    defines: list = [],
-    i_paths: list = [],
-    v_paths: list = [],
+    defines: list = defaults["DEFINES"],
+    i_paths: list = defaults["I_PATHS"],
+    v_paths: list = defaults["V_PATHS"],
 ):
 
-    template_dir = os.path.join("MaximSDK", "Template")  # Where to find the VS Code template directory
+    template_dir = os.path.join("MaximSDK", "Template")  # Where to find the VS Code template directory relative to this script
     template_prefix = "template"  # Filenames beginning with this will have substitution
 
     tmp = []  # Work-horse list, linter be nice
-    if defines is not None:
+    if defines != []:
         # Parse defines...
         # ---
         tmp = defines
@@ -39,6 +57,8 @@ def create_project(
         tmp = list(map("\"{0}\"".format, tmp))  # Surround with quotes
         defines_parsed = ",\n\t\t\t\t".join(tmp)  # csv, newline, and tab alignment
         # ---
+    else:
+        defines_parsed = ",\n\t\t\t\t".join(defines)
 
     # Parse include paths...
     tmp = i_paths
@@ -46,7 +66,7 @@ def create_project(
     i_paths_parsed = ",\n\t\t\t\t".join(tmp)  # csv, newline, and tab alignment
 
     # Parse browse paths...
-    tmp = v_paths  # Space-separated
+    tmp = v_paths
     tmp = list(map("\"{0}\"".format, tmp))  # Surround with quotes
     v_paths_parsed = ",\n\t\t\t\t\t".join(tmp)  # csv, newline, and tab alignment
 
@@ -88,12 +108,52 @@ def create_project(
                             replace("##__M4_OCD_TARGET_FILE__##", M4_OCD_target_file).
                             replace("##__RV_OCD_INTERFACE_FILE__##", RV_OCD_interface_file).
                             replace("##__RV_OCD_TARGET_FILE__##", RV_OCD_target_file).
-                            replace("\"##__ADDITIONAL_INCLUDES__##\"", i_paths_parsed).
+                            replace("\"##__I_PATHS__##\"", i_paths_parsed).  # Next 3 are surrounded in quotes in the template because of the linter
                             replace("\"##__DEFINES__##\"", defines_parsed).
-                            replace("\"##__ADDITIONAL_SOURCES__##\"", v_paths_parsed)
+                            replace("\"##__V_PATHS__##\"", v_paths_parsed)
                         )
 
             else:
                 # There is a non-template file to copy
                 shutil.copy(os.path.join(directory, file), out_path)
                 
+def generate_maximsdk(maxim_path = "", overwrite=True):
+    if maxim_path == "": 
+        print("Auto-detecting MaximSDK...")
+        # Check environment variable
+        if "MAXIM_PATH" in os.environ.keys():
+            print("Checking MAXIM_PATH environment variable..")
+            maxim_path = os.environ["MAXIM_PATH"]
+        # Check default install locations
+        elif "Windows" in platform.platform() and os.path.exists("C:/MaximSDK"):
+            print("Checking default Windows location...")
+            maxim_path = "C:/MaximSDK"
+        else:
+            print("Failed to auto-locate the MaximSDK...  set maxim_path in function call and try again.")
+            return False
+
+    # Search for list of targets
+    targets = []
+    for dir in os.scandir(os.path.join(maxim_path, "Examples")):
+        targets.append(dir.name)
+    
+
+    for target in targets:
+
+        # For this target, get the list of supported boards.
+        boards = []
+        for dir, subdirs, files in os.walk(os.path.join(maxim_path, "Libraries", "Boards", target)):
+            if "board.mk" in files: 
+                boards.append(os.path.split(dir)[1])
+
+        # Set default board.  Try EvKit_V1, otherwise use first entry in list
+        board = "EvKit_V1"
+        if board not in boards: board = boards[0]
+
+        for dir, subdirs, files in os.walk(os.path.join(maxim_path, "Examples", target)):
+            if "Makefile" in files:
+                if ".vscode" not in subdirs or (".vscode" in subdirs and overwrite):
+                    create_project(dir, target, board)
+    
+if __name__ == "__main__":
+    generate_maximsdk(maxim_path="C:/Users/Jake.Carter/repos/MAX78000_SDK")
