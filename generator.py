@@ -10,7 +10,9 @@ defaults = {
     "M4_OCD_TARGET_FILE":"${config:target}.cfg",
     "RV_OCD_INTERFACE_FILE":"ftdi/olimex-arm-usb-ocd-h.cfg",
     "RV_OCD_TARGET_FILE":"${config:target}-riscv.cfg",
-    "DEFINES":[],
+    "DEFINES":[
+        "${config:board}"
+    ],
     "I_PATHS":[
         "${workspaceFolder}/**",
         "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
