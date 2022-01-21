@@ -31,8 +31,8 @@ defaults = {
     ],
     "OCD_PATH":"${config:MAXIM_PATH}/Tools/OpenOCD",
     "ARM_GCC_PATH":"${config:MAXIM_PATH}/Tools/GNUTools/bin",
-    "RV_GCC_path":"{config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin",
-    "Make_path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"
+    "RV_GCC_PATH":"{config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin",
+    "MAKE_PATH":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"
 }
 
 def create_project(
@@ -50,9 +50,9 @@ def create_project(
     i_paths: list = defaults["I_PATHS"],
     v_paths: list = defaults["V_PATHS"],
     OCD_path: str = defaults["OCD_PATH"],
-    ARM_GCC_path: str = defaults["ARM_GCC_path"],
-    RV_GCC_path: str = defaults["RV_GCC_path"],
-    Make_path: str = defaults["Make_path"]
+    ARM_GCC_path: str = defaults["ARM_GCC_PATH"],
+    RV_GCC_path: str = defaults["RV_GCC_PATH"],
+    Make_path: str = defaults["MAKE_PATH"]
 ):
 
     template_dir = os.path.join("MaximSDK", "Template")  # Where to find the VS Code template directory relative to this script
