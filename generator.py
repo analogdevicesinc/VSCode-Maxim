@@ -26,7 +26,11 @@ defaults = {
         "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
         "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
         "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source"
-    ]
+    ],
+    "OCD_PATH":"${config:MAXIM_PATH}/Tools/OpenOCD",
+    "ARM_GCC_PATH":"${config:MAXIM_PATH}/Tools/GNUTools/bin",
+    "RV_GCC_path":"{config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin",
+    "Make_path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"
 }
 
 def create_project(
@@ -43,6 +47,10 @@ def create_project(
     defines: list = defaults["DEFINES"],
     i_paths: list = defaults["I_PATHS"],
     v_paths: list = defaults["V_PATHS"],
+    OCD_path: str = defaults["OCD_PATH"],
+    ARM_GCC_path: str = defaults["ARM_GCC_path"],
+    RV_GCC_path: str = defaults["RV_GCC_path"],
+    Make_path: str = defaults["Make_path"]
 ):
 
     template_dir = os.path.join("MaximSDK", "Template")  # Where to find the VS Code template directory relative to this script
@@ -110,14 +118,18 @@ def create_project(
                             replace("##__RV_OCD_TARGET_FILE__##", RV_OCD_target_file).
                             replace("\"##__I_PATHS__##\"", i_paths_parsed).  # Next 3 are surrounded in quotes in the template because of the linter
                             replace("\"##__DEFINES__##\"", defines_parsed).
-                            replace("\"##__V_PATHS__##\"", v_paths_parsed)
+                            replace("\"##__V_PATHS__##\"", v_paths_parsed).
+                            replace("##__OCD_PATH__##", OCD_path).
+                            replace("##__ARM_GCC_PATH__##", ARM_GCC_path).
+                            replace("##__RV_GCC_PATH__##", RV_GCC_path).
+                            replace("##__MAKE_PATH__##", Make_path)
                         )
 
             else:
                 # There is a non-template file to copy
                 shutil.copy(os.path.join(directory, file), out_path)
                 
-def generate_maximsdk(maxim_path = "", overwrite=True):
+def generate_maximsdk(maxim_path = "", target_os="Windows", overwrite=True):
     if maxim_path == "": 
         print("Auto-detecting MaximSDK...")
         # Check environment variable
@@ -153,7 +165,10 @@ def generate_maximsdk(maxim_path = "", overwrite=True):
         for dir, subdirs, files in os.walk(os.path.join(maxim_path, "Examples", target)):
             if "Makefile" in files:
                 if ".vscode" not in subdirs or (".vscode" in subdirs and overwrite):
-                    create_project(dir, target, board)
+                    if target_os == "Windows":
+                        create_project(dir, target, board)
+                    elif target_os == "Linux":
+                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg")
     
 if __name__ == "__main__":
-    generate_maximsdk(maxim_path="C:/Users/Jake.Carter/repos/MAX78000_SDK")
+    generate_maximsdk(maxim_path="C:/Users/Jake.Carter/repos/fork/MAX78000_SDK", target_os="Linux")

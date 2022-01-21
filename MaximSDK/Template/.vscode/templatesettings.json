@@ -22,6 +22,11 @@
     "M4_OCD_interface_file":"##__M4_OCD_INTERFACE_FILE__##",
     "M4_OCD_target_file":"##__M4_OCD_TARGET_FILE__##",
     "RV_OCD_interface_file":"##__RV_OCD_INTERFACE_FILE__##",
-    "RV_OCD_target_file":"##__RV_OCD_TARGET_FILE__##"
+    "RV_OCD_target_file":"##__RV_OCD_TARGET_FILE__##",
+
+    "OCD_path":"##__OCD_PATH__##",
+    "ARM_GCC_path":"##__ARM_GCC_PATH__##",
+    "RV_GCC_path":"##__RV_GCC_PATH__##",
+    "Make_path":"##__MAKE_PATH__##"
 }
 
