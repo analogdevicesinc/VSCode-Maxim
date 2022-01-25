@@ -1,4 +1,8 @@
 {
+    "target":"##__TARGET__##",
+    "board":"##__BOARD__##",
+
+    "MAXIM_PATH":"##__MAXIM_PATH__##", 
     "terminal.integrated.env.windows": {
         "Path":"${config:OCD_path};${config:ARM_GCC_path};${config:RV_GCC_path};${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
@@ -7,12 +11,7 @@
     "terminal.integrated.env.linux": {
         "PATH":"${config:OCD_path}:${config:ARM_GCC_path}:${config:RV_GCC_path}:${config:Make_path}:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
-    },
-
-    "MAXIM_PATH":"##__MAXIM_PATH__##",
-
-    "target":"##__TARGET__##",
-    "board":"##__BOARD__##",
+    },   
 
     "project_name":"${workspaceFolderBasename}",
 

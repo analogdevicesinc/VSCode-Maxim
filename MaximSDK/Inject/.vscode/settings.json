@@ -1,18 +1,16 @@
 {
+    "target":"MAX78000",
+    "board":"EvKit_V1",
+
+    "MAXIM_PATH":"C:/MaximSDK",
     "terminal.integrated.env.windows": {
         "Path":"${config:OCD_path};${config:ARM_GCC_path};${config:RV_GCC_path};${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
-
     "terminal.integrated.env.linux": {
         "PATH":"${config:OCD_path}:${config:ARM_GCC_path}:${config:RV_GCC_path}:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
-
-    "MAXIM_PATH":"C:/MaximSDK",
-
-    "target":"MAX78000",
-    "board":"EvKit_V1",
 
     "project_name":"${workspaceFolderBasename}",
 

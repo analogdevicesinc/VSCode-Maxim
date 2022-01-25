@@ -76,9 +76,13 @@ As such, a VSCode-Maxim project contains two main components:  A `.vscode` folde
 The main mechanism for creating a new project is copying the `.vscode` folder and Makefile ("injecting" it) into another "receiver" folder.  If the receiver folder is empty, then the new project is ready for `File > Open Folder`.  Otherwise, if it contains existing source code and/or an existing Makefile, the new project will require some minimal setup.  A quick-start guide for both scenarios is provided below, and a detailed walkthrough can also be found in the [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md).
 
 # Configuration
-## settings.json
-`.vscode/settings.json` is the main project configuration file.  Values set here are parsed into the other .json config files.  When a change is made to this file, VS Code should be restarted (or alternatively reloaded with CTRL+SHIFT+P -> Reload Window) to force a re-parse.  The following configuration options are available:
-### Common Config Options
+## Project Settings
+`.vscode/settings.json` is the main project configuration file.  Values set here are parsed into the other .json config files.  When a change is made to this file, VS Code should be restarted (or alternatively reloaded with CTRL+SHIFT+P -> Reload Window) to force a re-parse.  
+
+The default project configuration should work for most use cases as long as `"target"` and `"board"` are set correctly.
+
+The following configuration options are available:
+## Common Config Options
 * `"target"`
     * This sets the target microcontroller for the project.
     * Supported values:
@@ -96,40 +100,34 @@ The main mechanism for creating a new project is copying the `.vscode` folder an
 * `"board"`
     * This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
     * The available options will depend on your target microcontroller, and can be found in the `Libraries/Boards` folder of the MaximSDK
-    * For example, the supported options for the MAX78000 are `EvKit_V1`, `FTHR_RevA`, and `MAXREFDES178`.
+    * For example, the supported options for the MAX78000 are `"EvKit_V1"`, `"FTHR_RevA"`, and `"MAXREFDES178"`.
 ![MAX78000 Boards](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_boards.JPG)
 
-### Advanced Config Options
+## Advanced Config Options
 * `"terminal.integrated.env.[platform]:Path"`
     * This prepends the location of toolchain binaries to the system `Path` used by VSCode's integrated terminal.  Don't touch unless you know what you're doing :)
 
-### `MAXIM_PATH`
-* This must be set to the root installation directory of Maxim's SDK.  If you are using a non-default installation location or Linux, this must be changed accordingly.
+* `"MAXIM_PATH"`
+    * This option must point to the root installation directory of the MaximSDK.  
+    * Default value: `"${env:MAXIM_PATH}"`, which loads the MAXIM_PATH environment variable set in the installation process.
 
-### `project_name`
-* Sets the name of project.  This is used to set the build output filename via the `PROJ_OVERRIDE` Make variable.
-* Defaults to the name of the project folder.
+* `"project_name"`
+    * Sets the name of project.  This is used in other config options such as `program_file`.
+    * Default value: `"${workspaceFolderBasename}"`, which reads the name of the current workspace folder.
 
-### `program_file`
-* Sets the name of the file to program/flash and debug.  This is provided in case it's needed, but for most use cases should be left at its default.  File extension must be included.
-* Defaults to `${config:program_file}.elf`, which reads the `program_file` setting.
+* `"program_file"`
+    * Sets the name of the file to flash and debug.  This is provided in case it's needed, but for most use cases should be left at its default.  File extension must be included.
+    * Default value: `${config:program_file}.elf`, which reads the `program_file` setting.
 
-### `OCD_interface_file`
-* Sets the OpenOCD interface file to use.  This should match the connected debugger.  `.cfg` file extension must be included.
-* Defaults to `cmsis-dap.cfg`
+* `"OCD_interface_file"`
+    * Sets the OpenOCD interface file to use.  This should match the connected debugger.  Available options can be found in the `Tools/OpenOCD/scripts/interface` folder in the MaximSDK.  
+    * `.cfg` file extension must be included.
+    * Default value: `cmsis-dap.cfg`
 
-### `OCD_target_file`
-* Sets the OpenOCD target file to use.  This should match the target microcontroller.  `.cfg` file extension must be included.
-* Defaults to `${config:target}.cfg`, which reads the `target` setting.
-
-### `debugger`
-* This sets the debug adapter to use with OpenOCD and VSCode's integrated GDB client.  Options are:
-    * `"cmsis-dap"` (for default MAX32625PICO adapter.  If your micro has an integrated debugger, this is the correct option)
-    * `"ftdi/olimex-arm-jtag-swd"` (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/)
-    * `"ftdi/olimex-arm-usb-ocd"` (for http://www.olimex.com/dev/arm-usb-ocd.html)
-    * `"ftdi/olimex-arm-usb-ocd-h"` (for http://www.olimex.com/dev/arm-usb-ocd-h.html)
-    * `"ftdi/olimex-arm-usb-tiny-h"` (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
-    * `"ftdi/olimex-jtag-tiny"` (for http://www.olimex.com/dev/arm-usb-tiny.html)
+* `"OCD_target_file"`
+    * Sets the OpenOCD target file to use.  This should match the target microcontroller.  Available options can be found in the `Tools/OpenOCD/scripts/target` folder in the MaximSDK.
+    * `.cfg` file extension must be included.
+    * Default value: `${config:target}.cfg`, which reads the `target` setting.
 
 ## Configuring the Makefile
 The Makefile is the core file for the build system.  All configuration tasks such as adding source files to the build, setting compiler flags, and linking libraries are handled via the Makefile. The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand.
