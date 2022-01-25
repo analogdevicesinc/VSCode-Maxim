@@ -66,14 +66,101 @@ When opening workspaces and folders for the first time VSCode will now prompt fo
 
 The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
 
-# Projects
-The main mechanism for opening a project in Visual Studio Code is `File > Open Folder`.  When a folder is opened, VS Code will look for a `.vscode` folder inside of it to load settings from.
+# Usage
+Visual Studio Code is built around a "working directory" paradigm.  VS Code's editor is always running from inside of a working directory, and the main mechanism for changing that directory is `File > Open Folder`.  Once the folder is opened VS Code will look inside of it for a `.vscode` sub-folder to load project-specific settings from.  The project folders in this repository tell VS Code how to integrate with Maxim's SDK and toolchain, and allows for code editing with working peripheral driver function lookups as well as debugging.
 
-As such, a VSCode-Maxim project contains two components:  A `Makefile` and a `.vscode` folder.  
+As such, a VSCode-Maxim project contains two main components:  A `.vscode` folder and a `Makefile`.  
+* The .vscode folder contains .json files that tell Visual Studio Code how to use Maxim's Makefiles.  It also tells VS Code how to use Maxim's toolchain to flash and debug the project on a target microcontroller.
 * The Makefile describes how to use Maxim's toolchain to build a project's source code.
-* The .vscode folder contains .json files that tell Visual Studio Code how to use the Makefile.  It also tells VS Code how to use the toolchain to flash and debug the project on the target microcontroller.
 
-The main mechanism for _creating_ VSCode-Maxim projects is "injecting" the .vscode folder from this repository into another "receiver" folder.  This "receiver" folder may or may not have existing source code in it.  Both scenarios are discussed in more detail below, and in the [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md)
+The main mechanism for creating a new project is copying the `.vscode` folder and Makefile ("injecting" it) into another "receiver" folder.  If the receiver folder is empty, then the new project is ready for `File > Open Folder`.  Otherwise, if it contains existing source code and/or an existing Makefile, the new project will require some minimal setup.  A quick-start guide for both scenarios is provided below, and a detailed walkthrough can also be found in the [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md).
+
+# Configuration
+## settings.json
+`.vscode/settings.json` is the main project configuration file.  Values set here are parsed into the other .json config files.  When a change is made to this file, VS Code should be restarted (or alternatively reloaded with CTRL+SHIFT+P -> Reload Window) to force a re-parse.  The following configuration options are available:
+### Common Config Options
+* `"target"`
+    * This sets the target microcontroller for the project.
+    * Supported values:
+        * `"MAX32520"`
+        * `"MAX32570"`
+        * `"MAX32650"`
+        * `"MAX32655"`
+        * `"MAX32660"`
+        * `"MAX32665"` (for MAX32665-MAX32668)
+        * `"MAX32670"`
+        * `"MAX32672"`
+        * `"MAX32675"`
+        * `"MAX78000"`
+    
+* `"board"`
+    * This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
+    * The available options will depend on your target microcontroller, and can be found in the `Libraries/Boards` folder of the MaximSDK
+    * For example, the supported options for the MAX78000 are `EvKit_V1`, `FTHR_RevA`, and `MAXREFDES178`.
+![MAX78000 Boards](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_boards.JPG)
+
+### Advanced Config Options
+* `"terminal.integrated.env.[platform]:Path"`
+    * This prepends the location of toolchain binaries to the system `Path` used by VSCode's integrated terminal.  Don't touch unless you know what you're doing :)
+
+### `MAXIM_PATH`
+* This must be set to the root installation directory of Maxim's SDK.  If you are using a non-default installation location or Linux, this must be changed accordingly.
+
+### `project_name`
+* Sets the name of project.  This is used to set the build output filename via the `PROJ_OVERRIDE` Make variable.
+* Defaults to the name of the project folder.
+
+### `program_file`
+* Sets the name of the file to program/flash and debug.  This is provided in case it's needed, but for most use cases should be left at its default.  File extension must be included.
+* Defaults to `${config:program_file}.elf`, which reads the `program_file` setting.
+
+### `OCD_interface_file`
+* Sets the OpenOCD interface file to use.  This should match the connected debugger.  `.cfg` file extension must be included.
+* Defaults to `cmsis-dap.cfg`
+
+### `OCD_target_file`
+* Sets the OpenOCD target file to use.  This should match the target microcontroller.  `.cfg` file extension must be included.
+* Defaults to `${config:target}.cfg`, which reads the `target` setting.
+
+### `debugger`
+* This sets the debug adapter to use with OpenOCD and VSCode's integrated GDB client.  Options are:
+    * `"cmsis-dap"` (for default MAX32625PICO adapter.  If your micro has an integrated debugger, this is the correct option)
+    * `"ftdi/olimex-arm-jtag-swd"` (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/)
+    * `"ftdi/olimex-arm-usb-ocd"` (for http://www.olimex.com/dev/arm-usb-ocd.html)
+    * `"ftdi/olimex-arm-usb-ocd-h"` (for http://www.olimex.com/dev/arm-usb-ocd-h.html)
+    * `"ftdi/olimex-arm-usb-tiny-h"` (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
+    * `"ftdi/olimex-jtag-tiny"` (for http://www.olimex.com/dev/arm-usb-tiny.html)
+
+## Configuring the Makefile
+The Makefile is the core file for the build system.  All configuration tasks such as adding source files to the build, setting compiler flags, and linking libraries are handled via the Makefile. The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand.
+
+### Adding Source Files
+* The included Makefile is pre-configured for a single `main.c` source file by default.
+* Additional source files can be added to the build with `SRCS += yourfile.c`
+* The Makefile looks for source files _only_ in the `/src` directory by default.  If you would like to use additional source directories, add them with `VPATH += yoursourcedirectory`
+* The Makefile looks for header files _only_ in the `/src` directory by default.  If you would like to use additional include directories, add them with `IPATH += yourincludedirectory`
+
+### Compiler Flags
+* Compiler flags can be added/changed via the `PROJ_CFLAGS` variable.
+* Add a new flag to be passed to the compiler with `PROJ_CFLAGS += -yourflag`.  Flags are passed in the order that they are added to the `PROJ_CFLAGS` variable.
+
+### Linking Libraries
+* Additional libraries can be linked via the `PROJ_LIBS` variable.  Add a new library to the build with `PROJ_LIBS += yourlibraryname`.
+    * Note : Do not include the 'lib' part of the library name, or the file extension.  For example, to link `libarm_cortexM4lf_math.a` set `PROJ_LIBS += arm_cortexM4lf_math`.
+* Tell the linker where to find the library with the '-L' linker flag.  Set `PROJ_LDFLAGS += -Lpathtoyourlibrary`.  For example, set `PROJ_LDFLAGS += -L./lib` to search a 'lib' directory inside of the project for libraries. 
+
+### Optimization Level
+* The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
+
+## Setting Search Paths for Intellisense
+VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the C standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
+
+To add additional search paths :
+1. Open the `.vscode/c_cpp_properties.json` file.  
+
+2. Add the include path(s) to the `configurations > includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
+
+3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".  
 
 ## Project Creation
 **If you have not done so already, download the latest [release](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) of this repository and extract it to an accessible location.**
@@ -182,96 +269,7 @@ After creating, configuring, and opening your project with `File > Open Folder` 
    ![Make -v example output](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/make_test.JPG)
 
 # Configuration
-## Project Config Options - settings.json
-`settings.json`, found inside of the `.vscode` folder, is the main project configuration file.  Values set here are parsed into the other .json config files.  **When a change is made to this file, VS Code should be restarted (or alternatively reloaded with CTRL+SHIFT+P -> Reload Window) to force a re-parse.**
 
-### `terminal.integrated.env.[platform]:Path`
-* This prepends the location of toolchain binaries to the system `Path` used by VSCode's integrated terminal.  Don't touch unless you know what you're doing :)
-
-### `MAXIM_PATH`
-* This must be set to the root installation directory of Maxim's SDK.  If you are using a non-default installation location or Linux, this must be changed accordingly.
-
-### `target`
-* This sets the target microcontroller for the project.
-* Options for the Maxim Micros SDK are:
-    * `"MAX32520"`
-    * `"MAX32570"`
-    * `"MAX32655"`
-    * `"MAX32660"`
-    * `"MAX32665"` (for MAX32665-MAX32668)
-    * `"MAX32670"`
-    * `"MAX32672"`
-    * `"MAX32675"`
-    * `"MAX78000"`
-
-* Options for the LP Micros SDK are:
-    * `"MAX3263x"`
-    * `"MAX32600"`
-    * `"MAX32620"`
-    * `"MAX32625"`
-    * `"MAX32650"`
-    
-### `board`
-* This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
-* The available options will depend on your target microcontroller, and can be found under `~/MaximSDK/Libraries/Boards/[target]` for the MaximSDK or `~/Maxim/Firmware/[target]/Libraries/Boards` for the LP SDK.  
-* For example, the supported options for the MAX78000 are `EvKit_V1`, `FTHR_RevA`, and `MAXREFDES178`.
-![MAX78000 Boards](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/78000_boards.JPG)
-
-### `project_name`
-* Sets the name of project.  This is used to set the build output filename via the `PROJ_OVERRIDE` Make variable.
-* Defaults to the name of the project folder.
-
-### `program_file`
-* Sets the name of the file to program/flash and debug.  This is provided in case it's needed, but for most use cases should be left at its default.  File extension must be included.
-* Defaults to `${config:program_file}.elf`, which reads the `program_file` setting.
-
-### `OCD_interface_file`
-* Sets the OpenOCD interface file to use.  This should match the connected debugger.  `.cfg` file extension must be included.
-* Defaults to `cmsis-dap.cfg`
-
-### `OCD_target_file`
-* Sets the OpenOCD target file to use.  This should match the target microcontroller.  `.cfg` file extension must be included.
-* Defaults to `${config:target}.cfg`, which reads the `target` setting.
-
-### `debugger`
-* This sets the debug adapter to use with OpenOCD and VSCode's integrated GDB client.  Options are:
-    * `"cmsis-dap"` (for default MAX32625PICO adapter.  If your micro has an integrated debugger, this is the correct option)
-    * `"ftdi/olimex-arm-jtag-swd"` (for https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-SWD/)
-    * `"ftdi/olimex-arm-usb-ocd"` (for http://www.olimex.com/dev/arm-usb-ocd.html)
-    * `"ftdi/olimex-arm-usb-ocd-h"` (for http://www.olimex.com/dev/arm-usb-ocd-h.html)
-    * `"ftdi/olimex-arm-usb-tiny-h"` (for http://www.olimex.com/dev/arm-usb-tiny-h.html)
-    * `"ftdi/olimex-jtag-tiny"` (for http://www.olimex.com/dev/arm-usb-tiny.html)
-
-## Configuring the Makefile
-The Makefile is the core file for the build system.  All configuration tasks such as adding source files to the build, setting compiler flags, and linking libraries are handled via the Makefile. The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand.
-
-### Adding Source Files
-* The included Makefile is pre-configured for a single `main.c` source file by default.
-* Additional source files can be added to the build with `SRCS += yourfile.c`
-* The Makefile looks for source files _only_ in the `/src` directory by default.  If you would like to use additional source directories, add them with `VPATH += yoursourcedirectory`
-* The Makefile looks for header files _only_ in the `/src` directory by default.  If you would like to use additional include directories, add them with `IPATH += yourincludedirectory`
-
-### Compiler Flags
-* Compiler flags can be added/changed via the `PROJ_CFLAGS` variable.
-* Add a new flag to be passed to the compiler with `PROJ_CFLAGS += -yourflag`.  Flags are passed in the order that they are added to the `PROJ_CFLAGS` variable.
-
-### Linking Libraries
-* Additional libraries can be linked via the `PROJ_LIBS` variable.  Add a new library to the build with `PROJ_LIBS += yourlibraryname`.
-    * Note : Do not include the 'lib' part of the library name, or the file extension.  For example, to link `libarm_cortexM4lf_math.a` set `PROJ_LIBS += arm_cortexM4lf_math`.
-* Tell the linker where to find the library with the '-L' linker flag.  Set `PROJ_LDFLAGS += -Lpathtoyourlibrary`.  For example, set `PROJ_LDFLAGS += -L./lib` to search a 'lib' directory inside of the project for libraries. 
-
-### Optimization Level
-* The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
-
-## Setting Search Paths for Intellisense
-VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the C standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
-
-To add additional search paths :
-1. Open the `.vscode/c_cpp_properties.json` file.  
-
-2. Add the include path(s) to the `configurations > includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
-
-3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".  
 
 # Building
 There are 4 available build tasks that can be accessed via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.
