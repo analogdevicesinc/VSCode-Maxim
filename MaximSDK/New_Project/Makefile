@@ -60,9 +60,9 @@ ifeq "$(TARGET)" ""
 $(error target must be specified!  Set the TARGET variable.)
 endif
 
-# Add command line variable for setting output filename
-ifneq "$(PROJ_OVERRIDE)" ""
-PROJECT = $(PROJ_OVERRIDE)
+# Default board used.  This is overridden in settings.json
+ifeq "$(BOARD)" ""
+$(error board must be specified!  Set the BOARD variable.)
 endif
 
 # Set output filename
@@ -76,11 +76,6 @@ TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
 
 # Select 'GCC' or 'IAR' compiler
 COMPILER=GCC
-
-# Default board used.  This is overridden in settings.json
-ifeq "$(BOARD)" ""
-$(error board must be specified!  Set the BOARD variable.)
-endif
 
 # This is the path to the CMSIS root directory
 ifeq "$(MAXIM_PATH)" ""
