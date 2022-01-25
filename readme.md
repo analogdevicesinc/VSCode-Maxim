@@ -1,48 +1,68 @@
 # VSCode-Maxim
+https://github.com/MaximIntegratedTechSupport/VSCode-Maxim 
 
 # Introduction
-This is a [Visual Studio Code](https://code.visualstudio.com/)-based development environment for [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.  It builds off of Microsoft's C/C++ extension and leverages Maxim's toolchain into a full-featured IDE for building and debugging embedded code.  Windows and Linux are supported, though only Windows 10 and Ubuntu 20.04 LTS are officially tested.
+This repo contains [Visual Studio Code](https://code.visualstudio.com/) project folders for [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontroller Software Development Kits (SDKs).
 
-**Note:** This repository now contains a full [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md).  If this is your first time with this software, start there.
+**Note:** This repository now contains a full [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md).
 
-# Requirements
-Please download and install the following software dependencies:
+# Dependencies
+The project folders in this repo have the following dependencies:
 * [Visual Studio Code](https://code.visualstudio.com/)
-* [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A) (If you are using any of the micros below)
+* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for `ms-vscode.cpptools` from within the extension manager.)
+* [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A), which supports the following microcontrollers:
     * MAX32520
     * MAX32570
+    * MAX32650
     * MAX32655
     * MAX32660
     * MAX32665-MAX32668
     * MAX32670
     * MAX32672
     * MAX32675
+    * MAX32680
+    * MAX32690
     * MAX78000
+    * MAX78002
 
-* [Maxim LP Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0001500A) (If you are using any of the micros below)
-    * MAX3263x
-    * MAX32600
-    * MAX32620
-    * MAX32625
-    * MAX32650
+# Installation
+## Windows
+1. Download & install the Maxim Micros SDK [Windows Installer](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A).  See [AN7219](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7219.html) for a detailed installation guide if needed.
+2. Set the `MAXIM_PATH` environment variable to the installation location of the Maxim Micros SDK.  If you are unsure how to set an environment variable, see [this](https://www.onmsft.com/how-to/how-to-set-an-environment-variable-in-windows-10) article.  Ex:
 
-* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools) (This can be installed from within VSCode via the extension manager.  Search for `ms-vscode.cpptools` from within the extension manager.)
+![Variable Name = MAXIM_PATH, Variable Value = C:/MaximSDK](img\maxim_path_env.JPG)
 
-# Initial Setup/Installation
+3. Download & install [Visual Studio Code](https://code.visualstudio.com/)
+4. Launch Visual Studio Code.
+5. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).  This can also be installed from within VS Code's extension manager.  Search for `ms-vscode.cpptools`.
+6. That's it!  You're ready to start using the project folders.  See Usage below.
+
+## Linux
+1. Download & install the Maxim Micros SDK via the [Linux Installer](http://www.mxim.net/product/msdk/MaximMicrosSDK_linux.run) 
+    * **Note:** You may need to manually set this file as executable before running the installer.  Use `chmod +x MaximMicrosSDK_linux.run` or right click -> "Allow executing file as program" if you have a GUI.
+2. Set the `MAXIM_PATH` environment variable to the installation location of the Maxim Micros SDK.  There are many ways to do this depending on your distro and shell.  It's recommended to add a line to your shell initialization script (`~/.bash_profile`,`~/.bashrc`,`~/.profile`, etc.)  Ex:
+    ```bash
+    # Set MAXIM_PATH env variable
+    export MAXIM_PATH="~/MaximSDK"
+    ```
+3. Copy the contents of the Linux patch into the root directory of the SDK and overwrite.  This replaces OpenOCD config files to resolves some case sensitivity issues on Linux.
+4. Download & install [Visual Studio Code](https://code.visualstudio.com/)
+5. Launch Visual Studio Code.
+6. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).  This can also be installed from within VS Code's extension manager.  Search for `ms-vscode.cpptools`.
+7. That's it!  You're ready to start using the project folders.  See Usage below.
+
 ## Enabling Workspace Trust
-The workspaces in this repo set environment variables for the integrated terminal.  In order for this to work, workspace trust must be enabled in your User Settings.  It should be by default, but not follow the procedure below to enable it.  You only need to do this one time per VS Code installation.
+In order for the project folders to function workspace trust must be enabled in your User Settings.  It should be by default.  Follow the procedure below to check/enable it.  You only need to do this one time per VS Code installation.
 
 1. Launch VS Code.
-
 2. Open your settings with `File > Preferences > Settings`.
-
 3. Find the `security.workspace.trust` settings (you can copy+paste this into the searchbar), and enable Workspace Trust with the checkbox, as shown below.  It's also a good idea to set the startup prompt to 'always'.
 
-![Workspace Trust Settings Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrust.JPG)
+![Workspace Trust Settings Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrust.JPG)
 
 When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.
 
-![Workspace Trust Prompt Image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/workspaceTrustPrompt.JPG)
+![Workspace Trust Prompt Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrustPrompt.JPG)
 
 The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
 
@@ -196,6 +216,22 @@ After creating, configuring, and opening your project with `File > Open Folder` 
 * The available options will depend on your target microcontroller, and can be found under `~/MaximSDK/Libraries/Boards/[target]` for the MaximSDK or `~/Maxim/Firmware/[target]/Libraries/Boards` for the LP SDK.  
 * For example, the supported options for the MAX78000 are `EvKit_V1`, `FTHR_RevA`, and `MAXREFDES178`.
 ![MAX78000 Boards](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/78000_boards.JPG)
+
+### `project_name`
+* Sets the name of project.  This is used to set the build output filename via the `PROJ_OVERRIDE` Make variable.
+* Defaults to the name of the project folder.
+
+### `program_file`
+* Sets the name of the file to program/flash and debug.  This is provided in case it's needed, but for most use cases should be left at its default.  File extension must be included.
+* Defaults to `${config:program_file}.elf`, which reads the `program_file` setting.
+
+### `OCD_interface_file`
+* Sets the OpenOCD interface file to use.  This should match the connected debugger.  `.cfg` file extension must be included.
+* Defaults to `cmsis-dap.cfg`
+
+### `OCD_target_file`
+* Sets the OpenOCD target file to use.  This should match the target microcontroller.  `.cfg` file extension must be included.
+* Defaults to `${config:target}.cfg`, which reads the `target` setting.
 
 ### `debugger`
 * This sets the debug adapter to use with OpenOCD and VSCode's integrated GDB client.  Options are:

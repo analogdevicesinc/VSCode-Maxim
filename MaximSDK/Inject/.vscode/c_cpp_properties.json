@@ -13,7 +13,7 @@
                 "${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include"
             ],
             "defines": [
-
+                "${config:board}"
             ],
             "intelliSenseMode": "gcc-arm",
             "compilerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gcc.exe",
@@ -38,7 +38,7 @@
                 "${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include"
             ],
             "defines": [
-                
+                "${config:board}"
             ],
             "intelliSenseMode": "gcc-arm",
             "compilerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gcc",
