@@ -9,14 +9,14 @@
                 "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
                 "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
                 "${config:MAXIM_PATH}/Libraries/CMSIS/Include",
-                "${config:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
-                "${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include"
+                "${config:ARM_GCC_path}/include",
+                "${config:ARM_GCC_path}/lib/gcc/arm-none-eabi/${config:GCC_version}/include"
             ],
             "defines": [
                 "${config:board}"
             ],
             "intelliSenseMode": "gcc-arm",
-            "compilerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gcc.exe",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc.exe",
             "browse": {
                 "path": [
                     "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
@@ -34,14 +34,14 @@
                 "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
                 "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
                 "${config:MAXIM_PATH}/Libraries/CMSIS/Include",
-                "${config:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
-                "${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include"
+                "${config:ARM_GCC_path}/include",
+                "${config:ARM_GCC_path}/lib/gcc/arm-none-eabi/${config:GCC_version}/include"
             ],
             "defines": [
                 "${config:board}"
             ],
             "intelliSenseMode": "gcc-arm",
-            "compilerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gcc",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc",
             "browse": {
                 "path": [
                     "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
