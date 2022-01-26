@@ -9,7 +9,7 @@
                 "##__DEFINES__##"
             ],
             "intelliSenseMode": "gcc-arm",
-            "compilerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gcc.exe",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc.exe",
             "browse": {
                 "path": [                    
                     "##__V_PATHS__##"
@@ -25,7 +25,7 @@
                 "##__DEFINES__##"
             ],
             "intelliSenseMode": "gcc-arm",
-            "compilerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gcc",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc",
             "browse": {
                 "path": [
                     "##__V_PATHS__##"

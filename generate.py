@@ -29,9 +29,10 @@ defaults = {
         "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
         "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source"
     ],
+    "GCC_VERSION":"10.3.1",
     "OCD_PATH":"${config:MAXIM_PATH}/Tools/OpenOCD",
-    "ARM_GCC_PATH":"${config:MAXIM_PATH}/Tools/GNUTools/bin",
-    "RV_GCC_PATH":"{config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin",
+    "ARM_GCC_PATH":"${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi-${config:GCC_version}",
+    "RV_GCC_PATH":"{config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc",
     "MAKE_PATH":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"
 }
 
@@ -49,6 +50,7 @@ def create_project(
     defines: list = defaults["DEFINES"],
     i_paths: list = defaults["I_PATHS"],
     v_paths: list = defaults["V_PATHS"],
+    gcc_version: str = defaults["GCC_VERSION"],
     OCD_path: str = defaults["OCD_PATH"],
     ARM_GCC_path: str = defaults["ARM_GCC_PATH"],
     RV_GCC_path: str = defaults["RV_GCC_PATH"],
@@ -121,6 +123,7 @@ def create_project(
                             replace("\"##__I_PATHS__##\"", i_paths_parsed).  # Next 3 are surrounded in quotes in the template because of the linter
                             replace("\"##__DEFINES__##\"", defines_parsed).
                             replace("\"##__V_PATHS__##\"", v_paths_parsed).
+                            replace("##__GCC_VERSION__##", gcc_version).
                             replace("##__OCD_PATH__##", OCD_path).
                             replace("##__ARM_GCC_PATH__##", ARM_GCC_path).
                             replace("##__RV_GCC_PATH__##", RV_GCC_path).

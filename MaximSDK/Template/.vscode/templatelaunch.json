@@ -12,10 +12,10 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "linux": {
-                "miDebuggerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gdb"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb"
             },
             "windows": {
-                "miDebuggerPath": "${config:MAXIM_PATH}/Tools/GNUTools/bin/arm-none-eabi-gdb.exe"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe"
             },
             "preLaunchTask": "build",
             "miDebuggerArgs": "",
@@ -41,10 +41,10 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "linux": {
-                "miDebuggerPath": "${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin/riscv-none-embed-gdb"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/riscv-none-embed-gdb"
             },
             "windows": {
-                "miDebuggerPath": "${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin/riscv-none-embed-gdb.exe"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/riscv-none-embed-gdb.exe"
             },
             "miDebuggerArgs": "",
             "setupCommands": [
