@@ -30,7 +30,7 @@ The project folders in this repo have the following dependencies:
 1. Download & install the Maxim Micros SDK [Windows Installer](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A).  See [AN7219](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7219.html) for a detailed installation guide if needed.
 2. Set the `MAXIM_PATH` environment variable to the installation location of the Maxim Micros SDK.  If you are unsure how to set an environment variable, see [this](https://www.onmsft.com/how-to/how-to-set-an-environment-variable-in-windows-10) article.  Ex:
 
-![Variable Name = MAXIM_PATH, Variable Value = C:/MaximSDK](img\maxim_path_env.JPG)
+![Variable Name = MAXIM_PATH, Variable Value = C:/MaximSDK](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/maxim_path_env.JPG)
 
 3. Download & install [Visual Studio Code](https://code.visualstudio.com/)
 4. Launch Visual Studio Code.
