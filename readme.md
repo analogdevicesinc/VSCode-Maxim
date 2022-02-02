@@ -35,7 +35,7 @@ The project folders in this repo have the following dependencies:
 3. Download & install [Visual Studio Code](https://code.visualstudio.com/)
 4. Launch Visual Studio Code.
 5. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).  This can also be installed from within VS Code's extension manager.  Search for `ms-vscode.cpptools`.
-6. That's it!  You're ready to start using the project folders.  See Usage below.
+6. That's it!  Check Workspace Trust is enabled (see below) and then you're ready to start using the project folders.
 
 ## Linux
 1. Download & install the Maxim Micros SDK via the [Linux Installer](http://www.mxim.net/product/msdk/MaximMicrosSDK_linux.run) 
@@ -45,11 +45,12 @@ The project folders in this repo have the following dependencies:
     # Set MAXIM_PATH env variable
     export MAXIM_PATH="~/MaximSDK"
     ```
-3. Copy the contents of the Linux patch into the root directory of the SDK and overwrite.  This replaces OpenOCD config files to resolves some case sensitivity issues on Linux.
-4. Download & install [Visual Studio Code](https://code.visualstudio.com/)
-5. Launch Visual Studio Code.
-6. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).  This can also be installed from within VS Code's extension manager.  Search for `ms-vscode.cpptools`.
-7. That's it!  You're ready to start using the project folders.  See Usage below.
+3. Copy 60-openocd.rules to `/etc/udev/rules.d/` and refresh udev with `udevadm control --reload`
+4. Copy the contents of the Linux patch into the root directory of the SDK and overwrite.  This replaces OpenOCD config files to resolves some case sensitivity issues on Linux.
+5. Download & install [Visual Studio Code](https://code.visualstudio.com/)
+6. Launch Visual Studio Code.
+7. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).  This can also be installed from within VS Code's extension manager.  Search for `ms-vscode.cpptools`.
+6. That's it!  Check Workspace Trust is enabled (see below) and then you're ready to start using the project folders.
 
 ## Enabling Workspace Trust
 In order for the project folders to function workspace trust must be enabled in your User Settings.  It should be by default.  Follow the procedure below to check/enable it.  You only need to do this one time per VS Code installation.
@@ -60,14 +61,18 @@ In order for the project folders to function workspace trust must be enabled in 
 
 ![Workspace Trust Settings Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrust.JPG)
 
-When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.
+When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.  Select "Yes, I trust the authors" when opening a VSCode-Maxim project.
 
 ![Workspace Trust Prompt Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrustPrompt.JPG)
 
 The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
 
 # Usage
-Visual Studio Code is built around a "working directory" paradigm.  VS Code's editor is always running from inside of a working directory, and the main mechanism for changing that directory is `File > Open Folder`.  Once the folder is opened VS Code will look inside of it for a `.vscode` sub-folder to load project-specific settings from.  The project folders in this repository tell VS Code how to integrate with Maxim's SDK and toolchain, and allows for code editing with working peripheral driver function lookups as well as debugging.
+Visual Studio Code is built around a "working directory" paradigm.  VS Code's editor is always running from inside of a working directory, and the main mechanism for changing that directory is `File > Open Folder`...
+
+![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
+
+Once the folder is opened VS Code will look inside of it for a `.vscode` sub-folder to load project-specific settings from.  The project folders in this repository tell VS Code how to integrate with Maxim's SDK and toolchain, and allows for code editing with working peripheral driver function lookups as well as debugging.
 
 As such, a VSCode-Maxim project contains two main components:  A `.vscode` folder and a `Makefile`.  
 * The .vscode folder contains .json files that tell Visual Studio Code how to use Maxim's Makefiles.  It also tells VS Code how to use Maxim's toolchain to flash and debug the project on a target microcontroller.
