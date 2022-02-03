@@ -37,6 +37,7 @@ import os
 from subprocess import run
 import platform
 import time
+import shutil
 
 curplatform = platform.system() # Get OS
 
@@ -78,8 +79,7 @@ def ps(cmd, env=None):
 def sync_examples():
     # Inject .vscode folder into example projects
     print("Inject .vscode folder into example projects...")
-    ps("Copy-Item ./MaximLP/Inject/* ./MaximLP/New_Project/ -force -Recurse")
-    ps("Copy-Item ./MaximSDK/Inject/* ./MaximSDK/New_Project/ -force -Recurse")
+    for f in os.scandir("MaximSDK/Inject/.vscode"): shutil.copy(f, "MaximSDK/New_Project/.vscode/")
 
 def release(version):
     r_dir = f"./Releases/VSCode-Maxim-{version}" # Release directory
