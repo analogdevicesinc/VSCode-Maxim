@@ -136,12 +136,12 @@ def create_project(
                             replace("##__MAKE_PATH__##", Make_path)
                         )
 
-                os.chmod(out_loc, 764)
+                os.chmod(out_loc, 0o764)
 
             else:
                 # There is a non-template file to copy
                 shutil.copy(os.path.join(directory, file), out_path)
-                os.chmod(out_path, 764)
+                os.chmod(out_path, 0o764)
 
                 
 def generate_maximsdk(target_os = None, maxim_path = None, overwrite=True):
