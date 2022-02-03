@@ -2,6 +2,7 @@ import os
 import shutil
 import argparse
 import platform
+from subprocess import run
 
 defaults = {
     "MAXIM_PATH":"${env:MAXIM_PATH}", 
@@ -217,5 +218,8 @@ parser.add_argument("--os", type=str, choices=["Windows", "Linux"])
 parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the MaximSDK.  If this is not specified then the script will use the MAXIM_PATH environment variable instead.")
 
 if __name__ == "__main__":
+    result = run("getent passwd ${SUDO_USER}:-${USER}", capture_output=True, shell=True)
+    print(result)
+
     args = parser.parse_args()
     generate_maximsdk(target_os=args.os, maxim_path=args.maxim_path)
