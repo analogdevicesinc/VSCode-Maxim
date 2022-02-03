@@ -1,5 +1,6 @@
 import os
 import shutil
+import argparse
 import platform
 
 defaults = {
@@ -32,9 +33,14 @@ defaults = {
     "GCC_VERSION":"10.3.1",
     "OCD_PATH":"${config:MAXIM_PATH}/Tools/OpenOCD",
     "ARM_GCC_PATH":"${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi-${config:GCC_version}",
-    "RV_GCC_PATH":"{config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc",
+    "RV_GCC_PATH":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc",
     "MAKE_PATH":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"
 }
+
+whitelist = [
+    "MAX78000",
+    "MAX78002"
+]
 
 def create_project(
     out_path: str,
@@ -130,34 +136,49 @@ def create_project(
                             replace("##__MAKE_PATH__##", Make_path)
                         )
 
+                os.chmod(out_loc, 764)
+
             else:
                 # There is a non-template file to copy
                 shutil.copy(os.path.join(directory, file), out_path)
+                os.chmod(out_path, 764)
+
                 
-def generate_maximsdk(maxim_path = "", target_os="Windows", overwrite=True):
-    if maxim_path == "": 
-        print("Auto-detecting MaximSDK...")
-        # Check environment variable
-        if "MAXIM_PATH" in os.environ.keys():
-            print("Checking MAXIM_PATH environment variable..")
-            maxim_path = os.environ["MAXIM_PATH"]
-        # Check default install locations
-        elif "Windows" in platform.platform() and os.path.exists("C:/MaximSDK"):
-            print("Checking default Windows location...")
-            maxim_path = "C:/MaximSDK"
+def generate_maximsdk(target_os = None, maxim_path = None, overwrite=True):
+
+    if target_os is None:
+        current_os = platform.platform()
+        if "Windows" in current_os: target_os = "Windows"
+        elif "Linux" in current_os: target_os = "Linux"
         else:
-            print("Failed to auto-locate the MaximSDK...  set maxim_path in function call and try again.")
+            print(f"{current_os} is not supported at this time.  Please raise a ticket on Github requesting support for your platform.")
             return False
+
+    if maxim_path is None: 
+        # Check environment variable
+        print("Checking MAXIM_PATH environment variable..")
+        if "MAXIM_PATH" in os.environ.keys():
+            maxim_path = os.environ["MAXIM_PATH"]
+            print(f"MaximSDK located at {maxim_path}")
+
+        else:
+            print("Failed to locate the MaximSDK...  Please set the MAXIM_PATH environment variable and try again.")
+            return False
+
+    print(f"Scanning {maxim_path}...")
 
     # Search for list of targets
     targets = []
     for dir in os.scandir(os.path.join(maxim_path, "Examples")):
-        targets.append(dir.name)
-    
+        if dir.name in whitelist: targets.append(dir.name)
 
+    print(f"Generating VS Code project files for {targets}...")
+    
+    count = 0
     for target in targets:
 
         # For this target, get the list of supported boards.
+        print(f"Scanning BSPs for {target}...")
         boards = []
         for dir, subdirs, files in os.walk(os.path.join(maxim_path, "Libraries", "Boards", target)):
             if "board.mk" in files: 
@@ -167,13 +188,34 @@ def generate_maximsdk(maxim_path = "", target_os="Windows", overwrite=True):
         board = "EvKit_V1"
         if board not in boards: board = boards[0]
 
+        print(f"Found {boards}, using {board} as default...")
+
+        # Search for example projects
+        print(f"Searching for {target} example projects...")
         for dir, subdirs, files in os.walk(os.path.join(maxim_path, "Examples", target)):
+
             if "Makefile" in files:
+                # Found example project
+
                 if ".vscode" not in subdirs or (".vscode" in subdirs and overwrite):
+
+                    print(f"Found {dir}, injecting project files...")
+
                     if target_os == "Windows":
                         create_project(dir, target, board)
+
                     elif target_os == "Linux":
-                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg")
+                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg", maxim_path=maxim_path) 
+                        # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.  ${env:MAXIM_PATH} is not resolving as of 2/2/2022...  something to do with all the 2's...
+
+                    count += 1
+
+    print(f"Done!  Created {count} projects.")
     
+parser = argparse.ArgumentParser(description="Generate Visual Studio Code project files for Maxim's Microcontroller SDK.")
+parser.add_argument("--os", type=str, choices=["Windows", "Linux"])
+parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the MaximSDK.  If this is not specified then the script will use the MAXIM_PATH environment variable instead.")
+
 if __name__ == "__main__":
-    generate_maximsdk(maxim_path="C:/Users/Jake.Carter/repos/fork/MAX78000_SDK", target_os="Linux")
+    args = parser.parse_args()
+    generate_maximsdk(target_os=args.os, maxim_path=args.maxim_path)
