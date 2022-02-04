@@ -1,0 +1,32 @@
+{
+    "target":"##__TARGET__##",
+    "board":"##__BOARD__##",
+
+    "MAXIM_PATH":"##__MAXIM_PATH__##", 
+    "terminal.integrated.env.windows": {
+        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:RV_GCC_path}/bin;${config:Make_path};${env:PATH}",
+        "MAXIM_PATH":"${config:MAXIM_PATH}"
+    },
+    "terminal.integrated.env.linux": {
+        "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:RV_GCC_path}/bin:${env:PATH}",
+        "MAXIM_PATH":"${config:MAXIM_PATH}"
+    },
+
+    "project_name":"${workspaceFolderBasename}",
+
+    "program_file":"##__PROGRAM_FILE__##",
+    "symbol_file":"##__SYMBOL_FILE__##",
+
+    "M4_OCD_interface_file":"##__M4_OCD_INTERFACE_FILE__##",
+    "M4_OCD_target_file":"##__M4_OCD_TARGET_FILE__##",
+    "RV_OCD_interface_file":"##__RV_OCD_INTERFACE_FILE__##",
+    "RV_OCD_target_file":"##__RV_OCD_TARGET_FILE__##",
+
+    "GCC_version":"##__GCC_VERSION__##",
+
+    "OCD_path":"##__OCD_PATH__##",
+    "ARM_GCC_path":"##__ARM_GCC_PATH__##",
+    "RV_GCC_path":"##__RV_GCC_PATH__##",
+    "Make_path":"##__MAKE_PATH__##"
+}
+
