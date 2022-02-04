@@ -10,20 +10,7 @@ This repo contains [Visual Studio Code](https://code.visualstudio.com/) project 
 The project folders in this repo have the following dependencies:
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools)
-* [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A), which supports the following microcontrollers:
-    * MAX32520
-    * MAX32570
-    * MAX32650
-    * MAX32655
-    * MAX32660
-    * MAX32665-MAX32668
-    * MAX32670
-    * MAX32672
-    * MAX32675
-    * MAX32680
-    * MAX32690
-    * MAX78000
-    * MAX78002
+* [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A)
 
 # Installation
 ## Windows
