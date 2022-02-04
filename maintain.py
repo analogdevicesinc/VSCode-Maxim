@@ -50,6 +50,7 @@ def timestamp():
     now = time.localtime()
     return f"[{now.tm_mon}/{now.tm_mday}/{now.tm_year} {now.tm_hour}:{now.tm_min}:{now.tm_sec}]"
 
+
 duration = 0
 def time_me(f):
 

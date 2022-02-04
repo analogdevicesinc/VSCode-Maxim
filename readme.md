@@ -28,34 +28,46 @@ The project folders in this repo have the following dependencies:
 # Installation
 ## Windows
 1. Download & install the Maxim Micros SDK [Windows Installer](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A).  See [AN7219](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7219.html) for a detailed installation guide if needed.
+
 2. Set the `MAXIM_PATH` environment variable to the installation location of the Maxim Micros SDK.  If you are unsure how to set an environment variable, see [this](https://www.onmsft.com/how-to/how-to-set-an-environment-variable-in-windows-10) article.  Ex:
 
 ![Variable Name = MAXIM_PATH, Variable Value = C:/MaximSDK](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/maxim_path_env.JPG)
 
 3. Download & install [Visual Studio Code](https://code.visualstudio.com/)
+
 4. Launch Visual Studio Code.
+
 5. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).  This can also be installed from within VS Code's extension manager.  Search for `ms-vscode.cpptools`.
+
 6. That's it!  You're ready to start using the project folders.  See Usage below.
 
 ## Linux
 1. Download & install the Maxim Micros SDK via the [Linux Installer](http://www.mxim.net/product/msdk/MaximMicrosSDK_linux.run) 
     * **Note:** You may need to manually set this file as executable before running the installer.  Use `chmod +x MaximMicrosSDK_linux.run` or right click -> "Allow executing file as program" if you have a GUI.
+
 2. Set the `MAXIM_PATH` environment variable to the installation location of the Maxim Micros SDK.  There are many ways to do this depending on your distro and shell.  It's recommended to add a line to your shell initialization script (`~/.bash_profile`,`~/.bashrc`,`~/.profile`, etc.)  Ex:
     ```bash
     # Set MAXIM_PATH env variable
     export MAXIM_PATH="~/MaximSDK"
     ```
+
 3. Copy the contents of the Linux patch into the root directory of the SDK and overwrite.  This replaces OpenOCD config files to resolves some case sensitivity issues on Linux.
+
 4. Download & install [Visual Studio Code](https://code.visualstudio.com/)
+
 5. Launch Visual Studio Code.
+
 6. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).  This can also be installed from within VS Code's extension manager.  Search for `ms-vscode.cpptools`.
+
 7. That's it!  You're ready to start using the project folders.  See Usage below.
 
 ## Enabling Workspace Trust
 In order for the project folders to function workspace trust must be enabled in your User Settings.  It should be by default.  Follow the procedure below to check/enable it.  You only need to do this one time per VS Code installation.
 
 1. Launch VS Code.
+
 2. Open your settings with `File > Preferences > Settings`.
+
 3. Find the `security.workspace.trust` settings (you can copy+paste this into the searchbar), and enable Workspace Trust with the checkbox, as shown below.  It's also a good idea to set the startup prompt to 'always'.
 
 ![Workspace Trust Settings Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrust.JPG)
