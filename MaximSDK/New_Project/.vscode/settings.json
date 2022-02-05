@@ -26,6 +26,6 @@
 
     "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
     "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi-${config:GCC_version}",
-    "RV_GCC_path":"{config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc",
+    "RV_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc",
     "Make_path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"
 }
