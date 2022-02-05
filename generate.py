@@ -146,7 +146,7 @@ def create_project(
                 os.chmod(out_path, 0o764)
                 print(f"Wrote {out_path.split(os.sep)[-1]}")
 
-def populate_maximsdk(target_os = None, maxim_path = None, overwrite=True):
+def populate_maximsdk(target_os, maxim_path, overwrite=True):
     print(f"Generating VS Code project files on {target_os} for MaximSDK located at {maxim_path}...")
     print(f"Scanning {maxim_path}...")
 
@@ -195,34 +195,48 @@ def populate_maximsdk(target_os = None, maxim_path = None, overwrite=True):
 
     print(f"Done!  Created {count} projects.")
     
+def new():
+    print("Create new project!")
+
 parser = argparse.ArgumentParser(description="Generate Visual Studio Code project files for Maxim's Microcontroller SDK.")
+parser.add_argument("--os", type=str, choices=["Windows", "Linux"], help="(Optional) Operating system to generate the project files for.  If not specified the script will auto-detect.")
+parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the MaximSDK.  If this is not specified then the script will attempt to use the MAXIM_PATH environment variable.")
 
 subparsers = parser.add_subparsers(dest="cmd", help="sub-command", required=True)
+
+# SDK
 sdk_parser = subparsers.add_parser("SDK", help="Populate a MaximSDK installation's example projects with VS Code project files.")
-sdk_parser.add_argument("--os", type=str, choices=["Windows", "Linux"], help="(Optional) Operating system to generate the project files for.  If not specified the script will auto-detect.")
-sdk_parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the MaximSDK.  If this is not specified then the script will attempt to use the MAXIM_PATH environment variable.")
+
+# new
+new_parser = subparsers.add_parser("new", help="Generate a new project.")
+new_parser.add_argument("micro", type=str, choices=whitelist, help="The target microcontroller for the project.  Ex:  MAX78000, MAX32670, etc.")
+new_parser.add_argument("--board", type=str, help="The target board for the project.  If no board is specified, you will be prompted to select one from the list of supported boards for the target microcontroller.")
 
 if __name__ == "__main__":
     args = parser.parse_args()
 
-    if args.cmd == "SDK":
-        if args.os is None:
-            current_os = platform.platform()
-            if "Windows" in current_os: args.os = "Windows"
-            elif "Linux" in current_os: args.os = "Linux"
-            else:
-                print(f"{current_os} is not supported at this time.  Please raise a ticket on Github requesting support for your platform.")
-                exit()
+    if args.os is None:
+        # Get current OS
+        current_os = platform.platform()
+        if "Windows" in current_os: args.os = "Windows"
+        elif "Linux" in current_os: args.os = "Linux"
+        else:
+            print(f"{current_os} is not supported at this time.  Please raise a ticket on Github requesting support for your platform.")
+            exit()
 
-        if args.maxim_path is None: 
-            # Check environment variable
-            print("Checking MAXIM_PATH environment variable..")
-            if "MAXIM_PATH" in os.environ.keys():
-                args.maxim_path = os.environ["MAXIM_PATH"]
-                print(f"MaximSDK located at {args.maxim_path}")
+    if args.maxim_path is None: 
+        # Check environment variable
+        print("Checking MAXIM_PATH environment variable..")
+        if "MAXIM_PATH" in os.environ.keys():
+            args.maxim_path = os.environ["MAXIM_PATH"]
+            print(f"MaximSDK located at {args.maxim_path}")
 
-            else:
-                print("Failed to locate the MaximSDK...  Please specify --maxim_path manually.")
-                exit()
+        else:
+            print("Failed to locate the MaximSDK...  Please specify --maxim_path manually.")
+            exit()
 
-        populate_maximsdk(target_os=args.os, maxim_path=args.maxim_path)
+    if args.cmd == "SDK":        
+        populate_maximsdk(args.os, args.maxim_path)
+
+    elif args.cmd == "new":
+        new()
