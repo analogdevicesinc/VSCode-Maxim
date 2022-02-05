@@ -10,7 +10,20 @@ This repo contains [Visual Studio Code](https://code.visualstudio.com/) project 
 The project folders in this repo have the following dependencies:
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools)
-* [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A)
+* [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A), which supports the following microcontrollers:
+    * MAX32520
+    * MAX32570
+    * MAX32650
+    * MAX32655
+    * MAX32660
+    * MAX32665-MAX32668
+    * MAX32670
+    * MAX32672
+    * MAX32675
+    * MAX32680
+    * MAX32690
+    * MAX78000
+    * MAX78002
 
 # Installation
 ## Windows
@@ -32,22 +45,32 @@ The project folders in this repo have the following dependencies:
 ### Ubuntu
 1. Download the latest Ubuntu release from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
 
-2. Open a terminal in the extracted folder.  Run: 
+2. Open a terminal in the extracted folder.  
+
+3. Run: 
     ```bash
     sudo -u [your username] bash install.sh
     ```
 
-3. Follow the instructions in the installer and run the script to completion.
+4. Follow the instructions in the installer and run the script to completion.  Take note of where you installed the MaximSDK for use in the next step.
 
-4. Run...
+5. Add MAXIM_PATH to your system environment variables. Create a new file `/etc/profile.d/maximsdk-env.sh` with the contents `export MAXIM_PATH=[MaximSDK installation location]`.  For example...
+    ```bash
+    # in /etc/profile.d/maximsdk-env.sh ...
+    export MAXIM_PATH=/home/yourusername/MaximSDK
+    ```
+
+    ... and save the file.
+
+6. Run...
     ```bash
     bash setup.sh
     ```
-    ... to populate the SDK with VS Code project files and complete the installation.
+    ... to complete the installation.
 
-5. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
+7. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
 
-6. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
+8. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
 
 ## Enabling Workspace Trust
 In order for the project folders to function workspace trust must be enabled in your User Settings.  It should be by default.  Follow the procedure below to check/enable it.  You only need to do this one time per VS Code installation.
@@ -67,9 +90,9 @@ When opening workspaces and folders for the first time VSCode will now prompt fo
 The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
 
 # Usage
-Visual Studio Code is built around a "working directory" paradigm.  VS Code's editor is always running from inside of a working directory, and the main mechanism for changing that directory is `File > Open Folder`.  Once the folder is opened VS Code will look inside of it for a `.vscode` sub-folder to load project-specific settings from.  The project folders in this repository tell VS Code how to integrate with Maxim's SDK and toolchain, and allows for code editing with working peripheral driver function lookups as well as debugging.
+Visual Studio Code is built around a "working directory" paradigm.  The mechanism for changing the working directory is `File > Open Folder`.  VS Code will look inside of its working directory for a `.vscode` sub-folder to load project-specific settings from.
 
-As such, a VSCode-Maxim project contains two main components:  A `.vscode` folder and a `Makefile`.  
+A VSCode-Maxim project contains two main components:  A `.vscode` folder and a `Makefile`.  
 * The .vscode folder contains .json files that tell Visual Studio Code how to use Maxim's Makefiles.  It also tells VS Code how to use Maxim's toolchain to flash and debug the project on a target microcontroller.
 * The Makefile describes how to use Maxim's toolchain to build a project's source code.
 
