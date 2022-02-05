@@ -30,11 +30,11 @@
             "command": "openocd",
             "args": [
                 "-s",
-                "${config:MAXIM_PATH}/Tools/OpenOCD/scripts",
+                "${config:OCD_path}/scripts",
                 "-f",
-                "interface/${config:OCD_interface_file}",
+                "interface/${config:M4_OCD_interface_file}",
                 "-f",
-                "target/${config:OCD_target_file}",
+                "target/${config:M4_OCD_target_file}",
                 "-c",
                 "program build/${config:program_file} verify exit"
             ],
