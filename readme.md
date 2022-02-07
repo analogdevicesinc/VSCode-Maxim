@@ -83,14 +83,18 @@ In order for the project folders to function workspace trust must be enabled in 
 
 ![Workspace Trust Settings Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrust.JPG)
 
-When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.
+When opening workspaces and folders for the first time VSCode will now prompt for trust, as shown below.  Select "Yes, I trust the authors" when opening a VSCode-Maxim project.
 
 ![Workspace Trust Prompt Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrustPrompt.JPG)
 
 The .JSON source files within the .vscode folders of this repo contain all of the modifications made by this workspace.  Mainly, a few directories are appended to the system Path variable used by the integrated terminal to make the toolchain accessible from the command line.
 
 # Usage
-Visual Studio Code is built around a "working directory" paradigm.  The mechanism for changing the working directory is `File > Open Folder`.  VS Code will look inside of its working directory for a `.vscode` sub-folder to load project-specific settings from.
+Visual Studio Code is built around a "working directory" paradigm.  VS Code's editor is always running from inside of a working directory, and the main mechanism for changing that directory is `File > Open Folder`...
+
+![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
+
+Once the folder is opened VS Code will look inside of it for a `.vscode` sub-folder to load project-specific settings from.  The project folders in this repository tell VS Code how to integrate with Maxim's SDK and toolchain, and allows for code editing with working peripheral driver function lookups as well as debugging.
 
 A VSCode-Maxim project contains two main components:  A `.vscode` folder and a `Makefile`.  
 * The .vscode folder contains .json files that tell Visual Studio Code how to use Maxim's Makefiles.  It also tells VS Code how to use Maxim's toolchain to flash and debug the project on a target microcontroller.

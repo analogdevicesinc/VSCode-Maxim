@@ -64,8 +64,11 @@ def create_project(
     Make_path: str = defaults["MAKE_PATH"]
 ):
 
-    template_dir = os.path.join("MaximSDK", "Template")  # Where to find the VS Code template directory relative to this script
+    template_dir = os.path.abspath(os.path.join("MaximSDK", "Template"))  # Where to find the VS Code template directory relative to this script
     template_prefix = "template"  # Filenames beginning with this will have substitution
+
+    if not os.path.exists(template_dir):
+        raise(Exception(f"Failed to find project template folder '{template_dir}'.  Check the location and existence of these files."))
 
     tmp = []  # Work-horse list, linter be nice
     if defines != []:
@@ -204,19 +207,13 @@ parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the M
 
 subparsers = parser.add_subparsers(dest="cmd", help="sub-command", required=True)
 
-# SDK
 sdk_parser = subparsers.add_parser("SDK", help="Populate a MaximSDK installation's example projects with VS Code project files.")
-
-# new
-new_parser = subparsers.add_parser("new", help="Generate a new project.")
-new_parser.add_argument("micro", type=str, choices=whitelist, help="The target microcontroller for the project.  Ex:  MAX78000, MAX32670, etc.")
-new_parser.add_argument("--board", type=str, help="The target board for the project.  If no board is specified, you will be prompted to select one from the list of supported boards for the target microcontroller.")
 
 if __name__ == "__main__":
     args = parser.parse_args()
 
+    # Auto-detect OS
     if args.os is None:
-        # Get current OS
         current_os = platform.platform()
         if "Windows" in current_os: args.os = "Windows"
         elif "Linux" in current_os: args.os = "Linux"
@@ -224,6 +221,7 @@ if __name__ == "__main__":
             print(f"{current_os} is not supported at this time.  Please raise a ticket on Github requesting support for your platform.")
             exit()
 
+    # Auto-detect MAXIM_PATH
     if args.maxim_path is None: 
         # Check environment variable
         print("Checking MAXIM_PATH environment variable..")
@@ -235,8 +233,5 @@ if __name__ == "__main__":
             print("Failed to locate the MaximSDK...  Please specify --maxim_path manually.")
             exit()
 
-    if args.cmd == "SDK":        
-        populate_maximsdk(args.os, args.maxim_path)
-
-    elif args.cmd == "new":
-        new()
+    if args.cmd == "SDK":
+        populate_maximsdk(target_os=args.os, maxim_path=args.maxim_path)

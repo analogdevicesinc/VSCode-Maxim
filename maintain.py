@@ -82,38 +82,19 @@ def sync_examples():
     print("Inject .vscode folder into example projects...")
     for f in os.scandir("MaximSDK/Inject/.vscode"): shutil.copy(f, "MaximSDK/New_Project/.vscode/")
 
-def release(version):
-    r_dir = f"./Releases/VSCode-Maxim-{version}" # Release directory
-
-    # Create release release directory
-    print("Creating release directory...")
-    ps(f"New-Item -Path {r_dir} -ItemType Directory")        
-
+def release(version, target_os):
     sync_examples()
+
+    r_dir = f"./Releases/VSCode-Maxim-{version}" # Release directory
+    target_dir = f"{r_dir}/{target_os}"
 
     # Package release
     print("Packaging...")
-    ps(f"New-Item -Path {r_dir}/MaximLP -ItemType Directory")
-    ps(f"Copy-Item ./MaximLP/* {r_dir}/MaximLP/ -force -Recurse")
-
-    ps(f"New-Item -Path {r_dir}/MaximSDK -ItemType Directory")
-    ps(f"Copy-Item ./MaximSDK/* {r_dir}/MaximSDK/ -force -Recurse")
-
-    ps(f"Copy-Item ./readme.md {r_dir}/ -force")
-    ps(f"Copy-Item ./userguide.md {r_dir}/ -force")
-    ps(f"Copy-Item ./LICENSE.md {r_dir}/ -force")
-
-    #Archive release
-    print("Archiving...")
-    ps(f"compress-archive -path {r_dir} -DestinationPath {r_dir}/VSCode-Maxim-{version}")
-
-    # Clean up
-    print("Cleaning up...")
-    ps(f"Remove-Item {r_dir}/readme.md")
-    ps(f"Remove-Item {r_dir}/userguide.md")
-    ps(f"Remove-Item {r_dir}/LICENSE.md")
-    ps(f"Remove-Item {r_dir}/MaximLP -Recurse")
-    ps(f"Remove-Item {r_dir}/MaximSDK -Recurse")
+    shutil.copytree("MaximSDK", f"{target_dir}/MaximSDK", dirs_exist_ok=True)
+    shutil.copytree(f"dist/{target_os}", target_dir, dirs_exist_ok=True)
+    shutil.copy("readme.md", target_dir)
+    shutil.copy("userguide.md", target_dir)
+    shutil.copy("LICENSE.md", target_dir)
 
     print("Done!")
 
