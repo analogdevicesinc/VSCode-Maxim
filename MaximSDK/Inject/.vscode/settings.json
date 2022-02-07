@@ -1,4 +1,4 @@
-{
+{    
     "MAXIM_PATH":"${env:MAXIM_PATH}",
     "terminal.integrated.env.windows": {
         "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:RV_GCC_path}/bin;${config:Make_path};${env:PATH}",
@@ -27,5 +27,5 @@
     "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
     "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi-${config:GCC_version}",
     "RV_GCC_path":"{config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc",
-    "Make_path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin",
+    "Make_path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"
 }
