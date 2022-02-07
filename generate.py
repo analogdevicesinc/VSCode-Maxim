@@ -64,8 +64,11 @@ def create_project(
     Make_path: str = defaults["MAKE_PATH"]
 ):
 
-    template_dir = os.path.join("MaximSDK", "Template")  # Where to find the VS Code template directory relative to this script
+    template_dir = os.path.abspath(os.path.join("MaximSDK", "Template"))  # Where to find the VS Code template directory relative to this script
     template_prefix = "template"  # Filenames beginning with this will have substitution
+
+    if not os.path.exists(template_dir):
+        raise(Exception(f"Failed to find project template folder '{template_dir}'.  Check the location and existence of these files."))
 
     tmp = []  # Work-horse list, linter be nice
     if defines != []:
