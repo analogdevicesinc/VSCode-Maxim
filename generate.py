@@ -11,7 +11,7 @@ defaults = {
     "M4_OCD_INTERFACE_FILE":"cmsis-dap.cfg",
     "M4_OCD_TARGET_FILE":"${config:target}.cfg",
     "RV_OCD_INTERFACE_FILE":"ftdi/olimex-arm-usb-ocd-h.cfg",
-    "RV_OCD_TARGET_FILE":"${config:target}-riscv.cfg",
+    "RV_OCD_TARGET_FILE":"${config:target}_riscv.cfg",
     "DEFINES":[
         "${config:board}"
     ],
@@ -141,13 +141,13 @@ def create_project(
                         )
 
                 os.chmod(out_loc, 0o764)
-                print(f"Wrote {out_loc.split(os.sep)[-1]}")
+                print(f"Wrote {os.path.basename(out_loc)}")
 
             else:
                 # There is a non-template file to copy
                 shutil.copy(os.path.join(directory, file), out_path)
                 os.chmod(out_path, 0o764)
-                print(f"Wrote {out_path.split(os.sep)[-1]}")
+                print(f"Wrote {os.path.basename(out_path)}")
 
 def populate_maximsdk(target_os, maxim_path, overwrite=True):
     print(f"Generating VS Code project files on {target_os} for MaximSDK located at {maxim_path}...")

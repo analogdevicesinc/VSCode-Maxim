@@ -17,16 +17,26 @@
             "windows": {
                 "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe"
             },
-            "preLaunchTask": "build",
-            "miDebuggerArgs": "",
+            "logging": {
+                "exceptions": true,
+                "trace": false,
+                "traceResponse": false,
+                "engineLogging": false
+            },
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerPath": "${config:OCD_path}/openocd",
+            "debugServerArgs": "-s ${config:OCD_path}/scripts -f interface/${config:M4_OCD_interface_file} -f target/${config:M4_OCD_target_file} -c \"init; reset halt\"",
+            "serverStarted": "Info : Listening on port 3333 for gdb connections",
+            "filterStderr": true,
+            "targetArchitecture": "arm",
+            "customLaunchSetupCommands": [
+                {"text":"-list-features"}
+            ],
             "setupCommands": [
                 { "text":"cd ${workspaceFolder}" },
-                { "text": "set architecture armv7e-m", "ignoreFailures": false },
-                { "text": "target remote | openocd -c \"gdb_port pipe;log_output openocd.log\" -s ${config:MAXIM_PATH}/Tools/OpenOCD/scripts -f interface/${config:M4_OCD_interface_file} -f target/${config:M4_OCD_target_file}", "ignoreFailures": false },                               
-                { "text":"exec-file build/${config:program_file}", "ignoreFailures": false },
-                { "text":"symbol-file build/${config:symbol_file}", "ignoreFailures": false },
-                { "text": "monitor reset halt", "ignoreFailures": false },
-                { "text":"load", "ignoreFailures": false }
+                { "text":"exec-file build/${config:program_file}" },
+                { "text":"symbol-file build/${config:symbol_file}" },
+                { "text":"target remote localhost:3333" }
             ]
         },
         {
@@ -41,19 +51,32 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "linux": {
-                "miDebuggerPath": "${config:ARM_GCC_path}/bin/riscv-none-embed-gdb"
+                "miDebuggerPath": "${config:RV_GCC_path}/bin/riscv-none-embed-gdb"
             },
             "windows": {
-                "miDebuggerPath": "${config:ARM_GCC_path}/bin/riscv-none-embed-gdb.exe"
+                "miDebuggerPath": "${config:RV_GCC_path}/bin/riscv-none-embed-gdb.exe"
             },
-            "miDebuggerArgs": "",
+            "logging": {
+                "exceptions": true,
+                "trace": false,
+                "traceResponse": false,
+                "engineLogging": false
+            },
+            "miDebuggerServerAddress": "localhost:3334",
+            "debugServerPath": "${config:OCD_path}/openocd",
+            "debugServerArgs": "-c \"gdb_port 3334\" -s ${config:OCD_path}/scripts -f interface/${config:RV_OCD_interface_file} -f target/${config:RV_OCD_target_file}",
+            "serverStarted": "Info : Listening on port 3334 for gdb connections",
+            "filterStderr": true,
+            "customLaunchSetupCommands": [
+                {"text":"-list-features"}
+            ],
+            "targetArchitecture": "arm",
             "setupCommands": [
                 { "text":"cd ${workspaceFolder}" },
                 { "text": "set architecture riscv:rv32", "ignoreFailures": false },          
                 { "text":"exec-file build/${config:program_file}", "ignoreFailures": false },
                 { "text":"symbol-file buildrv/${config:symbol_file}", "ignoreFailures": false },
-                { "text": "target remote | openocd -c \"gdb_port pipe;log_output openocd.log\" -s ${config:MAXIM_PATH}/Tools/OpenOCD/scripts -f interface/ftdi/${config:RV_OCD_interface_file -f target/${config:RV_OCD_target_file}.cfg", "ignoreFailures": false },
-                { "text": "monitor reset halt", "ignoreFailures": false },
+                { "text":"target remote localhost:3334" },
                 { "text": "set $pc=Reset_Handler","ignoreFailures": false }
             ]
         }
