@@ -36,7 +36,7 @@
             ],
             "group": "build",
             "problemMatcher": [],
-            "dependsOn":[]
+            "dependsOn":["build"]
         },
         {
             "label": "openocd (m4)",
