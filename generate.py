@@ -11,7 +11,7 @@ defaults = {
     "M4_OCD_INTERFACE_FILE":"cmsis-dap.cfg",
     "M4_OCD_TARGET_FILE":"${config:target}.cfg",
     "RV_OCD_INTERFACE_FILE":"ftdi/olimex-arm-usb-ocd-h.cfg",
-    "RV_OCD_TARGET_FILE":"${config:target}-riscv.cfg",
+    "RV_OCD_TARGET_FILE":"${config:target}_riscv.cfg",
     "DEFINES":[
         "${config:board}"
     ],
@@ -141,13 +141,13 @@ def create_project(
                         )
 
                 os.chmod(out_loc, 0o764)
-                print(f"Wrote {out_loc.split(os.sep)[-1]}")
+                print(f"Wrote {os.path.basename(out_loc)}")
 
             else:
                 # There is a non-template file to copy
                 shutil.copy(os.path.join(directory, file), out_path)
                 os.chmod(out_path, 0o764)
-                print(f"Wrote {out_path.split(os.sep)[-1]}")
+                print(f"Wrote {os.path.basename(out_path)}")
 
 def populate_maximsdk(target_os, maxim_path, overwrite=True):
     print(f"Generating VS Code project files on {target_os} for MaximSDK located at {maxim_path}...")
@@ -188,16 +188,20 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
                     print(f"Found {dir}, injecting project files...")
 
                     if target_os == "Windows":
-                        create_project(dir, target, board)
+                        create_project(dir, target, board, ARM_GCC_path="${config:MAXIM_PATH}/Tools/GNUTools", gcc_version="9.2.1")
+                        # Windows SDK uses older GCC at different path
 
                     elif target_os == "Linux":
-                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg", maxim_path=maxim_path) 
-                        # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.  ${env:MAXIM_PATH} is not resolving as of 2/2/2022...  something to do with all the 2's...
+                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg") 
+                        # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.
 
                     count += 1
 
     print(f"Done!  Created {count} projects.")
     
+def new():
+    print("Create new project!")
+
 parser = argparse.ArgumentParser(description="Generate Visual Studio Code project files for Maxim's Microcontroller SDK.")
 parser.add_argument("--os", type=str, choices=["Windows", "Linux"], help="(Optional) Operating system to generate the project files for.  If not specified the script will auto-detect.")
 parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the MaximSDK.  If this is not specified then the script will attempt to use the MAXIM_PATH environment variable.")

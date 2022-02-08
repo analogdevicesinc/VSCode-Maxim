@@ -1,4 +1,12 @@
-# VSCode-Maxim setup script.  **Run as user**, ex:  sudo -u [username] bash setup.sh
+# VSCode-Maxim setup script.  **Run as user with non-elevated privileges**, ex:  bash setup.sh
+
+SCRIPTDIR=$(cd $(dirname $0) && pwd)
+
+if [ -f /etc/profile.d/maximsdk-env.sh ]; then
+	source /etc/profile.d/maximsdk-env.sh
+else
+	echo "Failed to find /etc/profile.d/maximsdk-env.sh"
+fi
 
 if [ ! -f ./MaintenanceTool.dat ]; then
 	# Running script outside of MaximSDK
@@ -31,8 +39,7 @@ if [ ! -f ./MaintenanceTool.dat ]; then
 	fi
 else
 	# Running from inside MaximSDK.  Set MAXIM_PATH to location of this script
-	BASEDIR=$(dirname $0)
-	MAXIM_PATH="$(cd $BASEDIR && pwd)"
+	MAXIM_PATH=$SCRIPTDIR
 fi
 
 # Final verify
@@ -43,30 +50,34 @@ else
 	echo "Verified SDK location!"
 fi
 
-#Get user's home directory
-HOME_DIR=$(getent passwd ${SUDO_USER:-$USER} | cut -d: -f6) # This should work if this script is run with sudo or normally
-echo "Located user home directory at $HOME_DIR..."
-
 # Add MAXIM_PATH to environment variables
+ENV_FILE=/etc/profile.d/maximsdk-env.sh
 echo "Adding MAXIM_PATH environment variable..."
-if [ -f $HOME_DIR/.bashrc ]; then
-
-	# .bashrc setup
-
-	echo "Detected $HOME_DIR/.bashrc..."
-	if [ -z "$(grep "export MAXIM_PATH=" $HOME_DIR/.bashrc)" ]; then
+if [ -f $ENV_FILE ]; then
+	# Update existing file
+	echo "Updating $ENV_FILE ..."
+	if [ -z "$(sudo grep "export MAXIM_PATH=" $ENV_FILE)" ]; then
 		# If grep search for MAXIM_PATH in ~/.bashrc returns empty string (-z)
-		echo "Setting MAXIM_PATH=$MAXIM_PATH in $HOME_DIR/.bashrc"
-		sed -i~ "1iexport MAXIM_PATH=${MAXIM_PATH}" $HOME_DIR/.bashrc # Insert line at beginning (1i) and create backup (-i~)
+		echo "Setting MAXIM_PATH=$MAXIM_PATH"
+		sudo sed -i~ "1iexport MAXIM_PATH=${MAXIM_PATH}" $ENV_FILE # Insert line at beginning (1i) and create backup (-i~)
 	else
 		# Update MAXIM_PATH instead of adding new line
-		echo "$HOME_DIR/.bashrc already sets MAXIM_PATH.  Updating to MAXIM_PATH=$MAXIM_PATH just in case"
-		sed -i~ "s:.*export MAXIM_PATH=.*:export MAXIM_PATH=$MAXIM_PATH:" $HOME_DIR/.bashrc
+		echo "$ENV_FILE already sets MAXIM_PATH.  Updating to MAXIM_PATH=$MAXIM_PATH"
+		sudo sed -i~ "s:.*export MAXIM_PATH=.*:export MAXIM_PATH=$MAXIM_PATH:" $ENV_FILE # search and replace (s):pattern (.*=all):with this:
 	fi
 
 	echo "Reloading shell..."
-	source $HOME_DIR/.bashrc
+	source $ENV_FILE
+else
+	# Create new file
+	sudo touch $ENV_FILE
+	sudo sed -i "1iexport MAXIM_PATH=${MAXIM_PATH}" $ENV_FILE
 fi
+
+# Run updates.sh
+echo "Checking for updates..."
+cd $MAXIM_PATH && bash updates.sh
+cd $SCRIPTDIR
 
 # Get newer GCC
 GCC_VERSION="10.3.1"
