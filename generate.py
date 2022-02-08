@@ -188,7 +188,8 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
                     print(f"Found {dir}, injecting project files...")
 
                     if target_os == "Windows":
-                        create_project(dir, target, board)
+                        create_project(dir, target, board, ARM_GCC_path="${config:MAXIM_PATH}/Tools/GNUTools", gcc_version="9.2.1")
+                        # Windows SDK uses older GCC at different path
 
                     elif target_os == "Linux":
                         create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg") 
