@@ -191,8 +191,8 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
                         create_project(dir, target, board)
 
                     elif target_os == "Linux":
-                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg", maxim_path=maxim_path) 
-                        # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.  ${env:MAXIM_PATH} is not resolving as of 2/2/2022...  something to do with all the 2's...
+                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg") 
+                        # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.
 
                     count += 1
 
