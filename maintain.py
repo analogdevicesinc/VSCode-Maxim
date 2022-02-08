@@ -38,6 +38,7 @@ from subprocess import run
 import platform
 import time
 import shutil
+import argparse
 
 curplatform = platform.system() # Get OS
 
@@ -77,18 +78,21 @@ def ps(cmd, env=None):
 
     return result
 
-def sync_examples():
+def sync():
     # Inject .vscode folder into example projects
-    print("Inject .vscode folder into example projects...")
-    for f in os.scandir("MaximSDK/Inject/.vscode"): shutil.copy(f, "MaximSDK/New_Project/.vscode/")
+    print("Copying from Inject folder into example project and template...")
+    for f in os.scandir("MaximSDK/Inject/.vscode"): 
+        shutil.copy(f, "MaximSDK/New_Project/.vscode/")
+
+    shutil.copy("MaximSDK/Inject/.vscode/launch.json", "MaximSDK/Template/.vscode/")
+    shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
 
 def release(version):
-    sync_examples()
+    sync()
 
     r_dir = f"./Releases/VSCode-Maxim-{version}" # Release directory
 
     for d in os.scandir("./dist"):
-        
         target_dir = os.path.join(r_dir, d.name)
 
         # Package release
@@ -249,5 +253,14 @@ def test(targets=None, boards=None, projects=None, searchdir=None):
     for pinfo in failed:
         log(f"[{pinfo['target']}] {pinfo['project']} for {pinfo['board']}...  see {pinfo['logfile']}", logfile)
 
+parser = argparse.ArgumentParser("VSCode-Maxim maintainer utilities")
+subparsers = parser.add_subparsers(dest="cmd", help="sub-command", required=True)
+
+release_parser = subparsers.add_parser("release", help="Package a release")
+release_parser.add_argument("version", type=str, help="Version # for the release")
+
 if __name__ == "__main__":
-    pass
+    args = parser.parse_args()
+
+    if args.cmd == "release":
+        release(args.version)
