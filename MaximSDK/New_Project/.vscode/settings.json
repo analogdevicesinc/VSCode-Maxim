@@ -20,7 +20,7 @@
     "M4_OCD_interface_file":"cmsis-dap.cfg",
     "M4_OCD_target_file":"${config:target}.cfg",
     "RV_OCD_interface_file":"ftdi/olimex-arm-usb-ocd-h.cfg",
-    "RV_OCD_target_file":"${config:target}-riscv.cfg",
+    "RV_OCD_target_file":"${config:target}_riscv.cfg",
 
     "GCC_version":"10.3.1",
 
