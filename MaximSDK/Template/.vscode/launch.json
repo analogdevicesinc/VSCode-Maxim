@@ -36,7 +36,9 @@
                 { "text":"cd ${workspaceFolder}" },
                 { "text":"exec-file build/${config:program_file}" },
                 { "text":"symbol-file build/${config:symbol_file}" },
-                { "text":"target remote localhost:3333" }
+                { "text":"target remote localhost:3333" },
+                { "text":"monitor reset halt" },
+                { "text":"b main" }
             ]
         },
         {
