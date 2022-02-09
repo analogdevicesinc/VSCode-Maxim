@@ -64,7 +64,7 @@ def create_project(
     Make_path: str = defaults["MAKE_PATH"]
 ):
 
-    template_dir = os.path.abspath(os.path.join("MaximSDK", "Template"))  # Where to find the VS Code template directory relative to this script
+    template_dir = os.path.abspath(os.path.join("Template"))  # Where to find the VS Code template directory relative to this script
     template_prefix = "template"  # Filenames beginning with this will have substitution
 
     if not os.path.exists(template_dir):
@@ -147,7 +147,7 @@ def create_project(
                 # There is a non-template file to copy
                 shutil.copy(os.path.join(directory, file), out_path)
                 os.chmod(out_path, 0o764)
-                print(f"Wrote {os.path.basename(out_path)}")
+                print(f"Wrote {os.path.basename(file)}")
 
 def populate_maximsdk(target_os, maxim_path, overwrite=True):
     print(f"Generating VS Code project files on {target_os} for MaximSDK located at {maxim_path}...")
