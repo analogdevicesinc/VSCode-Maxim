@@ -97,7 +97,7 @@ def release(version):
 
         # Package release
         print(f"Packaging {d.name}...")
-        shutil.copytree("MaximSDK", f"{target_dir}/MaximSDK", dirs_exist_ok=True)
+        shutil.copytree("MaximSDK", f"{target_dir}", dirs_exist_ok=True)
         shutil.copytree(f"dist/{d.name}", target_dir, dirs_exist_ok=True)
         shutil.copy("readme.md", target_dir)
         shutil.copy("userguide.md", target_dir)
