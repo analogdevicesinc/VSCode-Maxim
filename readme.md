@@ -308,7 +308,7 @@ Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's too
 
 1. Navigate to the open `TERMINAL` tab on the bottom of the VS Code application.  If a terminal is not open, you can open a new terminal with `Terminal > New Terminal` or (Ctrl+Shift+`).  
 
-   ![Terminal image](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/Terminal.JPG)
+   ![Terminal image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/Terminal.JPG)
 
 2. The following commands to retrieve version numbers should be able to be run successfully from within the terminal :
 
@@ -317,8 +317,8 @@ Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's too
     * `arm-none-eabi-gcc -v`
     * `arm-none-eabi-gdb -v`
     
-   For example, the `make -v` command should look like the following:
+   For example, the `make -v` command should similar to the following:
    
-   ![Make -v example output](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/img/make_test.JPG)
+   ![Make -v example output](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/make_test.JPG)
 
 If the tools are not accessible from the terminal, then the system settings and/or project settings must be examined further.  (Troubleshooting guide is in progress)
