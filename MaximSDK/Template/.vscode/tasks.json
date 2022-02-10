@@ -36,7 +36,7 @@
             ],
             "group": "build",
             "problemMatcher": [],
-            "dependsOn":[]
+            "dependsOn":["build"]
         },
         {
             "label": "openocd (m4)",
@@ -50,7 +50,7 @@
                 "-f",
                 "target/${config:M4_OCD_target_file}",
                 "-c",
-                "init; reset halt"
+                "\"init; reset halt\""
             ],
             "problemMatcher": [],
             "dependsOn":[]
