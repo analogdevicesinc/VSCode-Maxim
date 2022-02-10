@@ -4,7 +4,7 @@ https://github.com/MaximIntegratedTechSupport/VSCode-Maxim
 If you are viewing this document from within Visual Studio Code, press `CTRL+SHIFT+V` to open a Markdown preview window.
 
 # Introduction
-This project contains [Visual Studio Code](https://code.visualstudio.com/) project folders that integrate with [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) Microcontroller SDK.  It also releases with binaries that generate project folders for the SDK's example projects.  The following features are enabled by the project files:
+This repository is dedicated to maintaining [Visual Studio Code](https://code.visualstudio.com/) project files that integrate with [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) Microcontroller SDK.  It also release with installer scripts and binaries for easy setup.  The following features are enabled by the project files:
 * Code editing with intellisense and definition look-ups down to the register level
 * Code compilation with the ability to easily re-target a project for different microcontrollers and boards
 * Flashing program binaries
