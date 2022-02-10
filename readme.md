@@ -78,7 +78,7 @@ The project folders in this repo have the following dependencies:
 ## Introduction
 This section covers basic usage of the VSCode-Maxim project files.  For documentation on Visual Studio Code itself, please refer to the official docs [here](https://code.visualstudio.com/Docs).  
 
-Prior experience with Visual Studio Code is not required to understand this section or use this project, but some basic familiarity is helpful.  For new users, this initial familiarity can be gained by working through the full [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md).
+Prior experience with Visual Studio Code is not required to understand this section or use the project files, but some basic familiarity is helpful.  For new users, this initial familiarity can be gained by working through the full [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md).
 
 ## Opening Projects
 Visual Studio Code is built around a "working directory" paradigm.  VS Code's editor is always running from inside of a working directory, and the main mechanism for changing that directory is `File -> Open Folder...`  
@@ -113,6 +113,30 @@ Once a project is opened 4 available build tasks will become available via `Term
     * This task runs the Build task, and then flashes the output binary to the microcontroller.
     * A debugger must be connected to the correct debugger port on the target microcontroller.  Refer to the datasheet of your microcontrollers evaluation board for instructions on connecting a debugger.
 
+## Editing the Makefile
+At the heart of every project is its `Makefile`.  Build Tasks are essentially a wrapper around the Makefile.  Adding source code files to the build, setting compiler flags, linking libraries, etc. must be done by directly editing this file.
+
+The usage guidelines below are specific to Maxim's Makefiles.  The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand for documentation regarding Makefiles in general.
+
+### Adding Source Code Files
+* VS Code's editor can create and add new files to a project, but they won't be added to the build automatically.  The Makefile must be told which source code files to build, and where to find them.
+* Add a source file to the build with `SRCS += yourfile.c`
+* The Makefile looks for project source files in the `/src` directory by default.  Add additional directories to search with `VPATH += yoursourcedirectory`
+* The Makefile looks for project header files in the `/src` directory by default.  Add additional directories to search with `IPATH += yourincludedirectory`
+
+### Compiler Flags
+* Compiler flags can be added/changed via the `PROJ_CFLAGS` variable.
+* Add a new flag to be passed to the compiler with `PROJ_CFLAGS += -yourflag`.  Flags are passed in the order that they are added to the `PROJ_CFLAGS` variable.
+
+### Linking Libraries
+* Additional libraries can be linked via the `PROJ_LIBS` variable.  Add a new library to the build with `PROJ_LIBS += yourlibraryname`.
+    * Note : Do not include the 'lib' part of the library name, or the file extension.  For example, to link `libarm_cortexM4lf_math.a` set `PROJ_LIBS += arm_cortexM4lf_math`.
+* Tell the linker where to find the library with the '-L' linker flag.  Set `PROJ_LDFLAGS += -Lpathtoyourlibrary`.  For example, set `PROJ_LDFLAGS += -L./lib` to search a 'lib' directory inside of the project for libraries. 
+
+### Optimization Level
+* The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  
+* See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
+
 ## Debugging
 Debugging is enabled by Visual Studio Code's integrated debugger.  Launch configurations are provided by the `.vscode/launch.json` file.
 
@@ -141,30 +165,6 @@ Breakpoints can be set by clicking in the space next to the line number in a sou
 ![Breakpoint](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/breakpoint.JPG)
 
 For full usage details, please refer to the [official VS Code debugger documentation](https://code.visualstudio.com/docs/editor/debugging).  Documentation related to launch configurations can be ignored, as that's what's provided by this project.
-
-## Configuring the Makefile
-The Makefile is the core file that runs the build system.  Adding source files to the build, setting compiler flags, linking libraries, etc. must be done by directly editing the Makefile. 
-
-The usage guidelines below are specific to Maxim's Makefiles.  The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand for documentation regarding Makefiles in general.
-
-### Adding Source Files
-* The included Makefile is pre-configured for a single `main.c` source file by default.
-* Additional source files can be added to the build with `SRCS += yourfile.c`
-* The Makefile looks for project source files _only_ in the `/src` directory by default.  If you would like to use additional source directories, add them with `VPATH += yoursourcedirectory`
-* The Makefile looks for project header files _only_ in the `/src` directory by default.  If you would like to use additional include directories, add them with `IPATH += yourincludedirectory`
-
-### Compiler Flags
-* Compiler flags can be added/changed via the `PROJ_CFLAGS` variable.
-* Add a new flag to be passed to the compiler with `PROJ_CFLAGS += -yourflag`.  Flags are passed in the order that they are added to the `PROJ_CFLAGS` variable.
-
-### Linking Libraries
-* Additional libraries can be linked via the `PROJ_LIBS` variable.  Add a new library to the build with `PROJ_LIBS += yourlibraryname`.
-    * Note : Do not include the 'lib' part of the library name, or the file extension.  For example, to link `libarm_cortexM4lf_math.a` set `PROJ_LIBS += arm_cortexM4lf_math`.
-* Tell the linker where to find the library with the '-L' linker flag.  Set `PROJ_LDFLAGS += -Lpathtoyourlibrary`.  For example, set `PROJ_LDFLAGS += -L./lib` to search a 'lib' directory inside of the project for libraries. 
-
-### Optimization Level
-* The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  
-* See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
 
 # Configuration
 ## Project Settings
