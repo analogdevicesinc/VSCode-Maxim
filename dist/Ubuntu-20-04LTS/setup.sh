@@ -93,14 +93,14 @@ PACKAGE_STRING="10.3-2021.10"
 GCC_PATH="$MAXIM_PATH/Tools/GNUTools/gcc-arm-none-eabi-$GCC_VERSION"
 ARM_LINK="https://developer.arm.com/-/media/Files/downloads/gnu-rm/$PACKAGE_STRING/gcc-arm-none-eabi-$PACKAGE_STRING-$ARCH-linux.tar.bz2"
 
-echo "Getting Arm embedded toolchain v$GCC_VERSION from $ARM_LINK..."
+echo "Getting Arm embedded toolchain v$GCC_VERSION"
 if [ ! -d $GCC_PATH ]; then
 	wget -O gcc-arm.tar.bz2 $ARM_LINK
 	mkdir -p $GCC_PATH
-	tar -xvf gcc-arm.tar.bz2 --directory $MAXIM_PATH/Tools/GNUTools/
-	cp -rf $MAXIM_PATH/Tools/GNUTools/$PACKAGE_NAME/* $GCC_PATH/
+	tar -xvf gcc-arm.tar.bz2
+	cp -rf gcc-arm-none-eabi-$PACKAGE_STRING/* $GCC_PATH/
 	echo "Cleaning up..."
-	rm -rf $MAXIM_PATH/Tools/GNUTools/$PACKAGE_NAME
+	rm -rf gcc-arm-none-eabi-$PACKAGE_STRING
 	rm gcc-arm.tar.bz2
 else
 	echo "Already have $GCC_PATH"
