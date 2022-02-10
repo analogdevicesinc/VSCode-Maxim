@@ -85,7 +85,9 @@ def sync():
         shutil.copy(f, "MaximSDK/New_Project/.vscode/")
 
     shutil.copy("MaximSDK/Inject/.vscode/launch.json", "MaximSDK/Template/.vscode/")
+    shutil.copy("MaximSDK/Inject/.vscode/launch.json", "MaximSDK/New_Project/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
+    shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/New_Project/.vscode/")
 
 def release(version):
     sync()
