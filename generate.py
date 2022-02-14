@@ -3,42 +3,41 @@ import shutil
 import argparse
 import platform
 from subprocess import run
+import json
 
-defaults = {
-    "MAXIM_PATH":"${env:MAXIM_PATH}", 
-    "PROGRAM_FILE":"${config:project_name}.elf",
-    "SYMBOL_FILE":"${config:program_file}",
-    "M4_OCD_INTERFACE_FILE":"cmsis-dap.cfg",
-    "M4_OCD_TARGET_FILE":"${config:target}.cfg",
-    "RV_OCD_INTERFACE_FILE":"ftdi/olimex-arm-usb-ocd-h.cfg",
-    "RV_OCD_TARGET_FILE":"${config:target}_riscv.cfg",
-    "DEFINES":[
-        "${config:board}"
-    ],
-    "I_PATHS":[
-        "${workspaceFolder}/**",
-        "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
-        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
-        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
-        "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
-        "${config:MAXIM_PATH}/Libraries/CMSIS/Include",
-        "${config:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
-        "${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include"
-        ],
-    "V_PATHS":[
-        "${workspaceFolder}",
-        "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
-        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
-        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source"
-    ],
-    "GCC_VERSION":"10.3.1",
-    "OCD_PATH":"${config:MAXIM_PATH}/Tools/OpenOCD",
-    "ARM_GCC_PATH":"${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi-${config:GCC_version}",
-    "RV_GCC_PATH":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc",
-    "MAKE_PATH":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"
-}
+def parse_json(filename):
+    """
+    Parse values from a json file into a template-friendly (all-caps keys) dictionary
+    """
+    f = open(filename, "r")
+    defaults = json.load(f)
+
+    # Convert key values to uppercase for easier template parsing
+    keys = list(defaults.keys()) # Keys are changing on the fly, so can't use a view object
+    for k in keys:
+        defaults[k.upper()] = defaults.pop(k)
+    
+    return defaults
+
+# Load default values for template from master "inject" folder so that we don't have to maintain multiple copies of the settings
+defaults = parse_json("MaximSDK/Inject/.vscode/settings.json")
+c_cpp_properties = parse_json("MaximSDK/Inject/.vscode/c_cpp_properties.json")
+win32 = dict(c_cpp_properties["CONFIGURATIONS"][0]) # Win32 configuration is always first
+
+defaults["DEFINES"] = win32["defines"]
+defaults["I_PATHS"] = win32["includePath"]
+defaults["V_PATHS"] = win32["browse"]["path"]
 
 whitelist = [
+    "MAX32650",
+    "MAX32655",
+    "MAX32660",
+    "MAX32665",
+    "MAX32670",
+    "MAX32672",
+    "MAX32675",
+    "MAX32680",
+    "MAX32690",
     "MAX78000",
     "MAX78002"
 ]
@@ -64,7 +63,7 @@ def create_project(
     Make_path: str = defaults["MAKE_PATH"]
 ):
 
-    template_dir = os.path.abspath(os.path.join("Template"))  # Where to find the VS Code template directory relative to this script
+    template_dir = os.path.abspath(os.path.join("MaximSDK", "Template"))  # Where to find the VS Code template directory relative to this script
     template_prefix = "template"  # Filenames beginning with this will have substitution
 
     if not os.path.exists(template_dir):
