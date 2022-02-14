@@ -4,13 +4,26 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
-                "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
-                "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
-                "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
-                "${config:MAXIM_PATH}/Libraries/CMSIS/Include",
-                "${config:ARM_GCC_path}/include",
-                "${config:ARM_GCC_path}/lib/gcc/arm-none-eabi/${config:GCC_version}/include"
+				"${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
+				"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
+				"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
+				"${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
+				"${config:MAXIM_PATH}/Libraries/CMSIS/Include",
+				"${config:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
+				"${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/**",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/cfg",
+                "${config:MAXIM_PATH}/Libraries/Cordio/platform/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip",
+                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/ble",
+                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/common",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/dm",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/profiles",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/services"
             ],
             "defines": [
                 "${config:board}"
@@ -18,10 +31,11 @@
             "intelliSenseMode": "gcc-arm",
             "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc.exe",
             "browse": {
-                "path": [
-                    "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
-                    "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
-                    "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source"
+                "path": [                    
+                    "${workspaceFolder}",
+					"${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
+					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
+					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source"
                 ]
             }
         },
@@ -29,13 +43,26 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
-                "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
-                "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
-                "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
-                "${config:MAXIM_PATH}/Libraries/CMSIS/Include",
-                "${config:ARM_GCC_path}/include",
-                "${config:ARM_GCC_path}/lib/gcc/arm-none-eabi/${config:GCC_version}/include"
+				"${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
+				"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
+				"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
+				"${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
+				"${config:MAXIM_PATH}/Libraries/CMSIS/Include",
+				"${config:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
+				"${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/**",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/cfg",
+                "${config:MAXIM_PATH}/Libraries/Cordio/platform/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip",
+                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/ble",
+                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/common",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/dm",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/profiles",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/services"
             ],
             "defines": [
                 "${config:board}"
@@ -44,9 +71,10 @@
             "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc",
             "browse": {
                 "path": [
-                    "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
-                    "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
-                    "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source"
+                    "${workspaceFolder}",
+					"${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
+					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
+					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source"
                 ]
             }
         }
