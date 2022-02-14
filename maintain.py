@@ -256,13 +256,18 @@ def test(targets=None, boards=None, projects=None, searchdir=None):
         log(f"[{pinfo['target']}] {pinfo['project']} for {pinfo['board']}...  see {pinfo['logfile']}", logfile)
 
 parser = argparse.ArgumentParser("VSCode-Maxim maintainer utilities")
-subparsers = parser.add_subparsers(dest="cmd", help="sub-command", required=True)
+cmd_parser = parser.add_subparsers(dest="cmd", help="sub-command", required=True)
 
-release_parser = subparsers.add_parser("release", help="Package a release")
+release_parser = cmd_parser.add_parser("release", help="Package a release")
 release_parser.add_argument("version", type=str, help="Version # for the release")
+
+sync_parser = cmd_parser.add_parser("sync", help="Sync all .vscode project folders")
 
 if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.cmd == "release":
         release(args.version)
+    
+    elif args.cmd == "sync":
+        sync()
