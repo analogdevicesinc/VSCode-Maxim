@@ -191,7 +191,7 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
                         # Windows SDK uses older GCC at different path
 
                     elif target_os == "Linux":
-                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg") 
+                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg", gcc_version="9.2.1", RV_GCC_path="${config:MAXIM_PATH}/Tools/xPacks/riscv-none-embed-gcc") 
                         # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.
 
                     count += 1
@@ -232,6 +232,9 @@ if __name__ == "__main__":
         else:
             print("Failed to locate the MaximSDK...  Please specify --maxim_path manually.")
             exit()
+    else:
+        # Parse to abs path
+        args.maxim_path = os.path.abspath(args.maxim_path)
 
     if args.cmd == "SDK":
         populate_maximsdk(target_os=args.os, maxim_path=args.maxim_path)
