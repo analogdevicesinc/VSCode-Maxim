@@ -23,6 +23,7 @@
     "RV_OCD_target_file":"##__RV_OCD_TARGET_FILE__##",
 
     "GCC_version":"##__GCC_VERSION__##",
+    "v_xPack_GCC":"##__V_XPACK_GCC__##",
 
     "OCD_path":"##__OCD_PATH__##",
     "ARM_GCC_path":"##__ARM_GCC_PATH__##",

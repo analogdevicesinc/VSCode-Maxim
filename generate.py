@@ -57,6 +57,7 @@ def create_project(
     i_paths: list = defaults["I_PATHS"],
     v_paths: list = defaults["V_PATHS"],
     gcc_version: str = defaults["GCC_VERSION"],
+    v_xpack_gcc: str = defaults["V_XPACK_GCC"],
     OCD_path: str = defaults["OCD_PATH"],
     ARM_GCC_path: str = defaults["ARM_GCC_PATH"],
     RV_GCC_path: str = defaults["RV_GCC_PATH"],
@@ -133,6 +134,7 @@ def create_project(
                             replace("\"##__DEFINES__##\"", defines_parsed).
                             replace("\"##__V_PATHS__##\"", v_paths_parsed).
                             replace("##__GCC_VERSION__##", gcc_version).
+                            replace("##__V_XPACK_GCC__##", v_xpack_gcc).
                             replace("##__OCD_PATH__##", OCD_path).
                             replace("##__ARM_GCC_PATH__##", ARM_GCC_path).
                             replace("##__RV_GCC_PATH__##", RV_GCC_path).
@@ -187,11 +189,11 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
                     print(f"Found {dir}, injecting project files...")
 
                     if target_os == "Windows":
-                        create_project(dir, target, board, ARM_GCC_path="${config:MAXIM_PATH}/Tools/GNUTools", gcc_version="9.2.1")
+                        create_project(dir, target, board, ARM_GCC_path="${config:MAXIM_PATH}/Tools/GNUTools")
                         # Windows SDK uses older GCC at different path
 
                     elif target_os == "Linux":
-                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg", gcc_version="9.2.1", RV_GCC_path="${config:MAXIM_PATH}/Tools/xPacks/riscv-none-embed-gcc") 
+                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg") 
                         # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.
 
                     count += 1

@@ -22,10 +22,11 @@
     "RV_OCD_interface_file":"ftdi/olimex-arm-usb-ocd-h.cfg",
     "RV_OCD_target_file":"${config:target}_riscv.cfg",
 
-    "GCC_version":"10.3.1",
+    "GCC_version":"9.2.1",
+    "v_xPack_GCC":"8.3.0-1.1",
 
     "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
     "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi-${config:GCC_version}",
-    "RV_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc",
+    "RV_GCC_path":"${config:MAXIM_PATH}/Tools/xPacks/riscv-none-embed-gcc/${config:v_xPack_GCC}",
     "Make_path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"
 }
