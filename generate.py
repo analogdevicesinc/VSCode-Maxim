@@ -35,19 +35,19 @@ def create_project(
     maxim_path: str = defaults["MAXIM_PATH"],
     program_file: str = defaults["PROGRAM_FILE"],
     symbol_file: str = defaults["SYMBOL_FILE"],
-    M4_OCD_interface_file: str = defaults["M4_OCD_INTERFACE_FILE"],
-    M4_OCD_target_file: str = defaults["M4_OCD_TARGET_FILE"],
-    RV_OCD_interface_file: str = defaults["RV_OCD_INTERFACE_FILE"],
-    RV_OCD_target_file: str = defaults["RV_OCD_TARGET_FILE"],
+    m4_ocd_interface_file: str = defaults["M4_OCD_INTERFACE_FILE"],
+    m4_ocd_target_file: str = defaults["M4_OCD_TARGET_FILE"],
+    rv_ocd_interface_file: str = defaults["RV_OCD_INTERFACE_FILE"],
+    rv_ocd_target_file: str = defaults["RV_OCD_TARGET_FILE"],
     defines: list = defaults["DEFINES"],
     i_paths: list = defaults["I_PATHS"],
     v_paths: list = defaults["V_PATHS"],
     v_arm_gcc: str = defaults["V_ARM_GCC"],
     v_xpack_gcc: str = defaults["V_XPACK_GCC"],
-    OCD_path: str = defaults["OCD_PATH"],
-    ARM_GCC_path: str = defaults["ARM_GCC_PATH"],
+    ocd_path: str = defaults["OCD_PATH"],
+    arm_gcc_path: str = defaults["ARM_GCC_PATH"],
     xpack_gcc_path: str = defaults["XPACK_GCC_PATH"],
-    Make_path: str = defaults["MAKE_PATH"]
+    make_path: str = defaults["MAKE_PATH"]
 ):
 
     template_dir = os.path.abspath(os.path.join("MaximSDK", "Template"))  # Where to find the VS Code template directory relative to this script
@@ -112,19 +112,19 @@ def create_project(
                             replace("##__BOARD__##", board).
                             replace("##__PROGRAM_FILE__##", program_file).
                             replace("##__SYMBOL_FILE__##", symbol_file).
-                            replace("##__M4_OCD_INTERFACE_FILE__##", M4_OCD_interface_file).
-                            replace("##__M4_OCD_TARGET_FILE__##", M4_OCD_target_file).
-                            replace("##__RV_OCD_INTERFACE_FILE__##", RV_OCD_interface_file).
-                            replace("##__RV_OCD_TARGET_FILE__##", RV_OCD_target_file).
+                            replace("##__M4_OCD_INTERFACE_FILE__##", m4_ocd_interface_file).
+                            replace("##__M4_OCD_TARGET_FILE__##", m4_ocd_target_file).
+                            replace("##__RV_OCD_INTERFACE_FILE__##", rv_ocd_interface_file).
+                            replace("##__RV_OCD_TARGET_FILE__##", rv_ocd_target_file).
                             replace("\"##__I_PATHS__##\"", i_paths_parsed).  # Next 3 are surrounded in quotes in the template because of the linter
                             replace("\"##__DEFINES__##\"", defines_parsed).
                             replace("\"##__V_PATHS__##\"", v_paths_parsed).
                             replace("##__V_ARM_GCC__##", v_arm_gcc).
                             replace("##__V_XPACK_GCC__##", v_xpack_gcc).
-                            replace("##__OCD_PATH__##", OCD_path).
-                            replace("##__ARM_GCC_PATH__##", ARM_GCC_path).
+                            replace("##__OCD_PATH__##", ocd_path).
+                            replace("##__ARM_GCC_PATH__##", arm_gcc_path).
                             replace("##__XPACK_GCC_PATH__##", xpack_gcc_path).
-                            replace("##__MAKE_PATH__##", Make_path)
+                            replace("##__MAKE_PATH__##", make_path)
                         )
 
                 os.chmod(out_loc, 0o764)
@@ -175,11 +175,11 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
                     print(f"Found {dir}, injecting project files...")
 
                     if target_os == "Windows":
-                        create_project(dir, target, board, ARM_GCC_path="${config:MAXIM_PATH}/Tools/GNUTools")
+                        create_project(dir, target, board, arm_gcc_path="${config:MAXIM_PATH}/Tools/GNUTools")
                         # Windows SDK uses older GCC at different path
 
                     elif target_os == "Linux":
-                        create_project(dir, target, board, M4_OCD_target_file=f"{str.lower(target)}.cfg") 
+                        create_project(dir, target, board, m4_ocd_target_file=f"{str.lower(target)}.cfg") 
                         # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.
 
                     count += 1
