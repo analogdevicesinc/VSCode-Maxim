@@ -145,13 +145,13 @@ Debugging is enabled by Visual Studio Code's integrated debugger.  Launch config
 ### Launching the Debugger
 1. Ensure that a debugger is attached to the target microcontroller on the correct port.  (Refer to the datasheet of your evaluation board for instructions on connecting a debugger)
 
-2. Ensure the target microcontroller has been flashed.  Use the "Flash" Build Task.  Flashing does not happen automatically when launching the debugger.
+2. Flash the program to the microcontroller with the "Flash" Build Task (CTRL+SHIFT+B).  Flashing does not happen automatically when launching the debugger.
 
 3. Launch the debugger with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D) and the green "launch" arrow.
 
     ![Debug Tab](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger_window.JPG)
 
-4. The debugger will launch a GDB client & OpenOCD server, reset the microcontroller, and break on entry into `main`.
+4. The debugger will launch a GDB client & OpenOCD server, reset the microcontroller, and should break on entry into `main`.
 
 ### Using the Debugger
 The main interface for the debugger is the debugger control bar.
@@ -239,6 +239,10 @@ The following configuration options are available:
 
 * `"GCC_version"`
     * Sets the version of the Arm Embedded GCC Toolchain to use, including toolchain binaries and the standard library version.
+    * Default value: `"9.2.1"`
+
+* `"v_xPack_GCC"`
+    * Sets the version of the xPack RISC-V GCC Toolchain to use, including toolchain binaries and the standard library version.
 
 * `"OCD_path"`
     * Where to find the OpenOCD.
