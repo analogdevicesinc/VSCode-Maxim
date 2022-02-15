@@ -153,6 +153,8 @@ Debugging is enabled by Visual Studio Code's integrated debugger.  Launch config
 
 4. The debugger will launch a GDB client & OpenOCD server, reset the microcontroller, and should break on entry into `main`.
 
+    ![Debugger Break on Main](img\debugger_breakmain.JPG)
+
 ### Using the Debugger
 The main interface for the debugger is the debugger control bar.
 
@@ -238,11 +240,18 @@ The following configuration options are available:
     * Default value: `"${config:target}_riscv.cfg"`
 
 * `"GCC_version"`
+<<<<<<< HEAD
     * Sets the version of the Arm Embedded GCC Toolchain to use, including toolchain binaries and the standard library version.
     * Default value: `"9.2.1"`
 
 * `"v_xPack_GCC"`
     * Sets the version of the xPack RISC-V GCC Toolchain to use, including toolchain binaries and the standard library version.
+=======
+    * Sets the version of the Arm Embedded GCC to use, including toolchain binaries and the standard library version.
+
+* `"v_xPack_GCC"`
+    * Sets the version of the xPack RISC-V GCC to use.
+>>>>>>> 0f986a88806e23d845624d78bc74568200ecc7d2
 
 * `"OCD_path"`
     * Where to find the OpenOCD.
@@ -254,7 +263,7 @@ The following configuration options are available:
 
 * `"RV_GCC_path"`
     * Where to find the RISC-V GCC Toolchain.
-    * Default value: `"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc"`
+    * Default value: `${config:MAXIM_PATH}/Tools/xPacks/riscv-none-embed-gcc/${config:v_xPack_GCC}`
 
 * `"Make_path"`
     * Where to find Make binaries (only used on Windows)
