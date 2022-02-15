@@ -9,21 +9,16 @@
 				"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
 				"${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
 				"${config:MAXIM_PATH}/Libraries/CMSIS/Include",
-				"${config:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
-				"${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/**",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/cfg",
-                "${config:MAXIM_PATH}/Libraries/Cordio/platform/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip",
-                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/ble",
-                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/common",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/dm",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/profiles",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/services"
+				"${config:ARM_GCC_path}/arm-none-eabi/include",
+				"${config:ARM_GCC_path}/lib/gcc/arm-none-eabi/${config:GCC_version}/include",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers"
             ],
             "defines": [
                 "${config:board}"
@@ -35,7 +30,15 @@
                     "${workspaceFolder}",
 					"${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
 					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
-					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source"
+					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers"
                 ]
             }
         },
@@ -48,21 +51,16 @@
 				"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
 				"${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
 				"${config:MAXIM_PATH}/Libraries/CMSIS/Include",
-				"${config:MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include",
-				"${config:MAXIM_PATH}/Tools/GNUTools/lib/gcc/arm-none-eabi/9.2.1/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/**",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/cfg",
-                "${config:MAXIM_PATH}/Libraries/Cordio/platform/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip",
-                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/ble",
-                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/common",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/dm",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/profiles",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/services"
+				"${config:ARM_GCC_path}/arm-none-eabi/include",
+				"${config:ARM_GCC_path}/lib/gcc/arm-none-eabi/${config:GCC_version}/include",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+                "${config:MAXIM_PATH}/Libraries/MiscDrivers"
             ],
             "defines": [
                 "${config:board}"
@@ -74,7 +72,15 @@
                     "${workspaceFolder}",
 					"${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
 					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
-					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source"
+					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+                    "${config:MAXIM_PATH}/Libraries/MiscDrivers"
                 ]
             }
         }
