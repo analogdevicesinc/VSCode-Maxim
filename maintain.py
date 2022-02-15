@@ -107,21 +107,16 @@ def release(version):
     print("Done!")
 
 # Tests cleaning and compiling example projects for target platforms.  If no targets, boards, projects, etc. are specified then it will auto-detect
-def test(targets=None, boards=None, projects=None, searchdir=None):
+def test(maxim_path, targets=None, boards=None, projects=None):
     env = os.environ.copy()
 
     # Simulate the VS Code terminal by appending to the Path
-    MAXIM_PATH = ""
     if curplatform == 'Linux':
-        MAXIM_PATH = "/home/jcarter/MaximSDK" # Linux
-        env["PATH"] = f"{MAXIM_PATH}/Tools/OpenOCD:/{MAXIM_PATH}/Tools/GNUTools/bin:{MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin:" + env["PATH"] # Linux
+        env["PATH"] = f"{maxim_path}/Tools/OpenOCD:{maxim_path}/Tools/GNUTools/gcc-arm-none-eabi-9.2.1/bin:{maxim_path}/Tools/xPacks/riscv-none-embed-gcc/8.3.0-1.1/bin:" + env["PATH"] # Linux
     elif curplatform == 'Windows':
-        MAXIM_PATH = "C:/MaximSDK" # Windows
-        env["PATH"] = f"{MAXIM_PATH}/Tools/MinGW/msys/1.0/bin;{MAXIM_PATH}/Tools/OpenOCD;{MAXIM_PATH}/Tools/GNUTools/bin;{MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin;" + env["PATH"] # Windows
+        env["PATH"] = f"{maxim_path}/Tools/MinGW/msys/1.0/bin;{maxim_path}/Tools/OpenOCD;{maxim_path}/Tools/GNUTools/bin;{maxim_path}/Tools/xPack/riscv-none-embed-gcc/bin;" + env["PATH"] # Windows
     
     LOG_DIR = os.getcwd()
-
-    if searchdir is None: searchdir = f"{MAXIM_PATH}/Examples" # Search examples in SDK by default by default
 
     # Create log file
     try: os.mkdir(f"{LOG_DIR}/buildlogs")
@@ -136,7 +131,7 @@ def test(targets=None, boards=None, projects=None, searchdir=None):
     if targets is None:
         targets = []
 
-        for dir in os.scandir(searchdir):
+        for dir in os.scandir(f"{maxim_path}/Examples"):
             targets.append(dir.name) # Append subdirectories of Examples to list of target micros
 
         log(f"[TARGETS] Detected targets {targets}", logfile)
@@ -164,7 +159,7 @@ def test(targets=None, boards=None, projects=None, searchdir=None):
         # Get list of supported boards for this target.
         if boards is None:
             boards = []
-            for dirpath, subdirs, items in os.walk(f"{MAXIM_PATH}/Libraries/Boards/{target}"):
+            for dirpath, subdirs, items in os.walk(f"{maxim_path}/Libraries/Boards/{target}"):
                 if "board.mk" in items and curplatform == 'Linux': boards.append(dirpath.split('/')[-1]) # Linux
                 elif "board.mk" in items and curplatform == 'Windows': boards.append(dirpath.split('\\')[-1]) # Board string will be the last folder in the directory path # Windows
 
@@ -179,7 +174,7 @@ def test(targets=None, boards=None, projects=None, searchdir=None):
         # Get list of examples for this target.  If a Makefile is in the root directory it's an example.
         if projects is None:
             projects = []
-            for dirpath, subdirs, items in os.walk(searchdir):
+            for dirpath, subdirs, items in os.walk(f"{maxim_path}/Examples/{target}"):
                 if 'Makefile' in items:
                     projects.append(dirpath)  
 
@@ -205,7 +200,7 @@ def test(targets=None, boards=None, projects=None, searchdir=None):
                 success = True
 
                 # Test build (make all)
-                build_cmd = f"make all TARGET={target} MAXIM_PATH={MAXIM_PATH} BOARD={board} MAKE=make"
+                build_cmd = f"make all TARGET={target} MAXIM_PATH={maxim_path} BOARD={board} MAKE=make"
                 res = ps(build_cmd, env=env) # Run build command
 
                 # Error check build command
@@ -228,7 +223,7 @@ def test(targets=None, boards=None, projects=None, searchdir=None):
                 else: log(f"{timestamp()}[{board}] --- [BUILD]\t[SUCCESS] {round(duration, 4)}s", logfile)                
 
                 # Test clean (make clean)
-                clean_cmd = f"make clean TARGET={target} MAXIM_PATH={MAXIM_PATH} BOARD={board} MAKE=make"
+                clean_cmd = f"make clean TARGET={target} MAXIM_PATH={maxim_path} BOARD={board} MAKE=make"
                 res = ps(clean_cmd, env=env) # Run clean command
 
                 # Error check clean command
@@ -249,6 +244,8 @@ def test(targets=None, boards=None, projects=None, searchdir=None):
                 count += 1
 
         log("====================", logfile)
+        boards = None # Reset boards list
+        projects = None # Reset targets list
 
     log(f"[SUMMARY] Tested {count} projects.  {count - len(failed)}/{count} succeeded.  Failed projects: ", logfile)
     for pinfo in failed:
