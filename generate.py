@@ -42,11 +42,11 @@ def create_project(
     defines: list = defaults["DEFINES"],
     i_paths: list = defaults["I_PATHS"],
     v_paths: list = defaults["V_PATHS"],
-    gcc_version: str = defaults["GCC_VERSION"],
+    v_arm_gcc: str = defaults["V_ARM_GCC"],
     v_xpack_gcc: str = defaults["V_XPACK_GCC"],
     OCD_path: str = defaults["OCD_PATH"],
     ARM_GCC_path: str = defaults["ARM_GCC_PATH"],
-    RV_GCC_path: str = defaults["RV_GCC_PATH"],
+    xpack_gcc_path: str = defaults["XPACK_GCC_PATH"],
     Make_path: str = defaults["MAKE_PATH"]
 ):
 
@@ -119,11 +119,11 @@ def create_project(
                             replace("\"##__I_PATHS__##\"", i_paths_parsed).  # Next 3 are surrounded in quotes in the template because of the linter
                             replace("\"##__DEFINES__##\"", defines_parsed).
                             replace("\"##__V_PATHS__##\"", v_paths_parsed).
-                            replace("##__GCC_VERSION__##", gcc_version).
+                            replace("##__V_ARM_GCC__##", v_arm_gcc).
                             replace("##__V_XPACK_GCC__##", v_xpack_gcc).
                             replace("##__OCD_PATH__##", OCD_path).
                             replace("##__ARM_GCC_PATH__##", ARM_GCC_path).
-                            replace("##__RV_GCC_PATH__##", RV_GCC_path).
+                            replace("##__XPACK_GCC_PATH__##", xpack_gcc_path).
                             replace("##__MAKE_PATH__##", Make_path)
                         )
 

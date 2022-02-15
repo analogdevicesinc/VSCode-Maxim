@@ -1,11 +1,11 @@
 {    
     "MAXIM_PATH":"${env:MAXIM_PATH}",
     "terminal.integrated.env.windows": {
-        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:RV_GCC_path}/bin;${config:Make_path};${env:PATH}",
+        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.env.linux": {
-        "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:RV_GCC_path}/bin:${env:PATH}",
+        "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
 
@@ -22,11 +22,11 @@
     "RV_OCD_interface_file":"ftdi/olimex-arm-usb-ocd-h.cfg",
     "RV_OCD_target_file":"${config:target}_riscv.cfg",
 
-    "GCC_version":"9.2.1",
+    "v_Arm_GCC":"9.2.1",
     "v_xPack_GCC":"8.3.0-1.1",
 
     "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
-    "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi-${config:GCC_version}",
-    "RV_GCC_path":"${config:MAXIM_PATH}/Tools/xPacks/riscv-none-embed-gcc/${config:v_xPack_GCC}",
+    "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi/${config:v_Arm_GCC}",
+    "xPack_GCC_path":"${config:MAXIM_PATH}/Tools/xPacks/riscv-none-embed-gcc/${config:v_xPack_GCC}",
     "Make_path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"
 }
