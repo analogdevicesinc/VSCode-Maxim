@@ -175,7 +175,7 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
                     print(f"Found {dir}, injecting project files...")
 
                     if target_os == "Windows":
-                        create_project(dir, target, board, arm_gcc_path="${config:MAXIM_PATH}/Tools/GNUTools")
+                        create_project(dir, target, board, arm_gcc_path="${config:MAXIM_PATH}/Tools/GNUTools", xpack_gcc_path="${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc")
                         # Windows SDK uses older GCC at different path
 
                     elif target_os == "Linux":
