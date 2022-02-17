@@ -1,4 +1,7 @@
+from dataclasses import dataclass
 import json
+from dataclasses import dataclass
+from pathlib import Path
 
 def parse_json(filename):
     """
@@ -13,3 +16,18 @@ def parse_json(filename):
         d[k.upper()] = d.pop(k)
     
     return d
+
+# Timer wrapper function
+import time
+def time_me(f):
+
+    def wrapper(*args, **kwargs):
+        start = time.time() # Start timer
+        res = f(*args, **kwargs)
+        end = time.time() # Stop timer
+        duration = end - start # Calculate duration
+        print(f"{f.__name__} took {duration}s") # Print timer info
+        
+        return res
+
+    return wrapper
