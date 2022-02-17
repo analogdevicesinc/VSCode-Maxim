@@ -4,6 +4,7 @@ import argparse
 import platform
 from subprocess import run
 from utils import parse_json
+from sdk import *
 
 # Load default values for template from master "inject" folder so that we don't have to maintain multiple copies of the settings
 defaults = parse_json("MaximSDK/Inject/.vscode/settings.json")
@@ -140,49 +141,36 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
     print(f"Generating VS Code project files on {target_os} for MaximSDK located at {maxim_path}...")
     print(f"Scanning {maxim_path}...")
 
-    # Search for list of targets
-    targets = []
-    for dir in os.scandir(os.path.join(maxim_path, "Examples")):
-        if dir.name in whitelist: targets.append(dir.name)
-
-    print(f"Generating VS Code project files for {targets}...")
+    sdk = SDK(maxim_path)
     
     count = 0
-    for target in targets:
+    for example in sdk.examples:
+        print(f"Generating VSCode-Maxim project for {example.path} ...")
 
-        # For this target, get the list of supported boards.
-        print(f"Scanning BSPs for {target}...")
-        boards = []
-        for dir, subdirs, files in os.walk(os.path.join(maxim_path, "Libraries", "Boards", target)):
-            if "board.mk" in files: 
-                boards.append(os.path.split(dir)[1])
+        if target_os == "Windows":
+            create_project(
+                example.path, 
+                example.target.name, 
+                example.target.boards[0].name, 
+                arm_gcc_path="${config:MAXIM_PATH}/Tools/GNUTools", 
+                xpack_gcc_path="${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc",
+                program_file="{config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"],
+                symbol_file="{config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
+            )
+            # Windows SDK uses older GCC at different path
 
-        # Set default board.  Try EvKit_V1, otherwise use first entry in list
-        board = "EvKit_V1"
-        if board not in boards: board = boards[0]
+        elif target_os == "Linux":
+            create_project(
+                example.path,
+                example.target.name,
+                example.target.boards[0].name, 
+                m4_ocd_target_file=f"{str.lower(example.target.name)}.cfg",
+                program_file="{config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"],
+                symbol_file="{config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
+            ) 
+            # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.
 
-        print(f"Found {boards}, using {board} as default...")
-
-        # Search for example projects
-        print(f"Searching for {target} example projects...")
-        for dir, subdirs, files in os.walk(os.path.join(maxim_path, "Examples", target)):
-
-            if "Makefile" in files:
-                # Found example project
-
-                if ".vscode" not in subdirs or (".vscode" in subdirs and overwrite):
-
-                    print(f"Found {dir}, injecting project files...")
-
-                    if target_os == "Windows":
-                        create_project(dir, target, board, arm_gcc_path="${config:MAXIM_PATH}/Tools/GNUTools", xpack_gcc_path="${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc")
-                        # Windows SDK uses older GCC at different path
-
-                    elif target_os == "Linux":
-                        create_project(dir, target, board, m4_ocd_target_file=f"{str.lower(target)}.cfg") 
-                        # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.
-
-                    count += 1
+        count += 1
 
     print(f"Done!  Created {count} projects.")
     
