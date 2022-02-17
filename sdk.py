@@ -58,7 +58,7 @@ def get_targets_and_boards(maxim_path):
         board_dirs.remove(target_dir.joinpath("Source"))
             
         for board_dir in board_dirs:
-            b = Board(t.name + board_dir.name, t, [])
+            b = Board(board_dir.name, t, [])
             adapterinfo_file = board_dir.joinpath("adapterinfo.json")
             if adapterinfo_file.exists():
                 with open(adapterinfo_file) as f:
