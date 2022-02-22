@@ -72,12 +72,13 @@ def create_project(
     # Parse include paths...
     tmp = i_paths
     tmp = list(map("\"{0}\"".format, tmp))  # Surround with quotes
-    i_paths_parsed = ",\n\t\t\t\t".join(tmp)  # csv, newline, and tab alignment
+    i_paths_parsed = ",\n\t\t\t\t".join(tmp).replace(target, "${config:target}").replace("\\", "/")
+
 
     # Parse browse paths...
     tmp = v_paths
     tmp = list(map("\"{0}\"".format, tmp))  # Surround with quotes
-    v_paths_parsed = ",\n\t\t\t\t\t".join(tmp)  # csv, newline, and tab alignment
+    v_paths_parsed = ",\n\t\t\t\t\t".join(tmp).replace(target, "${config:target}").replace("\\", "/")  # csv, newline, and tab alignment
 
     # Create template...
     for directory, _, files in sorted(os.walk(template_dir)):
@@ -147,35 +148,98 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
     for example in sdk.examples:
         print(f"Generating VSCode-Maxim project for {example.path} ...")
 
+        # Common options
+        _path = example.path
+        _target = example.target.name
+        _board = "EvKit_V1" if "EvKit_V1" in example.target.boards else example.target.boards[0].name
+        _program_file="{config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"]
+        _symbol_file="{config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
+        _ipaths = [] + defaults["I_PATHS"]
+        _vpaths = [] + defaults["V_PATHS"]
+
+        # TODO: Temporary solution until info files are populated for the sdk.
+        # Cordio
+        if example.target.name == "MAX32655" or example.target.name == "MAX32665" or example.target.name == "MAX32690":
+            _ipaths += [
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/cfg",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-mesh-apps/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-mesh-model/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-mesh-profile/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/ble",
+                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/common",
+                "${config:MAXIM_PATH}/Libraries/Cordio/platform/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/dm",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/profiles",
+                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/services",
+                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include",
+                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/util"
+            ]
+            _vpaths += [
+                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/sources",
+                "${config:MAXIM_PATH}/Libraries/ble-host/sources",
+                "${config:MAXIM_PATH}/Libraries/ble-profiles/sources",
+                "${config:MAXIM_PATH}/Libraries/controller/sources",
+                "${config:MAXIM_PATH}/Libraries/Cordio/platform/targets/maxim/${config:target}/sources"
+            ]
+
+        if example.name == "FreeRTOSDemo":
+            _ipaths += [
+                "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/include",
+                "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F",
+                "${config:MAXIM_PATH}/Libraries/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI"
+            ]
+            _vpaths += [
+                "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source",
+                "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F",
+                "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/Common",
+                "${config:MAXIM_PATH}/Libraries/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI"
+            ]
+
+
+        # TODO: Uncomment when libinfo.json files have been added into SDK release
+        # for l in example.libs:
+        #     for ipath in l.get_ipaths(example.target.name):
+        #         _ipaths.append(str(ipath.as_posix()).replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").replace(example.target.name, "${config:target}"))
+
+        #     for vpath in l.get_vpaths(example.target.name):
+        #         _vpaths.append(str(vpath.as_posix()).replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").replace(example.target.name, "${config:target}"))
+
+        # OS-specific overrides
         if target_os == "Windows":
             create_project(
-                example.path, 
-                example.target.name, 
-                example.target.boards[0].name, 
-                arm_gcc_path="${config:MAXIM_PATH}/Tools/GNUTools", 
-                xpack_gcc_path="${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc",
-                program_file="{config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"],
-                symbol_file="{config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
+                _path, 
+                _target, 
+                _board,
+                program_file=_program_file,
+                symbol_file=_symbol_file,
+                i_paths=_ipaths,
+                v_paths=_vpaths,
+                arm_gcc_path="${config:MAXIM_PATH}/Tools/GNUTools", # Windows SDK uses older GCC at different path
+                xpack_gcc_path="${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc"
             )
-            # Windows SDK uses older GCC at different path
-
+            
         elif target_os == "Linux":
             create_project(
-                example.path,
-                example.target.name,
-                example.target.boards[0].name, 
-                m4_ocd_target_file=f"{str.lower(example.target.name)}.cfg",
-                program_file="{config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"],
-                symbol_file="{config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
+                _path,
+                _target,
+                _board,
+                program_file=_program_file,
+                symbol_file=_symbol_file,
+                i_paths=_ipaths,
+                v_paths=_vpaths,
+                m4_ocd_target_file=f"{str.lower(example.target.name)}.cfg", # Linux is case-sensitive
             ) 
-            # Need to manually set MAXIM_PATH and deal with lowercase OpenOCD .cfg files on Linux.
 
         count += 1
 
     print(f"Done!  Created {count} projects.")
     
 def new():
-    print("Create new project!")
+    pass # TODO: New project wizard
 
 parser = argparse.ArgumentParser(description="Generate Visual Studio Code project files for Maxim's Microcontroller SDK.")
 parser.add_argument("--os", type=str, choices=["Windows", "Linux"], help="(Optional) Operating system to generate the project files for.  If not specified the script will auto-detect.")

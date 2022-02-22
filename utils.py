@@ -26,7 +26,7 @@ def time_me(f):
         res = f(*args, **kwargs)
         end = time.time() # Stop timer
         duration = end - start # Calculate duration
-        print(f"{f.__name__} took {duration}s") # Print timer info
+        print(f"{f} took {duration}s") # Print timer info
         
         return res
 
