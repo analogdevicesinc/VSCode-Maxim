@@ -32,7 +32,7 @@ The project folders in this repo have the following dependencies:
 
     ![Release Folders](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/release-folders-win10.jpg)
 
-6. Open a command prompt in the extracted release folder.
+6. Open a command prompt in the extracted release folder from step #5 above.
 
 7. Run the following command to populate the SDK with project folders:
     ```bash
@@ -45,34 +45,37 @@ The project folders in this repo have the following dependencies:
 
 ## Linux
 ### Ubuntu
-1. Download the latest Ubuntu release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
+1. Download & install the Maxim Microcontrollers SDK via the [Linux Installer](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0018720A).  See [AN7219](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7219.html) for a detailed installation guide if needed.  (If the SDK is already installed, run the "MaintenanceTool" to update it to the latest version)
 
-2. Open a terminal in the extracted folder.  
+3. Add MAXIM_PATH to your system environment variables.
+    1. Create a new file `/etc/profile.d/maximsdk-env.sh` with the contents `export MAXIM_PATH=[MaximSDK installation location]`.  
+    
+        For example...
 
-3. Run: 
+        ```bash
+        # in /etc/profile.d/maximsdk-env.sh ...
+        export MAXIM_PATH=/home/yourusername/MaximSDK
+        ```
+
+        ... and save the file.
+
+    2. Refresh your system environment variables with the command...
+        ```bash
+        source /etc/profile.d/maximsdk-env.sh
+        ```
+
+3. Download the latest Ubuntu release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
+
+4. Open a terminal and `cd` into the extracted release folder from step #3 above.
+
+5. Run the following command to populate the SDK with project folders:
     ```bash
-    sudo -u [your username] bash install.sh
+    generate SDK
     ```
 
-4. Follow the instructions in the installer and run the script to completion.  Take note of where you installed the MaximSDK for use in the next step.
+6. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
 
-5. Add MAXIM_PATH to your system environment variables. Create a new file `/etc/profile.d/maximsdk-env.sh` with the contents `export MAXIM_PATH=[MaximSDK installation location]`.  For example...
-    ```bash
-    # in /etc/profile.d/maximsdk-env.sh ...
-    export MAXIM_PATH=/home/yourusername/MaximSDK
-    ```
-
-    ... and save the file.
-
-6. Run...
-    ```bash
-    bash setup.sh
-    ```
-    ... to complete the installation.
-
-7. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
-
-8. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
+7. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
 
 # Usage
 ## Introduction
