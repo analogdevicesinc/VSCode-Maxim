@@ -28,7 +28,7 @@ The project folders in this repo have the following dependencies:
 
 4. Copy the files from the `MaximSDK` folder into the root directory of your MaximSDK installation and overwrite.  This will populate the example projects with VS Code project folders and make any necessary patches to the SDK.
 
-    ![Drag and Drop Installation](img\drag_and_drop_install.jpg)
+    ![Drag and Drop Installation](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/drag_and_drop_install.jpg)
 
 5. Download & install [Visual Studio Code](https://code.visualstudio.com/).
 
@@ -63,7 +63,7 @@ The project folders in this repo have the following dependencies:
 
 4. Copy the files from the `MaximSDK` folder into the root directory of your MaximSDK installation and overwrite.  This will populate the example projects with VS Code project folders and make any necessary patches to the SDK.
 
-    ![Drag and Drop Installation](img\drag_and_drop_install.jpg)
+    ![Drag and Drop Installation](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/drag_and_drop_install.jpg)
     (Note:  The image above shows a Windows file explorer...  The principal is the same on any OS)
 
 5. Download & install [Visual Studio Code](https://code.visualstudio.com/).
