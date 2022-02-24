@@ -24,30 +24,25 @@ The project folders in this repo have the following dependencies:
 
     ![Variable Name = MAXIM_PATH, Variable Value = C:/MaximSDK](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/maxim_path_env.JPG)
 
-3. Download & install [Visual Studio Code](https://code.visualstudio.com/).
+3. Download the latest Windows 10 release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
 
-4. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
+4. Copy the files from the `MaximSDK` folder into the root directory of your MaximSDK installation and overwrite.  This will populate the example projects with VS Code project folders and make any necessary patches to the SDK.
 
-5. Download the latest Windows 10 release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
+    ![Drag and Drop Installation](img\drag_and_drop_install.jpg)
 
-    ![Release Folders](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/release-folders-win10.jpg)
+5. Download & install [Visual Studio Code](https://code.visualstudio.com/).
 
-6. Open a command prompt in the extracted release folder from step #5 above.
+6. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
-7. Run the following command to populate the SDK with project folders:
-    ```bash
-    generate.exe SDK
-    ```
+7. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
 
-8. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
-
-9. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
+8. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
 
 ## Linux
 ### Ubuntu
 1. Download & install the Maxim Microcontrollers SDK via the [Linux Installer](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0018720A).  See [AN7219](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7219.html) for a detailed installation guide if needed.  (If the SDK is already installed, run the "MaintenanceTool" to update it to the latest version)
 
-3. Add MAXIM_PATH to your system environment variables.
+2. Add MAXIM_PATH to your system environment variables.
     1. Create a new file `/etc/profile.d/maximsdk-env.sh` with the contents `export MAXIM_PATH=[MaximSDK installation location]`.  
     
         For example...
@@ -64,18 +59,20 @@ The project folders in this repo have the following dependencies:
         source /etc/profile.d/maximsdk-env.sh
         ```
 
-3. Download the latest Ubuntu release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
+3. Download the latest Linux release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
 
-4. Open a terminal and `cd` into the extracted release folder from step #3 above.
+4. Copy the files from the `MaximSDK` folder into the root directory of your MaximSDK installation and overwrite.  This will populate the example projects with VS Code project folders and make any necessary patches to the SDK.
 
-5. Run the following command to populate the SDK with project folders:
-    ```bash
-    generate SDK
-    ```
+    ![Drag and Drop Installation](img\drag_and_drop_install.jpg)
+    (Note:  The image above shows a Windows file explorer...  The principal is the same on any OS)
 
-6. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
+5. Download & install [Visual Studio Code](https://code.visualstudio.com/).
 
-7. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
+6. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
+
+7. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
+
+8. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
 
 # Usage
 ## Introduction
