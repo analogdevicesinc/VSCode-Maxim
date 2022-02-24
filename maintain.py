@@ -104,6 +104,11 @@ def release(version, maxim_path):
         out_dir = r_dir.joinpath(Path(str(i).replace(i.anchor, ""))) # Strip drive info and pre-pend output directory
         shutil.copytree(i, out_dir, dirs_exist_ok=True)
 
+    print("Copying Inect & New_Project folders")
+    shutil.copytree(Path("MaximSDK/Inject"), r_dir.joinpath("Inject"))
+    shutil.copytree(Path("MaximSDK/New_Project"), r_dir.joinpath("New_Project"))
+
+    print("Copying markdown files")
     shutil.copy("readme.md", r_dir)
     shutil.copy("userguide.md", r_dir)
     shutil.copy("LICENSE.md", r_dir)
