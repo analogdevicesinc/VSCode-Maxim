@@ -157,56 +157,12 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
         _ipaths = [] + defaults["I_PATHS"]
         _vpaths = [] + defaults["V_PATHS"]
 
-        # TODO: Temporary solution until info files are populated for the sdk.
-        # Cordio
-        if example.target.name == "MAX32655" or example.target.name == "MAX32665" or example.target.name == "MAX32690":
-            _ipaths += [
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/cfg",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-mesh-apps/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-mesh-model/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-mesh-profile/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/ble",
-                "${config:MAXIM_PATH}/Libraries/Cordio/controller/include/common",
-                "${config:MAXIM_PATH}/Libraries/Cordio/platform/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/dm",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/profiles",
-                "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources/services",
-                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include",
-                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/util"
-            ]
-            _vpaths += [
-                "${config:MAXIM_PATH}/Libraries/Cordio/wsf/sources",
-                "${config:MAXIM_PATH}/Libraries/ble-host/sources",
-                "${config:MAXIM_PATH}/Libraries/ble-profiles/sources",
-                "${config:MAXIM_PATH}/Libraries/controller/sources",
-                "${config:MAXIM_PATH}/Libraries/Cordio/platform/targets/maxim/${config:target}/sources"
-            ]
+        for l in example.libs:
+            for ipath in l.get_ipaths(example.target.name):
+                _ipaths.append(str(ipath.as_posix()).replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").replace(example.target.name, "${config:target}"))
 
-        if example.name == "FreeRTOSDemo":
-            _ipaths += [
-                "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/include",
-                "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F",
-                "${config:MAXIM_PATH}/Libraries/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI"
-            ]
-            _vpaths += [
-                "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source",
-                "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F",
-                "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/Common",
-                "${config:MAXIM_PATH}/Libraries/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI"
-            ]
-
-
-        # TODO: Uncomment when libinfo.json files have been added into SDK release
-        # for l in example.libs:
-        #     for ipath in l.get_ipaths(example.target.name):
-        #         _ipaths.append(str(ipath.as_posix()).replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").replace(example.target.name, "${config:target}"))
-
-        #     for vpath in l.get_vpaths(example.target.name):
-        #         _vpaths.append(str(vpath.as_posix()).replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").replace(example.target.name, "${config:target}"))
+            for vpath in l.get_vpaths(example.target.name):
+                _vpaths.append(str(vpath.as_posix()).replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").replace(example.target.name, "${config:target}"))
 
         # OS-specific overrides
         if target_os == "Windows":
@@ -217,9 +173,7 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
                 program_file=_program_file,
                 symbol_file=_symbol_file,
                 i_paths=_ipaths,
-                v_paths=_vpaths,
-                arm_gcc_path="${config:MAXIM_PATH}/Tools/GNUTools", # Windows SDK uses older GCC at different path
-                xpack_gcc_path="${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc"
+                v_paths=_vpaths
             )
             
         elif target_os == "Linux":
@@ -262,7 +216,7 @@ if __name__ == "__main__":
             exit()
 
     # Auto-detect MAXIM_PATH
-    if args.maxim_path is None: 
+    if args.maxim_path is None:
         # Check environment variable
         print("Checking MAXIM_PATH environment variable..")
         if "MAXIM_PATH" in os.environ.keys():

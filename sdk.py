@@ -144,13 +144,12 @@ class SDK():
         self.examples = get_examples(self.maxim_path, targets)
 
         # Match examples to libraries
-        # TODO: Uncomment when libinfo.json files have been added to SDK
-        # for e in self.examples:
-        #     for l in self.libs:
-        #         lib_hfiles = l.get_hfiles(e.target.name)
-        #         for hfile in e.hfiles:
-        #             if hfile in lib_hfiles and l not in e.libs:
-        #                 e.libs.append(l)
+        for e in self.examples:
+            for l in self.libs:
+                lib_hfiles = l.get_hfiles(e.target.name)
+                for hfile in e.hfiles:
+                    if hfile in lib_hfiles and l not in e.libs:
+                        e.libs.append(l)
 
 @time_me
 def get_targets_and_boards(maxim_path):
