@@ -42,6 +42,7 @@ import argparse
 from pathlib import Path
 from dataclasses import dataclass
 from utils import time_me
+from generate import populate_maximsdk
 
 curplatform = platform.system() # Get OS
 
@@ -91,21 +92,21 @@ def sync():
     shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/flash.gdb", "MaximSDK/Template/.vscode/")
 
-def release(version):
+def release(version, maxim_path):
     sync()
+    
+    r_dir = Path(f"./Releases/VSCode-Maxim-{version}") # Release directory
 
-    r_dir = f"./Releases/VSCode-Maxim-{version}" # Release directory
+    maxim_path = Path(maxim_path)
+    vscode_folders = maxim_path.rglob("*/.vscode")
+    for i in vscode_folders:
+        print(f"Copying {i}")
+        out_dir = r_dir.joinpath(Path(str(i).replace(i.anchor, ""))) # Strip drive info and pre-pend output directory
+        shutil.copytree(i, out_dir, dirs_exist_ok=True)
 
-    for d in os.scandir("./dist"):
-        target_dir = os.path.join(r_dir, d.name)
-
-        # Package release
-        print(f"Packaging {d.name}...")
-        shutil.copytree("MaximSDK", f"{target_dir}", dirs_exist_ok=True)
-        shutil.copytree(f"dist/{d.name}", target_dir, dirs_exist_ok=True)
-        shutil.copy("readme.md", target_dir)
-        shutil.copy("userguide.md", target_dir)
-        shutil.copy("LICENSE.md", target_dir)
+    shutil.copy("readme.md", r_dir)
+    shutil.copy("userguide.md", r_dir)
+    shutil.copy("LICENSE.md", r_dir)
 
     print("Done!")
 
@@ -259,6 +260,7 @@ cmd_parser = parser.add_subparsers(dest="cmd", help="sub-command", required=True
 
 release_parser = cmd_parser.add_parser("release", help="Package a release")
 release_parser.add_argument("version", type=str, help="Version # for the release")
+release_parser.add_argument("maxim_path", type=str, help="Path to the SDK for release")
 
 sync_parser = cmd_parser.add_parser("sync", help="Sync all .vscode project folders")
 
@@ -266,7 +268,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.cmd == "release":
-        release(args.version)
+        release(args.version, args.maxim_path)
     
     elif args.cmd == "sync":
         sync()
