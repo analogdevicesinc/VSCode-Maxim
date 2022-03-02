@@ -38,7 +38,7 @@ The project folders in this repo have the following dependencies:
 
 6. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
-7. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
+7. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual and `extensions.autoUpdate` to None.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.  Additionally, feature changes on the vscode-cpptools extension may cause instability.  Tested version #s can be found on each Release page.
 
 8. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
 
@@ -85,7 +85,7 @@ The project folders in this repo have the following dependencies:
 
 7. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
-8. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
+8. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual and `extensions.autoUpdate` to None.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.  Additionally, feature changes on the vscode-cpptools extension may cause instability.  Tested version #s can be found on each Release page.
 
 9. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
 
@@ -189,6 +189,8 @@ For full usage details, please refer to the [official VS Code debugger documenta
 
 The default project configuration should work for most use cases as long as `"target"` and `"board"` are set correctly.
 
+Any field from `settings.json` can be referenced from any other config file (including itself) with `"${config:[fieldname]}"`
+
 The following configuration options are available:
 ## Basic Config Options
 * `"target"`
@@ -242,6 +244,7 @@ The following configuration options are available:
 * `"M4_OCD_target_file"`
     * Sets the OpenOCD target file to use for the Arm M4 core.  This should match the target microcontroller.
     * `.cfg` file extension must be included.
+    * **On Linux there is a case-sensitivity issue with this setting**.  OpenOCD config files are all lowercase, but `"target"` must be uppercase.  On Linux, manually set this value to the lowercase target .cfg file matching the `"target"` config option.  Ex:  `""M4_OCD_target_file":"max32670.cfg"`
     * Default value: `"${config:target}.cfg"`
 
 * `"RV_OCD_interface_file"`
