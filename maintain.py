@@ -105,8 +105,8 @@ def release(version, maxim_path):
         shutil.copytree(i, out_dir, dirs_exist_ok=True)
 
     print("Copying Inect & New_Project folders")
-    shutil.copytree(Path("MaximSDK/Inject"), r_dir.joinpath("Inject"))
-    shutil.copytree(Path("MaximSDK/New_Project"), r_dir.joinpath("New_Project"))
+    shutil.copytree(Path("MaximSDK/Inject"), r_dir.joinpath("Inject"), dirs_exist_ok=True)
+    shutil.copytree(Path("MaximSDK/New_Project"), r_dir.joinpath("New_Project"), dirs_exist_ok=True)
 
     print("Copying markdown files")
     shutil.copy("readme.md", r_dir)
