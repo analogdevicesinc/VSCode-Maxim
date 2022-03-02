@@ -22,7 +22,7 @@ The project folders in this repo have the following dependencies:
 
     **Ensure all components are selected!**
 
-    ![All components selected](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/MaximSDK_Installer.JPG)
+    ![All components selected](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/installer_components.JPG)
 
 2. Set the `MAXIM_PATH` environment variable to the installation location of the SDK.  If you are unsure how to set an environment variable, see [this](https://www.onmsft.com/how-to/how-to-set-an-environment-variable-in-windows-10) article.  Ex:
 
@@ -48,7 +48,7 @@ The project folders in this repo have the following dependencies:
 
     **Ensure all components are selected!**
 
-    ![All components selected](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/MaximSDK_Installer.JPG)
+    ![All components selected](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/installer_components.JPG)
 
 2. Add MAXIM_PATH to your system environment variables.
     1. Create a new file `/etc/profile.d/maximsdk-env.sh` with the contents `export MAXIM_PATH=[MaximSDK installation location]`.  
