@@ -69,10 +69,10 @@ The project folders in this repo have the following dependencies:
 
 3. Download the latest Linux release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
 
-4. Copy the `60-openocd.rules` file from the VSCode-Maxim release into `/etc/udev/rules.d` and refresh udev rules.  The following terminal commands can be used from within the VSCode-Maxim release folder...
+4. Copy the `60-openocd.rules` file from the VSCode-Maxim release into `/etc/udev/rules.d/` and refresh udev rules.  The following terminal commands can be used from within the VSCode-Maxim release folder...
 
     ```bash
-    cp 60-openocd.rules /etc/udev/rules.d
+    cp 60-openocd.rules /etc/udev/rules.d/
     udevadm control --reload 
     ```
 
@@ -324,6 +324,7 @@ If you want to start from scratch, take this option.
 6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.  However, you'll probably want to add some source code.  See [Configuring the Makefile](#configuring-the-makefile).
 
 # Troubleshooting
+## Testing the Setup
 Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's toolchain accessible from the integrated terminal.  To test that everything is working properly : 
 
 1. Navigate to the open `TERMINAL` tab on the bottom of the VS Code application.  If a terminal is not open, you can open a new terminal with `Terminal > New Terminal` or (Ctrl+Shift+`).  
