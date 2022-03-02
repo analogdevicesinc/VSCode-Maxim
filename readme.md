@@ -20,6 +20,10 @@ The project folders in this repo have the following dependencies:
 ## Windows 10
 1. Download & install the Maxim Microcontrollers SDK via the [Windows Installer](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A).  See [AN7219](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7219.html) for a detailed installation guide if needed.  (If the SDK is already installed, run the "MaintenanceTool.exe" to update it to the latest version)
 
+    **Ensure all components are selected!**
+
+    ![All components selected](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/MaximSDK_Installer.JPG)
+
 2. Set the `MAXIM_PATH` environment variable to the installation location of the SDK.  If you are unsure how to set an environment variable, see [this](https://www.onmsft.com/how-to/how-to-set-an-environment-variable-in-windows-10) article.  Ex:
 
     ![Variable Name = MAXIM_PATH, Variable Value = C:/MaximSDK](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/maxim_path_env.JPG)
@@ -42,6 +46,10 @@ The project folders in this repo have the following dependencies:
 ### Ubuntu
 1. Download & install the Maxim Microcontrollers SDK via the [Linux Installer](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0018720A).  See [AN7219](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7219.html) for a detailed installation guide if needed.  (If the SDK is already installed, run the "MaintenanceTool" to update it to the latest version)
 
+    **Ensure all components are selected!**
+
+    ![All components selected](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/MaximSDK_Installer.JPG)
+
 2. Add MAXIM_PATH to your system environment variables.
     1. Create a new file `/etc/profile.d/maximsdk-env.sh` with the contents `export MAXIM_PATH=[MaximSDK installation location]`.  
     
@@ -61,18 +69,25 @@ The project folders in this repo have the following dependencies:
 
 3. Download the latest Linux release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
 
-4. Copy the files from the `MaximSDK` folder into the root directory of your MaximSDK installation and overwrite.  This will populate the example projects with VS Code project folders and make any necessary patches to the SDK.
+4. Copy the `60-openocd.rules` file from the VSCode-Maxim release into `/etc/udev/rules.d` and refresh udev rules.  The following terminal commands can be used from within the VSCode-Maxim release folder...
+
+    ```bash
+    cp 60-openocd.rules /etc/udev/rules.d
+    udevadm control --reload 
+    ```
+
+5. Copy the files from the `MaximSDK` folder into the root directory of your MaximSDK installation and overwrite.  This will populate the example projects with VS Code project folders and make any necessary patches to the SDK.
 
     ![Drag and Drop Installation](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/drag_and_drop_install.jpg)
     (Note:  The image above shows a Windows file explorer...  The principal is the same on any OS)
 
-5. Download & install [Visual Studio Code](https://code.visualstudio.com/).
+6. Download & install [Visual Studio Code](https://code.visualstudio.com/).
 
-6. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
+7. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
-7. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
+8. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.
 
-8. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
+9. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
 
 # Usage
 ## Introduction
