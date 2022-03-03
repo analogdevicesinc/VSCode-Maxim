@@ -62,10 +62,7 @@ The project folders in this repo have the following dependencies:
 
         ... and save the file.
 
-    2. Refresh your system environment variables with the command...
-        ```bash
-        source /etc/profile.d/maximsdk-env.sh
-        ```
+    2. Reboot your system to refresh environment variables system-wide.
 
 3. Download the latest Linux release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
 
