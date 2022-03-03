@@ -24,8 +24,7 @@ Maxim's SDKs contain all the tools necessary to build, flash, and debug code on 
 The core concepts of the content below are the same for both SDKs, but for the sake of clarity only file-paths for the MaximSDK will be used.
 
 The main components of Maxim's SDK Toolchain are:
-* [Arm GNU Compiler Collection](https://gcc.gnu.org/) (GCC) - located under `~\MaximSDK\Tools\GNUTools\bin`
-* [Arm GNU Project Debugger](https://www.gnu.org/software/gdb/) (GDB) - located under `~\MaximSDK\Tools\GNUTools\bin`
+* [Arm GNU Compiler Collection](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm) (GCC) - located under `~\MaximSDK\Tools\GNUTools\bin`
 * [Open On-Chip Debugger](http://openocd.org/) (OpenOCD) - located under `~\MaximSDK\Tools\OpenOCD`
 * [GNU Make](https://www.gnu.org/software/make) - made available on Windows via MSYS2 and located under `~\MaximSDK\Tools\MinGW\msys\1.0\bin`
 
@@ -40,53 +39,29 @@ OpenOCD handles flashing firmware and opening a debugger _server_.  It handles t
 Now that we have some understanding of the toolchain, let's see how we can integrate it into Visual Studio Code.
 
 ## Integrating the Toolchain
-Visual Studio Code provides the [Tasks](https://code.visualstudio.com/Docs/editor/tasks) interface for integrating external tools.  To use the Maxim SDK toolchain via Tasks, the toolchain binaries must be made accessible from the command line.  Additionally, the correct board and peripheral driver files for a target platform must be loaded for compilation and source code development.  When those conditions are met, then Tasks can be created to conveniently implement the features that you would expect from an IDE:  building, cleaning, flashing, and debugging.
+Visual Studio Code provides the [Tasks](https://code.visualstudio.com/Docs/editor/tasks) interface for integrating external tools.  To use the Maxim SDK toolchain via Tasks, the toolchain binaries must be made accessible from the command line.  Additionally, the correct board and peripheral driver files for a target platform must be loaded for compilation and source code development.  When those conditions are met, then Tasks can be created to conveniently implement the features that you would expect from an IDE:  building, cleaning, flashing, etc.
 
-[VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim) handles this for you and offers simple, clear configuration options for changing the target platform.  It leverages the fact that VS Code loads settings from a `.vscode` folder inside its working directory.  The `.vscode` folder in the repo makes the toolchain accessible from the integrated terminal and contains the core Tasks for use with a project Makefile.  It also configures the debugger and Intellisense properly.
+[VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim) handles this for you and offers project files that are configured for Maxim's SDK and toolchain.
 
-Let's get started setting it up.  The procedure below is a demonstration for the MAX32670EVKIT, but the same procedure can apply to all micros.
+Let's get started setting it up and walking through some common use-cases.  The procedure below is a demonstration for the MAX32670EVKIT, but the same procedure applies to all micros.
 
 ## Getting Started with VSCode-Maxim
 
 ### 1 - Install Software Requirements
-First, ensure you have met the Software [Requirements](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#requirements) listed in the readme.  This includes VS Code itself, the correct SDK for your microcontroller, and the official C/C++ extension for VS Code.
-
-If you're not sure which SDK to use for your platform, see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#requirements).  
-
-It's recommended to install all of the SDK components (Eclipse is optional) and use the default installation path.  **On Linux**:  Do not select "Eclipse".  
-
-![MaximSDK Installer Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/MaximSDK_Installer.JPG)
-
-The C/C++ extension can be installed from within VS Code from the built-in Extensions manager by searching for `ms-vscode.cpptools`, as shown below.
-
-![cpptools](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/cpptools.JPG)
+First, ensure you've followed the [installation instructions](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#installation) for your OS from the readme.  This include installing software requirements, setting the `MAXIM_PATH` environment variable, and downloading the latest release of VSCode-Maxim.
 
 <hr>
 
-### 2 - Enable Workspace Trust
-Enable workspace trust following the [procedure](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#enabling-workspace-trust) in the readme.  This is necessary to load the configuration settings from VSCode-Maxim, and should be enabled by default.
+### 2 - Open the Example Project
+Next, we'll open the template example project to see how it works.
 
-![Workspace Trust Settings](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrust.JPG)
+Launch VS Code, and then select `File > Open Folder`.  
 
-<hr>
-
-### 3 - Download the Latest Release of VSCode-Maxim
-The latest release can be found on Github [here](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases).  Extract the release to an accessible location.
-
-You'll notice two sub-folders.  The MaximLP folder contains the configuration for the LP Microcontroller toolchain, and the MaximSDK folder contains the configurations for the MaximSDK toolchain.
-
-![Folders](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/Release_folders.JPG)
-
-<hr>
-
-### 4 - Open the Example Project
-First, we'll open the example project to see how it works.  
-
-Launch VS Code, and then select `File > Open Folder`.
+"Open folder" is the main mechanism for opening projects in VS Code.  For those familiar with IDEs that offer options such as "New Project" or "Open Project", this may seem counterintuitive.  However, this will start to make more sense as you use it.  VS Code's editor is based entirely out of its working directory, and a `.vscode` folder inside that working directory can contain local settings overrides.  This is similar to the way `.git` folders work.
 
 ![File Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
 
-Navigate to the New_Project folder for your SDK from the VSCode-Maxim release you extracted earlier.
+So...  After `File > Open Folder` navigate inside of "New_Project" from the VSCode-Maxim release package and open it.  The contents should look as follows...
 
 ![Browse](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_example.JPG)
 
@@ -96,20 +71,8 @@ VSCode will prompt for trust the first time.  Select _Trust folder and enable al
 
 <hr>
 
-### (Optional) Set MAXIM_PATH
-If you installed the SDK to a non-default location or are using Linux you'll need to update the MAXIM_PATH variable inside of `.vscode/settings.json` to point to the right installation directory of the SDK.
-
-Open settings.json, and edit the `MAXIM_PATH` variable to point to the root directory of the SDK.
-![Settings](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/settings-json.JPG)
-
-For example, on Linux I might set `"MAXIM_PATH":"/home/jcarter/MaximSDK"`
-
-After using CTRL+S to save the changes to settings.json, restart VS Code.  The project folder will open back up automatically and you can pick up again on step 5 - now with the toolchain accessible.
-
-<hr>
-
-### 5 - See the Tools Working in the Terminal
-VS Code should now look something like this:
+### 3 - See the Tools Working in the Terminal
+VS Code should now look something like this.  At this point, the project is opened and ready to use.  Let's take a few steps to get familiar with how things work, starting with the integrated terminal...
 
 ![VS Code Startup](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/new_project_startup.JPG)
 
@@ -117,30 +80,34 @@ If the terminal isn't open, you can launch one with `Terminal > New Terminal`.
 
 ![New Terminal](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/new_terminal.JPG)
 
-First, we'll run through the commands in the ["Testing the Setup"](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#testing-the-setup) of the readme to see that the toolchain is accessible from the integrated terminal.
+First, we'll run through the commands in the ["Testing the Setup"](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#testing-the-setup) of the readme to see that the toolchain is accessible from the integrated terminal.  This is critical for everything else to work.  The project settings will add the locations of the toolchain to the terminal's `PATH`, and you should be able to interact with the toolchain directly.
 
 For example, running `make -v` in the terminal should output a version # for Make, as shown below.
 
 ![Make Test](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/make_test.JPG)
 
-Run the other commands for OpenOCD, GCC, and GDB to verify that the integrated terminal has been configured correctly from our `.vscode` folder settings.  These should all run successfully.
+Run the other commands for OpenOCD, GCC, and GDB to verify that the integrated terminal has been configured correctly and the toolchain is in the right place.  These should all run without error.
 * `openocd -v`
 * `arm-none-eabi-gcc -v`
 * `arm-none-eabi-gdb -v`
 
+If there _are_ any errors thrown by any of the commands above, first verify that you've followed the [installation instructions](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#installation) correctly.  Problems are usually related to a missing or incorrect `MAXIM_PATH` environment variable and/or missing SDK components.  Otherwise, see the [troubleshooting section](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/issues) of the readme.
+
 <hr>
 
-### 6 - Set the Target Platform
-Open `settings.json`.  This is the main configuration file for the vscode setup, and can be found inside of the `.vscode` folder.  The other configuration files (`c_cpp_properties.json`, `launch.json`, `tasks.json`) reference values set here, and it's here that we set our target platform.
+### 4 - Set the Target Platform
+Now, we'll do some basic configuration of the project for the MAX32670EVKIT.  
+
+Open `.vscode/settings.json`.  This is the main configuration file.
+
+[Configuration](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#configuration) contains a  detailed descriptions of options, as JSON doesn't support comments.  In this case, we'll be changing the two most basic options:  `"target"` and `"board"`.  The other options only require tweaking in advanced use-cases.  So...
 
 ![Opening settings.json](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/settings.JPG)
 
-Set the `"target"`, `"board"`, and `"debugger"` variables for your target platform.  See the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md) if you're unsure what to set here.  
-For example, for the MAX32670 I would set:
+Set the `"target"` and `"board"` variables for your target platform.
+For example, for the MAX32670EVKIT I would set.
 * `"target":"MAX32670"`
 * `"board":"EvKit_V1"`
-* `"debugger":"cmsis-dap"` (leaving at default)
-    * The value "cmsis-dap" is used for the MAX32625PICO debugger adapter, which comes with our EVKITs and is used in the platforms with integrated debuggers such as the MAX32670EVKIT.  Unless you're using a different adapter, such as an Olimex, leave this value at its default.
 
 Save your changes with `CTRL+S` and reload the VS Code window.  A reload is necessary after changing any options in `settings.json`. The VS Code window can be re-loaded quickly with the `Ctrl + Shift + P` -> `Reload Window` developer command.
 
@@ -150,21 +117,21 @@ Now VS Code is ready to edit, build, and debug source code for the target platfo
 
 <hr>
 
-### 7 - Open the Source Code
+### 5 - Open the Source Code
 Open `main.c`, which can be found in the `src` folder.  Here we can see the source code for a simple "Hello world" program.
 
 ![main.c](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/main.JPG)    
 
 <hr>
 
-### 8 - Clean the Program
+### 6 - Clean the Program
 First, let's ensure that we're starting from a clean slate.  Open the build tasks menu with `Ctrl+Shift+B` or `Terminal > Run Build Task...` and select the "clean-periph" option.  This cleans out the build products from the current project as well as the peripheral drivers in the SDK.  This ensures that the next step compiles everything from scratch.
 
 ![Cleaning the program](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/clean-periph.jpg)
 
 <hr>
 
-### 9 - Build the Program
+### 7 - Build the Program
 Next, we'll build the source code.  Open the build tasks menu again with `Ctrl+Shift+B` or `Terminal > Run Build Task...`
 
 ![Build Tasks](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
@@ -179,15 +146,17 @@ When we ran the "build" task, VS Code parsed the configuration options from `set
 
 ![Include core Makefile](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/include_core_makefile.JPG)
 
-The source code and compiler options are passed into the build with the variables further up in the Makefile.
+The source code and compiler options are passed into the build with the variables further up in the Makefile...
 
 ![Makefile main options](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/Makefile_options.JPG)
 
-See ["Configuring the Makefile"](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#configuring-the-makefile) in the readme for more details on configuring the build.
+This is a good time to bring up an important point:  _All configuration of the build itself must be done via the project's Makefile._  This includes things like adding source code files to the project, linking libraries, setting optimization levels, etc.  ["Editing the Makefile"](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#editing-the-makefile) in the readme covers this subject in more detail.
+
+For now, take note of the fact that the example project comes  pre-configured for a single `main.c` source file, and looks for all `.c` and `.h` files inside of the `src` directory.
 
 <hr>
 
-### 10 - Debug the Program
+### 8 - Debug the Program
 Now that we've seen the program build successfully, let's flash it onto the microcontroller and debug it.
 
 First, open the `main.c` source file and set a breakpoint on the `int main(void)` function.  This is the entry-point into the program and ensures that the debugger will break once the program starts execution.
