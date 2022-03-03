@@ -72,15 +72,16 @@ class Library():
         entry in the library, this function will return an empty tuple.
         """
         target_info = None
-        if target is not None:  # Search for match  
-            for i in self.targets:
-                if ("name" in i.keys() and i["name"] == target):
-                    target_info = i
 
-        if self.whitelist is True and target_info is None:
+        if self.whitelist is True and target is None:
             return () # Return empty tuple
         else:
             _ipaths = list(map(lambda p: self.path.joinpath(p), self.ipaths)) # Common paths
+
+            if target is not None and self.targets is not None:  # Search for match  
+                for i in self.targets:
+                    if ("name" in i.keys() and i["name"] == target):
+                        target_info = i
         
             if target_info is not None and "ipaths" in target_info.keys():
                 _ipaths += list(map(lambda p: self.path.joinpath(p), target_info["ipaths"])) # Target-specific paths
@@ -101,15 +102,16 @@ class Library():
         entry in the library, this function will return an empty tuple.
         """
         target_info = None
-        if target is not None:  # Search for match  
-            for i in self.targets:
-                if ("name" in i.keys() and i["name"] == target):
-                    target_info = i
 
-        if self.whitelist is True and target_info is None:
+        if self.whitelist is True and target is None:
             return () # Return empty tuple
         else:
             _vpaths = list(map(lambda p: self.path.joinpath(p), self.vpaths)) # Common paths
+
+            if target is not None and self.targets is not None:  # Search for match  
+                for i in self.targets:
+                    if ("name" in i.keys() and i["name"] == target):
+                        target_info = i
         
             if target_info is not None and "vpaths" in target_info.keys():
                 _vpaths += list(map(lambda p: self.path.joinpath(p), target_info["vpaths"])) # Target-specific paths
