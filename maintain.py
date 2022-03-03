@@ -104,7 +104,7 @@ def release(version, maxim_path):
         out_dir = r_dir.joinpath(Path(str(i).replace(i.anchor, ""))) # Strip drive info and pre-pend output directory
         shutil.copytree(i, out_dir, dirs_exist_ok=True)
 
-    print("Copying Inect & New_Project folders")
+    print("Copying Inject & New_Project folders")
     shutil.copytree(Path("MaximSDK/Inject"), r_dir.joinpath("Inject"), dirs_exist_ok=True)
     shutil.copytree(Path("MaximSDK/New_Project"), r_dir.joinpath("New_Project"), dirs_exist_ok=True)
 
@@ -261,16 +261,29 @@ def test(maxim_path, targets=None, boards=None, projects=None):
         log(f"[{pinfo['target']}] {pinfo['project']} for {pinfo['board']}...  see {pinfo['logfile']}", logfile)
 
 parser = argparse.ArgumentParser("VSCode-Maxim maintainer utilities")
+parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the MaximSDK.  If this is not specified then the script will attempt to use the MAXIM_PATH environment variable.")
+
 cmd_parser = parser.add_subparsers(dest="cmd", help="sub-command", required=True)
 
 release_parser = cmd_parser.add_parser("release", help="Package a release")
 release_parser.add_argument("version", type=str, help="Version # for the release")
-release_parser.add_argument("maxim_path", type=str, help="Path to the SDK for release")
 
 sync_parser = cmd_parser.add_parser("sync", help="Sync all .vscode project folders")
 
 if __name__ == "__main__":
     args = parser.parse_args()
+
+    # Auto-detect MAXIM_PATH
+    if args.maxim_path is None:
+        # Check environment variable
+        print("Checking MAXIM_PATH environment variable..")
+        if "MAXIM_PATH" in os.environ.keys():
+            args.maxim_path = os.environ["MAXIM_PATH"]
+            print(f"MaximSDK located at {args.maxim_path}")
+
+        else:
+            print("Failed to locate the MaximSDK...  Please specify --maxim_path manually.")
+            exit()
 
     if args.cmd == "release":
         release(args.version, args.maxim_path)
