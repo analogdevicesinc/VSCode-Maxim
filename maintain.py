@@ -1,7 +1,6 @@
 """
-
 /*******************************************************************************
-* Copyright (C) 2021 Maxim Integrated Products, Inc., All Rights Reserved.
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
 *
 * Permission is hereby granted, free of charge, to any person obtaining a
 * copy of this software and associated documentation files (the "Software"),
@@ -31,6 +30,7 @@
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
 *******************************************************************************
+*/
 """
 
 import os
