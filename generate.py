@@ -173,6 +173,7 @@ def create_project(
                 os.chmod(out_path, 0o764)
                 print(f"Wrote {os.path.basename(file)}")
 
+@time_me
 def populate_maximsdk(target_os, maxim_path, overwrite=True):
     print(f"Generating VS Code project files on {target_os} for MaximSDK located at {maxim_path}...")
     print(f"Scanning {maxim_path}...")
@@ -186,42 +187,43 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
         # Common options
         _path = example.path
         _target = example.target.name
-        _board = "EvKit_V1" if "EvKit_V1" in example.target.boards else example.target.boards[0].name
+        _board = example.target.boards[0].name # Default to first board in list
+        for b in example.target.boards:
+            if b.name == "EvKit_V1": _board = "EvKit_V1" # Use EvKit_V1 if it's there
         _program_file="{config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"]
         _symbol_file="{config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
         _ipaths = [] + defaults["I_PATHS"]
         _vpaths = [] + defaults["V_PATHS"]
 
+        # Add include and browse paths for the libraries that this example uses
         for l in example.libs:
             for ipath in l.get_ipaths(example.target.name):
-                _ipaths.append(str(ipath.as_posix()).replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").replace(example.target.name, "${config:target}"))
+                _ipaths.append(
+                    str(ipath.as_posix()).
+                    replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").
+                    replace(example.target.name, "${config:target}")
+                )
 
             for vpath in l.get_vpaths(example.target.name):
-                _vpaths.append(str(vpath.as_posix()).replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").replace(example.target.name, "${config:target}"))
+                _vpaths.append(
+                    str(vpath.as_posix()).
+                    replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").
+                    replace(example.target.name, "${config:target}")
+                )
 
-        # OS-specific overrides
-        if target_os == "Windows":
-            create_project(
-                _path, 
-                _target, 
-                _board,
-                program_file=_program_file,
-                symbol_file=_symbol_file,
-                i_paths=_ipaths,
-                v_paths=_vpaths
-            )
-            
-        elif target_os == "Linux":
-            create_project(
-                _path,
-                _target,
-                _board,
-                program_file=_program_file,
-                symbol_file=_symbol_file,
-                i_paths=_ipaths,
-                v_paths=_vpaths,
-                m4_ocd_target_file=f"{str.lower(example.target.name)}.cfg", # Linux is case-sensitive
-            ) 
+        # Linux OpenOCD .cfg files are case senstive.  Need to hard-code a lowercase value.
+        _m4_ocd_target_file = f"{str.lower(example.target.name)}.cfg" if target_os == "Linux" else defaults["M4_OCD_INTERFACE_FILE"]
+
+        create_project(
+            _path,
+            _target,
+            _board,
+            program_file=_program_file,
+            symbol_file=_symbol_file,
+            i_paths=_ipaths,
+            v_paths=_vpaths,
+            m4_ocd_target_file=_m4_ocd_target_file
+        )
 
         count += 1
 
@@ -229,41 +231,3 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
     
 def new():
     pass # TODO: New project wizard
-
-parser = argparse.ArgumentParser(description="Generate Visual Studio Code project files for Maxim's Microcontroller SDK.")
-parser.add_argument("--os", type=str, choices=["Windows", "Linux"], help="(Optional) Operating system to generate the project files for.  If not specified the script will auto-detect.")
-parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the MaximSDK.  If this is not specified then the script will attempt to use the MAXIM_PATH environment variable.")
-
-subparsers = parser.add_subparsers(dest="cmd", help="sub-command", required=True)
-
-sdk_parser = subparsers.add_parser("SDK", help="Populate a MaximSDK installation's example projects with VS Code project files.")
-
-if __name__ == "__main__":
-    args = parser.parse_args()
-
-    # Auto-detect OS
-    if args.os is None:
-        current_os = platform.platform()
-        if "Windows" in current_os: args.os = "Windows"
-        elif "Linux" in current_os: args.os = "Linux"
-        else:
-            print(f"{current_os} is not supported at this time.  Please raise a ticket on Github requesting support for your platform.")
-            exit()
-
-    # Auto-detect MAXIM_PATH
-    if args.maxim_path is None:
-        # Check environment variable
-        print("Checking MAXIM_PATH environment variable..")
-        if "MAXIM_PATH" in os.environ.keys():
-            args.maxim_path = os.environ["MAXIM_PATH"]
-            print(f"MaximSDK located at {args.maxim_path}")
-
-        else:
-            print("Failed to locate the MaximSDK...  Please specify --maxim_path manually.")
-            exit()
-    else:
-        # Parse to abs path
-        args.maxim_path = os.path.abspath(args.maxim_path)
-
-    if args.cmd == "SDK":
-        populate_maximsdk(target_os=args.os, maxim_path=args.maxim_path)
