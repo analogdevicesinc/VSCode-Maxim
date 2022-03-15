@@ -258,18 +258,21 @@ def get_examples(maxim_path, targets: list):
 
 def get_hfiles(filepath):
     hfiles = []
-    with open(filepath, "r") as c:
-        lines = c.readlines()
-        for l in lines: 
-            if "#include" in l:
-                # Search for non-standard #includes
-                # [\"] means character matching "
-                # \S+ is equivalent to %s in scanf
-                # Use raw string as recommended by Python docs (r"...")
-                m = re.search(r"[\"]\S+.h[\"]", l)
-                if m is not None:
-                    mstring = l[m.start() + 1:m.end() - 1] # strip quotes
-                    if mstring not in hfiles: hfiles.append(mstring)
+    try:
+        with open(filepath, "r") as c:
+            lines = c.readlines()
+            for l in lines: 
+                if "#include" in l:
+                    # Search for non-standard #includes
+                    # [\"] means character matching "
+                    # \S+ is equivalent to %s in scanf
+                    # Use raw string as recommended by Python docs (r"...")
+                    m = re.search(r"[\"]\S+.h[\"]", l)
+                    if m is not None:
+                        mstring = l[m.start() + 1:m.end() - 1] # strip quotes
+                        if mstring not in hfiles: hfiles.append(mstring)
+    except:
+        print(f"Failed to get header files from {filepath}")
 
     return tuple(hfiles)
 
