@@ -37,7 +37,7 @@ from dataclasses import dataclass
 from typing import Generator
 from utils import *
 import json
-import jsonpickle
+import pickle
 import re
 from copy import *
 
@@ -190,12 +190,12 @@ class SDK():
                         e.libs.append(l)
 
     def freeze(self, filename):
-        with open(filename, "w+") as f:
-            f.write(json.dumps(jsonpickle.encode(self)))
+        with open(filename, "wb") as f:
+            pickle.dump(self, f)
 
     def thaw(self, filename):
-        with open(filename, "r") as f:
-            tmp = jsonpickle.decode(json.load(f))
+        with open(filename, "rb") as f:
+            tmp = pickle.load(f)
             self.maxim_path = tmp.maxim_path
             self.targets = tmp.targets
             self.boards = tmp.boards
