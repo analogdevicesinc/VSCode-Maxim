@@ -43,6 +43,7 @@ if __name__ == "__main__":
     # Process command
     if args.cmd == "generate":
         if args.subcmd == "SDK":
+            print(f"Generating .vscode projects for all examples in SDK located at {args.maxim_path}")
             populate_maximsdk(target_os=args.os, maxim_path=args.maxim_path)
         elif args.subcmd == "new":
             pass

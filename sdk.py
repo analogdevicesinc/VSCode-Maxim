@@ -39,6 +39,7 @@ from utils import *
 import json
 import pickle
 import re
+import os
 from copy import *
 
 def get_baseitems(g: Generator):
@@ -172,35 +173,52 @@ class Example():
 
 class SDK():
     @time_me
-    def __init__(self, maxim_path):
-        # Populate initial info
+    def __init__(self, maxim_path, targets, boards, libs, examples):
         self.maxim_path = Path(maxim_path).absolute()
-        (targets, boards) = get_targets_and_boards(self.maxim_path)
         self.targets = targets
         self.boards = boards
-        self.libs = get_libraries(self.maxim_path)
-        self.examples = get_examples(self.maxim_path, targets)
+        self.libs = libs
+        self.examples = examples
+
+    @time_me
+    def from_search(maxim_path):
+        # Populate initial info
+        maxim_path = Path(maxim_path).absolute()
+        (targets, boards) = get_targets_and_boards(maxim_path)
+        targets = targets
+        boards = boards
+        libs = get_libraries(maxim_path)
+        examples = get_examples(maxim_path, targets)
 
         # Match examples to libraries
-        for e in self.examples:
-            for l in self.libs:
+        for e in examples:
+            for l in libs:
                 lib_hfiles = l.get_hfiles(e.target.name)
                 for hfile in e.hfiles:
                     if hfile in lib_hfiles and l not in e.libs:
                         e.libs.append(l)
+        
+        return SDK(maxim_path, targets, boards, libs, examples)
 
+    @time_me
     def freeze(self, filename):
+        if not Path(filename).exists():
+            os.mkdir(Path(filename).parent)
+
         with open(filename, "wb") as f:
             pickle.dump(self, f)
 
-    def thaw(self, filename):
-        with open(filename, "rb") as f:
+    @time_me
+    def thaw(filename):
+        with open(str(filename), "rb") as f:
             tmp = pickle.load(f)
-            self.maxim_path = tmp.maxim_path
-            self.targets = tmp.targets
-            self.boards = tmp.boards
-            self.libs = tmp.libs
-            self.examples = tmp.examples
+            maxim_path = tmp.maxim_path
+            targets = tmp.targets
+            boards = tmp.boards
+            libs = tmp.libs
+            examples = tmp.examples
+
+            return SDK(maxim_path, targets, boards, libs, examples)
 
 @time_me
 def get_targets_and_boards(maxim_path):

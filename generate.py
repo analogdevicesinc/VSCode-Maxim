@@ -130,7 +130,7 @@ def create_project(
             out_path = os.path.join(out_path, rel_dir)
             os.makedirs(out_path, exist_ok=True)
         else:
-            # We're in the root template folder.
+            # We're in the root template folder, no need to create a directory.
             pass
 
         # Any files to copy?
@@ -165,24 +165,32 @@ def create_project(
                         )
 
                 os.chmod(out_loc, 0o764)
-                print(f"Wrote {os.path.basename(out_loc)}")
+                # print(f"Wrote {os.path.basename(out_loc)}")  # Uncomment to debug
 
             else:
                 # There is a non-template file to copy
                 shutil.copy(os.path.join(directory, file), out_path)
                 os.chmod(out_path, 0o764)
-                print(f"Wrote {os.path.basename(file)}")
+                #print(f"Wrote {os.path.basename(file)}") # Uncomment to debug
 
 @time_me
 def populate_maximsdk(target_os, maxim_path, overwrite=True):
     print(f"Generating VS Code project files on {target_os} for MaximSDK located at {maxim_path}...")
     print(f"Scanning {maxim_path}...")
 
-    sdk = SDK(maxim_path)
+    # Check for cache file
+    cachefile = Path(".cache").joinpath("msdk")
+
+    if (cachefile.exists()):
+        print("Loading from cache file...")
+        sdk = SDK.thaw(cachefile)
+    else:
+        sdk = SDK.from_search(maxim_path)
+        sdk.freeze(cachefile)
     
     count = 0
     for example in sdk.examples:
-        print(f"Generating VSCode-Maxim project for {example.path} ...")
+        #print(f"Generating VSCode-Maxim project for {example.path} ...")
 
         # Common options
         _path = example.path
