@@ -37,6 +37,7 @@ from dataclasses import dataclass
 from typing import Generator
 from utils import *
 import json
+import jsonpickle
 import re
 from copy import *
 
@@ -188,6 +189,19 @@ class SDK():
                     if hfile in lib_hfiles and l not in e.libs:
                         e.libs.append(l)
 
+    def freeze(self, filename):
+        with open(filename, "w+") as f:
+            f.write(json.dumps(jsonpickle.encode(self)))
+
+    def thaw(self, filename):
+        with open(filename, "r") as f:
+            tmp = jsonpickle.decode(json.load(f))
+            self.maxim_path = tmp.maxim_path
+            self.targets = tmp.targets
+            self.boards = tmp.boards
+            self.libs = tmp.libs
+            self.examples = tmp.examples
+
 @time_me
 def get_targets_and_boards(maxim_path):
     maxim_path = Path(maxim_path).absolute()
@@ -232,7 +246,7 @@ def get_examples(maxim_path, targets: list):
                     Makefile.parent.name,
                     Makefile.parent,
                     t,
-                    True if "Makefile.RISCV" in get_baseitems(Makefile.parent.iterdir()) else False,
+                    "Makefile.RISCV" in get_baseitems(Makefile.parent.iterdir()),
                     [], # Filling these in later...
                     [],
                     []
@@ -263,7 +277,7 @@ def get_hfiles(filepath):
             lines = c.readlines()
             for l in lines: 
                 if "#include" in l:
-                    # Search for non-standard #includes
+                    # Search for non-standard #includes - ie. #include "myheader.h"
                     # [\"] means character matching "
                     # \S+ is equivalent to %s in scanf
                     # Use raw string as recommended by Python docs (r"...")
@@ -278,7 +292,6 @@ def get_hfiles(filepath):
 
 @time_me
 def get_libraries(maxim_path):
-    # TODO: Standardize actual library format so that I don't have to write a custom reader for each library
     maxim_path = Path(maxim_path).absolute()
     libs_path = maxim_path.joinpath("Libraries")
 
