@@ -179,7 +179,7 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
     print(f"Scanning {maxim_path}...")
 
     # Check for cache file
-    cachefile = Path(".cache").joinpath("msdk")
+    cachefile = Path(__file__).parent.joinpath(".cache").joinpath("msdk")
 
     if (cachefile.exists()):
         print("Loading from cache file...")
@@ -236,6 +236,3 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
         count += 1
 
     print(f"Done!  Created {count} projects.")
-    
-def new():
-    pass # TODO: New project wizard
