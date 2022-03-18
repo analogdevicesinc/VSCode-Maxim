@@ -220,7 +220,7 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
                 )
 
         # Linux OpenOCD .cfg files are case senstive.  Need to hard-code a lowercase value.
-        _m4_ocd_target_file = f"{str.lower(example.target.name)}.cfg" if target_os == "Linux" else defaults["M4_OCD_INTERFACE_FILE"]
+        _m4_ocd_target_file = f"{str.lower(example.target.name)}.cfg" if target_os == "Linux" else defaults["M4_OCD_TARGET_FILE"]
 
         create_project(
             _path,
