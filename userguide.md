@@ -1,4 +1,4 @@
-# How to Use Visual Studio Code with Maxim's Microcontrollers (Windows & Linux)
+# How to Use Visual Studio Code with Maxim's Microcontrollers SDK (Windows & Linux)
 
 ## Table of Contents
 * [Introduction](#introduction)
@@ -10,20 +10,18 @@
 * [Creating a Project from Scratch](#creating-a-project-from-scratch)
 
 ## Introduction
-IDEs targeted at microcontrollers can oftentimes come with a lot of overhead.  They have a tendency to be bulky, unwieldy programs that can take up a lot of hard drive space, and when something isn't configured properly they can be a pain to troubleshoot.  No one likes digging into project settings for hours trying to get their include paths working or troubleshooting five different configuration options just to link a library.
+Integrated Development Environments (IDEs) targeted at embedded systems and microcontroller development can come with a lot of overhead.  They have a tendency to be bulky, unwieldy programs that can take up a lot of hard drive space, and when something isn't configured properly they can be a pain to troubleshoot.  No one likes digging into project settings for hours trying to get their include paths working, troubleshooting five different configuration options just to link a library, or tracking a bug back down to project config option.
 
-[Visual Studio Code](https://code.visualstudio.com/) is a lightweight, powerful, and customizable editor that can serve as a great free alternative to the more traditional micro IDEs like Eclipse, Code-Composer Studio, IAR, Keil uVision, etc.  This app note outlines step-by-step how to get started with [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim), a development environment for Maxim's Microcontrollers targeted specifically at VS Code.  Since VSCode-Maxim makes calls directly into Maxim's toolchain, a detailed overview of it is provided to facilitate understanding and ease of use.
+[Visual Studio Code](https://code.visualstudio.com/) is a lightweight, powerful, and customizable editor that can serve as a great free alternative to the more traditional micro IDEs like Eclipse, Code-Composer Studio, IAR, Keil uVision, etc.  This app note outlines step-by-step how to get started with [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim), which is a collection of project configurations that integrate Maxim's Microcontrollers SDK into Visual Studio Code.
 
 ## De-Mystifying the SDK Toolchain
-Currently, Maxim maintains two Software Development Kits (SDKs) for microcontroller development - one for our earlier Low Power (LP) microcontrollers and one for the rest of Maxim's line of Arm MCUs.  The SDK you'll use will depend on the microcontroller you're targeting, but everything is being consolidated into the [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A).  
+Maxim maintains a Software Development Kits (SDK) for microcontroller development called the "Maxim Micros SDK".  The SDK contains a large number of components, such as register files, linker files, board-support packages (BSPs), peripheral drivers, example code, etc.  This section will focus on one of the _core_ components of the SDK - the _toolchain_.
 
-Before digging into the VS Code setup, it will help to understand how the SDK works.  Install the SDK for your microcontroller and we'll take a look under the hood.  (If you're not sure which to use see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#requirements)) 
+Understanding the toolchain is important because this VSCode-Maxim project is essentially a "wrapper" around the toolchain.  Let's take a look under the hood...
 
-Maxim's SDKs contain all the tools necessary to build, flash, and debug code on our Microcontrollers.  This collection of tools is called a toolchain, and it's what Integrated Development Environments (IDEs) use to build a project.  The toolchain is really just a collection of program binaries and typically includes compiler, linker, and debugger executables.  It also may include utility programs and build systems to make using these lower-level programs more convenient.
+A [toolchain](https://en.wikipedia.org/wiki/Toolchain) is really just a collection of programs and typically includes compiler, linker, and debugger executables.  It also may include utility programs and build systems to make using these lower-level programs more convenient.
 
-The core concepts of the content below are the same for both SDKs, but for the sake of clarity only file-paths for the MaximSDK will be used.
-
-The main components of Maxim's SDK Toolchain are:
+The main components of the SDK's Toolchain are:
 * [Arm GNU Compiler Collection](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm) (GCC) - located under `~\MaximSDK\Tools\GNUTools\bin`
 * [Open On-Chip Debugger](http://openocd.org/) (OpenOCD) - located under `~\MaximSDK\Tools\OpenOCD`
 * [GNU Make](https://www.gnu.org/software/make) - made available on Windows via MSYS2 and located under `~\MaximSDK\Tools\MinGW\msys\1.0\bin`
@@ -36,51 +34,76 @@ Great - so source code is compiled into firmware binaries by Make using GCC.  Ho
 
 OpenOCD handles flashing firmware and opening a debugger _server_.  It handles the necessary configuration to support the variety of debugger adapters and debugger protocols (such as SWD or JTAG) that are available and sends debugging information and instructions to the microcontroller.  OpenOCD deals with the low-level hardware and exposes a common high-level interface that can be used with a debugger _client_ such as GDB.  GDB connects to the OpenOCD server over a socket and presents a user interface.
 
-Now that we have some understanding of the toolchain, let's see how we can integrate it into Visual Studio Code.
+In general, this is how things work at a low level.  Integrated Development Environments (IDEs) such as Visual Studio Code have mechanisms for integrating toolchains so that these low-level steps can be abstracted away in a more convenient way.
 
 ## Integrating the Toolchain
 Visual Studio Code provides the [Tasks](https://code.visualstudio.com/Docs/editor/tasks) interface for integrating external tools.  To use the Maxim SDK toolchain via Tasks, the toolchain binaries must be made accessible from the command line.  Additionally, the correct board and peripheral driver files for a target platform must be loaded for compilation and source code development.  When those conditions are met, then Tasks can be created to conveniently implement the features that you would expect from an IDE:  building, cleaning, flashing, etc.
 
 [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim) handles this for you and offers project files that are configured for Maxim's SDK and toolchain.
 
-Let's get started setting it up and walking through some common use-cases.  The procedure below is a demonstration for the MAX32670EVKIT, but the same procedure applies to all micros.
+Let's get started setting it up and walking through some common use-cases.  The procedure below is a demonstration for the MAX32670EVKIT running on Windows 10, but the same procedure applies to all micros and OS's.
 
 ## Getting Started with VSCode-Maxim
 
 ### 1 - Install Software Requirements
-First, ensure you've followed the [installation instructions](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#installation) for your OS from the readme.  This include installing software requirements, setting the `MAXIM_PATH` environment variable, and downloading the latest release of VSCode-Maxim.
+First, follow the [installation instructions](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#installation) for your OS from the readme if you haven't already.  This include installing software requirements, setting the `MAXIM_PATH` environment variable, and downloading the latest release of VSCode-Maxim to an accessible location.
 
 <hr>
 
-### 2 - Open the Example Project
-Next, we'll open the template example project to see how it works.
+### 2 - Release Package Overview
+The VSCode-Maxim release package should contain the following contents.  Note: Releases between OS's/versions may differ _slightly_ from the screenshot below, but this should match in general...
 
-Launch VS Code, and then select `File > Open Folder`.  
+![Release Contents](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/Release-contents.jpg)
+
+* `"Inject"` contains _just_ the VSCode-Maxim config files _without_ any source code.  It's contents are designed to be used to "inject" a VSCode-Maxim project into any folder.
+* `"MaximSDK"` is used during the installation process.  Its contents can be copied into the root directory of an SDK installation to populate the SDK's example projects with VSCode-Maxim project files.
+* `"New_Project"` is a starter template project with a little bit of source code.  This folder is available to make creating new VSCode-Maxim projects easier.  Copy it over to a new location and rename it to create a new starter project.
+* `"LICENSE.md"` contains Maxim's copyright notice.
+* `"readme.md"` is the core readme file for the project, and you should read it!
+* `"userguide.md"` is this User Guide.
+
+### 3 - Starter Project
+In this section, we'll get hands on with the VSCode-Maxim starter project to see how it works.
+
+First, copy the "New_Project" folder from the VSCode-Maxim release package into an accessible location.  You can also rename the folder if you'd like.  For example, I've copied the folder to a `workspace` directory I created in my User folder below.  I've also renamed the project to "MyProject".
+
+**It's important that the folder name and location does _not_ contain any spaces** - this will break the project files.
+
+![MyProject](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_location.jpg)
+
+Now, launch Visual Studio Code.  On startup, it should look something like this:
+
+![VSCode Startup Screen](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/VSCode-startup.jpg)
+
+Select `Open Folder...` on the welcome page, or alternatively get there with `File -> Open Folder...`
 
 "Open folder" is the main mechanism for opening projects in VS Code.  For those familiar with IDEs that offer options such as "New Project" or "Open Project", this may seem counterintuitive.  However, this will start to make more sense as you use it.  VS Code's editor is based entirely out of its working directory, and a `.vscode` folder inside that working directory can contain local settings overrides.  This is similar to the way `.git` folders work.
 
 ![File Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
 
-So...  After `File > Open Folder` navigate inside of "New_Project" from the VSCode-Maxim release package and open it.  The contents should look as follows...
 
-![Browse](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_example.JPG)
+So...  After `File > Open Folder` navigate _inside_ of template project created earlier and click "Select Folder".
 
-VSCode will prompt for trust the first time.  Select _Trust folder and enable all features_.
+![Browse](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_openfolder.jpg)
+
+VS Code will prompt for trust the first time.  Select _Trust folder and enable all features_.
 
 ![Trust Prompt](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrustPrompt.JPG)
 
+Now, VS Code should look something like this, where the template project has been opened in the file explorer.
+
+![File opened](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_opened.jpg)
+
 <hr>
 
-### 3 - See the Tools Working in the Terminal
-VS Code should now look something like this.  At this point, the project is opened and ready to use.  Let's take a few steps to get familiar with how things work, starting with the integrated terminal...
+### 4 - Verify Toolchain Access
+At this point, the project is opened and ready to use and configure.  Let's take a few steps on the integrated terminal to verify that things _are_ actually working correctly.
 
-![VS Code Startup](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/new_project_startup.JPG)
+First, launch a terminal with `Terminal > New Terminal`.
 
-If the terminal isn't open, you can launch one with `Terminal > New Terminal`.
+![New Terminal](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_terminal.jpg)
 
-![New Terminal](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/new_terminal.JPG)
-
-First, we'll run through the commands in the ["Testing the Setup"](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#testing-the-setup) of the readme to see that the toolchain is accessible from the integrated terminal.  This is critical for everything else to work.  The project settings will add the locations of the toolchain to the terminal's `PATH`, and you should be able to interact with the toolchain directly.
+Next, we'll run through the commands in the ["Testing the Setup"](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#testing-the-setup) of the readme to see that the toolchain is accessible.  This is critical for everything else to work.  The project settings in the `.vscode` folder will add the locations of the toolchain to the terminal's `PATH`, which will allow them to be accessed directly.
 
 For example, running `make -v` in the terminal should output a version # for Make, as shown below.
 
@@ -96,20 +119,28 @@ If there _are_ any errors thrown by any of the commands above, first verify that
 <hr>
 
 ### 4 - Set the Target Platform
-Now, we'll do some basic configuration of the project for the MAX32670EVKIT.  
+With the tools verified as accessible from within VS Code, we can now start to configure the project for a specific microcontroller.
 
-Open `.vscode/settings.json`.  This is the main configuration file.
+In this case, we'll do some basic configuration of the project for the MAX32670EVKIT, but the same steps apply to any micro.
 
-[Configuration](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#configuration) contains a  detailed descriptions of options, as JSON doesn't support comments.  In this case, we'll be changing the two most basic options:  `"target"` and `"board"`.  The other options only require tweaking in advanced use-cases.  So...
+Open `.vscode/settings.json`.  This is the main configuration file, and you shouldn't need to interact with any of the other files inside of the `.vscode` folder except for in the most advanced use-cases.
 
 ![Opening settings.json](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/settings.JPG)
 
 Set the `"target"` and `"board"` variables for your target platform.
-For example, for the MAX32670EVKIT I would set.
+For example, for the MAX32670EVKIT I would set...
 * `"target":"MAX32670"`
 * `"board":"EvKit_V1"`
 
-Save your changes with `CTRL+S` and reload the VS Code window.  A reload is necessary after changing any options in `settings.json`. The VS Code window can be re-loaded quickly with the `Ctrl + Shift + P` -> `Reload Window` developer command.
+The [Configuration](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#configuration) section of the readme will tell you the values that can be set here.  In this case, we've changed the two most basic options:  `"target"` and `"board"`.
+
+![Basic Config Options](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/readme_basicconfig.jpg)
+
+As shown in the readme, the value for the `"board"` option can vary.  This option sets the Board Support Package (BSP) to use, and it should match the name of a BSP folder for the target microcontroller.  BSPs for each microcontroller can be found in the `Libraries/Boards` folder of the SDK.
+
+Save your changes to this file with `CTRL+S`.
+
+Next, reload the VS Code window.  A reload is necessary after changing any options in `settings.json` to force a re-parse. The VS Code window can be conveniently re-loaded with the `Ctrl + Shift + P` -> `Reload Window` developer command.
 
 ![Reload window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
 
@@ -117,7 +148,7 @@ Now VS Code is ready to edit, build, and debug source code for the target platfo
 
 <hr>
 
-### 5 - Open the Source Code
+### 5 - Opening main.c
 Open `main.c`, which can be found in the `src` folder.  Here we can see the source code for a simple "Hello world" program.
 
 ![main.c](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/main.JPG)    
@@ -125,16 +156,24 @@ Open `main.c`, which can be found in the `src` folder.  Here we can see the sour
 <hr>
 
 ### 6 - Clean the Program
-First, let's ensure that we're starting from a clean slate.  Open the build tasks menu with `Ctrl+Shift+B` or `Terminal > Run Build Task...` and select the "clean-periph" option.  This cleans out the build products from the current project as well as the peripheral drivers in the SDK.  This ensures that the next step compiles everything from scratch.
+First, let's ensure that we're starting from a clean slate.  Open the build tasks menu with `Ctrl+Shift+B` or `Terminal > Run Build Task...` and select the "clean-periph" option.  This cleans out the build products from the current project as well as the peripheral drivers in the SDK.  With everything cleaned out, the next step will build everything from scratch.
 
 ![Cleaning the program](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/clean-periph.jpg)
+
+Selecting the `clean-periph` build task will launch the task in the integrated terminal, and it will look someting like this...
+
+![Clean-periph Complete](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/clean-periph_complete.jpg)
 
 <hr>
 
 ### 7 - Build the Program
-Next, we'll build the source code.  Open the build tasks menu again with `Ctrl+Shift+B` or `Terminal > Run Build Task...`
+Next, we'll build the source code.  
 
-![Build Tasks](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
+It should be noted that the template project's Makefile comes with a basic pre-configuration "out of the box".  However, keep in mind that the Makefile _does_ need to be edited when you want to do things like add source code, change compiler flags, etc.  This is covered in the [Editing the Makefile](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#editing-the-makefile) section of the readme and additional sections in this User Guide, but for now no additional steps are necessary - we'll see how to run the build command in the first place.
+
+Open the build tasks menu again with `Ctrl+Shift+B` or `Terminal > Run Build Task...`
+
+![Build Tasks](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks_build.jpg)
 
 Select build to compile the source code.  You'll notice the build task completing in the terminal window, and a new `build` directory will appear in the file explorer.  At the end of a successful build the program binary (.elf file) will be placed in this build directory.
 
@@ -150,7 +189,7 @@ The source code and compiler options are passed into the build with the variable
 
 ![Makefile main options](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/Makefile_options.JPG)
 
-This is a good time to bring up an important point:  _All configuration of the build itself must be done via the project's Makefile._  This includes things like adding source code files to the project, linking libraries, setting optimization levels, etc.  ["Editing the Makefile"](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#editing-the-makefile) in the readme covers this subject in more detail.
+This is a good time to (once again) re-iterate an important point:  _All configuration of the build itself must be done via the project's Makefile._  [Editing the Makefile](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#editing-the-makefile) in the readme covers this subject in more detail.
 
 For now, take note of the fact that the example project comes  pre-configured for a single `main.c` source file, and looks for all `.c` and `.h` files inside of the `src` directory.
 
@@ -159,26 +198,22 @@ For now, take note of the fact that the example project comes  pre-configured fo
 ### 8 - Debug the Program
 Now that we've seen the program build successfully, let's flash it onto the microcontroller and debug it.
 
-First, open the `main.c` source file and set a breakpoint on the `int main(void)` function.  This is the entry-point into the program and ensures that the debugger will break once the program starts execution.
+First, ensure that your microcontroller is powered on and connected to your PC through your debug adapter.  The specifics of this will vary based on the platform you're using, but documentation can be found in the datasheet.  On a platform with an integrated debugger, such as the [MAX32670EVKIT](https://datasheets.maximintegrated.com/en/ds/MAX32670EVKIT.pdf), this is as simple as plugging it in with a micro-usb cable.  On platforms where the debug adapter is not integrated, you'll need to connect your debug adapter to the right debugger port and power the platform separately.
 
-![Breakpoint in Hello World](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/breakpoint_helloworld.JPG)
+Next, we'll flash our compiled program binaries on to the microcontroller.  This is done with the `flash` build task.  Use `CTRL + SHIFT + B` to open up the build tasks menu again and select `flash`.  The `flash` build task will automatically run the `build` task first to make sure our program has actually been compiled successfully.  `build` is incremental, so the check should only take a few seconds since we've already built the code.
 
-Next, ensure that your microcontroller is powered on and connected to your PC through your debug adapter.  On a platform with an integrated debugger, such as the MAX32670EVKIT, this is as simple as plugging it in with a micro-usb cable.  On platforms where the debug adapter is not integrated, you'll need to connect your debug adapter to the right debugger port and power the platform separately.  See your target platform's datasheet for more details.
-
-Now, launch the debugger by pressing `F5` or by navigating to the debugger window and pressing the green play button next to "GDB".
+Once the flash is complete, launch the debugger by pressing `F5` or by navigating to the debugger window and pressing the green play button next to "GDB".
 
 ![Debugger Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger_window.JPG)
 
-You'll see some activity happening in the terminal as the debugger is launched. VS Code will automatically run the `build` task to make sure the code is compiled without errors.  Then, it runs the `flash` task to flash the compiled program binary to the target micro with an OpenOCD command.  Finally, it opens an OpenOCD server and launches a GDB session to connect to it.  
-
-Once the debugger connects you should see the breakpoint set on main hit.  VS Code should look something like this:
+Once the debugger connects it will break the program execution on entry into the `main` function.  VS Code should look something like this:
 
 ![Breakpoint Hit](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/breakpoint_hit.JPG)
 
 <hr>
 
 ### 11 (optional) - Open a Serial Port to the Micro
-Before we continue the program execution, you'll need to open a serial port to the platform to see the "Hello world!" message and count printed.
+Before we continue the program execution, you can optionally open up a serial port to the microcontroller to see the "Hello world!" message and count printed.
 
 Default serial communication settings are:
 * BAUD : 115200
