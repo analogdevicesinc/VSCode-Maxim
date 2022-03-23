@@ -175,11 +175,14 @@ def create_project(
 
 @time_me
 def populate_maximsdk(target_os, maxim_path, overwrite=True):
+    # Copy readme into template directory
+    shutil.copy("readme.md", str(Path("MaximSDK/Template/.vscode")))
+
     print(f"Generating VS Code project files on {target_os} for MaximSDK located at {maxim_path}...")
     print(f"Scanning {maxim_path}...")
 
     # Check for cache file
-    cachefile = Path(__file__).parent.joinpath(".cache").joinpath("msdk")
+    cachefile = Path(maxim_path).joinpath(".cache").joinpath("msdk")
 
     if (cachefile.exists()):
         print("Loading from cache file...")
@@ -222,6 +225,18 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
         # Linux OpenOCD .cfg files are case senstive.  Need to hard-code a lowercase value.
         _m4_ocd_target_file = f"{str.lower(example.target.name)}.cfg" if target_os == "Linux" else defaults["M4_OCD_TARGET_FILE"]
 
+        # RPi Tools
+        if target_os == "RPi":
+            _arm_gcc_path = "${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi/${config:v_Arm_GCC}"
+            _xpack_gcc_path = "${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/${config:v_xPack_GCC}"
+            _v_arm_gcc = "10.3.1"
+            _v_xpack_gcc = "10.2.0-1.2"
+        else:
+            _arm_gcc_path = defaults["ARM_GCC_PATH"]
+            _xpack_gcc_path = defaults["XPACK_GCC_PATH"]
+            _v_arm_gcc = defaults["V_ARM_GCC"]
+            _v_xpack_gcc = defaults["V_XPACK_GCC"]
+
         create_project(
             _path,
             _target,
@@ -230,7 +245,11 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
             symbol_file=_symbol_file,
             i_paths=_ipaths,
             v_paths=_vpaths,
-            m4_ocd_target_file=_m4_ocd_target_file
+            m4_ocd_target_file=_m4_ocd_target_file,
+            arm_gcc_path=_arm_gcc_path,
+            xpack_gcc_path=_xpack_gcc_path,
+            v_arm_gcc=_v_arm_gcc,
+            v_xpack_gcc=_v_xpack_gcc
         )
 
         count += 1
