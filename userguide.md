@@ -167,15 +167,13 @@ Selecting the `clean-periph` build task will launch the task in the integrated t
 <hr>
 
 ### 7 - Build the Program
-Next, we'll build the source code.  
-
-It should be noted that the template project's Makefile comes with a basic pre-configuration "out of the box".  However, keep in mind that the Makefile _does_ need to be edited when you want to do things like add source code, change compiler flags, etc.  This is covered in the [Editing the Makefile](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#editing-the-makefile) section of the readme and additional sections in this User Guide, but for now no additional steps are necessary - we'll see how to run the build command in the first place.
+Next, we'll build the source code.
 
 Open the build tasks menu again with `Ctrl+Shift+B` or `Terminal > Run Build Task...`
 
 ![Build Tasks](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks_build.jpg)
 
-Select build to compile the source code.  You'll notice the build task completing in the terminal window, and a new `build` directory will appear in the file explorer.  At the end of a successful build the program binary (.elf file) will be placed in this build directory.
+Select `build` to compile the source code.  You'll notice the build task completing in the terminal window, and a new `build` directory will appear in the file explorer.  At the end of a successful build the program binary (.elf file) will be placed in this build directory.
 
 ![Build complete](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/build_complete.JPG)
 
@@ -195,12 +193,14 @@ For now, take note of the fact that the example project comes  pre-configured fo
 
 <hr>
 
-### 8 - Debug the Program
+### 8 - Flash and Debug the Program
 Now that we've seen the program build successfully, let's flash it onto the microcontroller and debug it.
 
 First, ensure that your microcontroller is powered on and connected to your PC through your debug adapter.  The specifics of this will vary based on the platform you're using, but documentation can be found in the datasheet.  On a platform with an integrated debugger, such as the [MAX32670EVKIT](https://datasheets.maximintegrated.com/en/ds/MAX32670EVKIT.pdf), this is as simple as plugging it in with a micro-usb cable.  On platforms where the debug adapter is not integrated, you'll need to connect your debug adapter to the right debugger port and power the platform separately.
 
-Next, we'll flash our compiled program binaries on to the microcontroller.  This is done with the `flash` build task.  Use `CTRL + SHIFT + B` to open up the build tasks menu again and select `flash`.  The `flash` build task will automatically run the `build` task first to make sure our program has actually been compiled successfully.  `build` is incremental, so the check should only take a few seconds since we've already built the code.
+With the debugger connected, flash the compiled program on to the microcontroller.  This is done with the `flash` build task.  Use `CTRL + SHIFT + B` to open up the build tasks menu again and select `flash`.  The `flash` build task will automatically run the `build` task first to make sure our program has actually been compiled successfully.  `build` is incremental, so the check should only take a few seconds since we've already built the code.  Then, the task will open an OpenOCD connection and flash the program binaries from a GDB client script.  The terminal output during `flash` will show the GDB side of the procedure, and a `flash.log` file will be created to log the OpenOCD side.  These can be viewed in case of any issues.  A successful flash should look something like below.
+
+![Flash Task Complete](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_flash.jpg)
 
 Once the flash is complete, launch the debugger by pressing `F5` or by navigating to the debugger window and pressing the green play button next to "GDB".
 
@@ -212,7 +212,7 @@ Once the debugger connects it will break the program execution on entry into the
 
 <hr>
 
-### 11 (optional) - Open a Serial Port to the Micro
+### 9 (optional) - Open a Serial Port to the Micro
 Before we continue the program execution, you can optionally open up a serial port to the microcontroller to see the "Hello world!" message and count printed.
 
 Default serial communication settings are:
@@ -232,7 +232,7 @@ From there, steps will be program-specific to the serial terminal you're using. 
 
 <hr>
 
-### 12 - Continue the Program
+### 10 - Continue the Program
 Press `F5` or hit the continue button in the debugger menu to continue the program past the breakpoint.
 
 ![Continue button](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/continue_button.JPG)
@@ -245,17 +245,20 @@ Feel free to play around in the debugger here (setting different breakpoints, wa
 
 <hr>
 
-### 13 - Wrapping Up
-Here, we've gotten started with a basic project configuration, the available build tasks, and have debugged a Hello World program.  The `New_Project` folder is intended as a project template to get you started, and you can freely copy this project around and re-configure it for different target platforms.
+### 11 - Wrapping Up
+Here, we've gotten started with a basic project configuration, the available build tasks, and have flashed/debugged the template Hello World program.  
+
+The `New_Project` project template is designed as a good re-usable starting point, and you can freely copy this project around and re-configure it for different target platforms.
 
 You should now have a good basic understanding of how VS Code works and how Maxim's toolchain is integrated.  The next sections cover more advanced subjects.
 
 <hr>
 
 ## Referencing Example Code
-When writing code for Maxim's Microcontrollers you might want to reference example code to see how to use our peripheral drivers.
 
-In the MaximSDK examples can be found under the `~\MaximSDK\Examples\<Target Platform>` folder, and in the LP SDK they can be found under the `~\Maxim\Firmware\<Target Platform>\Applications\EvKitExamples` folder.  For instance, the MAX32670 has the following examples available:
+Frequently, you might want to reference example code to see how to use the MaximSDK's peripheral drivers (I2C, GPIOs, ADCs, etc.)
+
+In the MaximSDK examples can be found under the `~/MaximSDK/Examples/<Target Platform>` folder.  For instance, the MAX32670 has the following examples available:
 
 ![Examples folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/examples_folder.JPG)
 
@@ -269,9 +272,7 @@ There are a couple components inside the project:
 * Eclipse configuration files and debugger profile (`.cproject`, `.project`, `GPIO.launch`)
 * A readme
 
-_(Before proceeding - This section assumes you've already met the [requirements](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#requirements) for using the VSCode-Maxim repository.  If not, working through the "Getting Started" section of this UG first is recommended.)_
-
-A quick way to reference the example code is to drag and drop it into VS Code's editor while you have an active project open.  Intellisense settings for the active project will be used even when editing external files.  For example, dragging the `main.c` file from the GPIO example for the MAX32670 into the "Hello World" project we configured in the previous section allows for simultaneous viewing.
+A quick way to reference the example code is to drag and drop it into VS Code's editor while you have an active project open.  Settings from the active project will be used even when editing external files.  For example, having the template project opened in VS Code allows the `main.c` file from the GPIO example to be dragged into the editor with working function look-ups.
 
 ![GPIO Copy](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/GPIO_copy.JPG)
 
@@ -297,13 +298,22 @@ The implementation file for the correct die-type of the microcontroller needs to
 
 Using this method, you can quickly and easily reference example code for your own applications.  This method works for any external code, provided that the search paths for Intellisense are configured properly.  For more details on configuration of those search paths, see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md).
 
-## Injecting into Existing Source Code
-Using example code as a reference is great, but what if we want to work with it directly, or inject the VS Code setup into a different project that's not in the MaximSDK?  That's where the `Inject` folder in the VSCode-Maxim release package comes in.  In the example below, we'll inject the VS Code setup into the Maxim SDK GPIO example, but this procedure fundamentally applies to any existing source code.
+Note:  It's recommended to only use this method for _browsing/referencing_ example code.  If you'd like to work with the example projects directly, it's recommended to copy them to an external location to keep the SDK's reference copy untouched.  See the next section for more details.
 
-_This section assumes you've already met the [requirements](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#requirements) for using the VSCode-Maxim repository.  If not, working through the "Getting Started" section of this UG first is recommended._
+## Loading Example Projects
+Following the [installation procedure](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#installation) from the VSCode-Maxim readme will populate the MaximSDK's example projects with `.vscode` project folders.  As such, they're ready to use "out of the box" with `File -> Open Folder`.
+
+However, it's recommended to copy the example projects to a location _outside_ of the SDK before using them.  Keeping a copy of the original examples intact and untouched is always a good idea in case you need to go back and reference them later.
+
+By default, the example projects are configured for the "EVKIT" evaluation platform for each target microcontroller.  See [Project Settings](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#project-settings) in the readme if you need to change this. 
+
+## Injecting into Existing Source Code
+Using example code as a reference is great, but what if we want to inject the VS Code setup into an existing project that's not in the MaximSDK?  That's where the `Inject` folder in the VSCode-Maxim release package comes in.  
+
+In the example below, we'll use the GPIO example _without_ any pre-existing VS Code project settings.  The same procedure applies to any existing source code.
 
 ### 1 - Locate the Existing Project
-Example projects can be found under the `~\MaximSDK\Examples\<Target Platform>` folder for the Maxim SDK and in the LP SDK they can be found under the `~\Maxim\Firmware\<Target Platform>\Applications\EvKitExamples` folder.  For the sake of this example, a working copy of the GPIO example has been copied over into a separate folder.
+For the sake of this example, a working copy of the GPIO example has been copied over into a separate folder.
 
 The contents of this GPIO example are as follows:
 
@@ -311,24 +321,8 @@ The contents of this GPIO example are as follows:
 
 <hr>
 
-### 2 - (Optional) Delete Eclipse Project Files
-The `.cproject`, `.project`, and `GPIO.launch` files are all Eclipse-related project files.  Since we're working with VS Code these can be deleted to clean up the project.
-
-![GPIO Contents Cleaned](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_contents_clean.JPG)
-
-<hr>
-
-### 3 - (Optional) Rename the Existing Makefile
-In step #4 we'll inject the VS Code setup into the project folder, and this will replace the existing Makefile.  It may good idea to keep the existing Makefile around for reference, especially for more complicated projects.
-
-Rename the existing `Makefile` to `Makefile-old` to keep a reference copy.  By renaming the file, it won't interfere with our new one.
-
-![Rename Makefile](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/rename_makefile.JPG)
-
-<hr>
-
-### 4 - Inject the VS Code Environment
-Copy the _contents_ of the `Inject` for your SDK from VSCode-Maxim into the example project.  In this example we're working with the MAX32670, so we'll use the `Inject` folder inside of the `MaximSDK` folder.  
+### 2 - Inject the VSCode-Maxim Files
+Copy the _contents_ of the `Inject` folder from the VSCode-Maxim release package into the example project.
 
 ![GPIO Inject](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/inject_gpio.JPG)
 
@@ -338,8 +332,8 @@ The contents of the project should now look something like this, with our `.vsco
 
 <hr>
 
-### 5 - Open the Project
-The GPIO is now ready to be opened from within VS Code, and from here we'll follow a similar process as the one outlined in the "Getting Started" section of this User Guide.  You'll open the project folder and configure `settings.json` for your target platform.  However, since we're injecting into existing source code, we'll need to configure the build system a bit as well.  We'll get into that, but first things first...
+### 3 - Open the Project
+The GPIO is now ready to be opened from within VS Code, and from here we'll follow a similar process as the one outlined in the "Getting Started" section of this User Guide.  You'll open the project folder and configure `settings.json` for your target platform.  However, since we're injecting into existing source code, we'll need to configure the Makefile as well.  First things first...
 
 Launch VS Code.  Open the project folder with `File > Open Folder...` and browse to the root directory of the project.
 
@@ -351,20 +345,21 @@ VS Code should prompt for workspace trust.  Select _Trust folder and enable all 
 
 <hr>
 
-### 6 - Set the Target Platform & Reload
+### 4 - Set the Target Platform & Reload
 Open `settings.json` inside of the `.vscode` folder and configure the project settings for your target platform.  See the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md) if you are unsure what to set here.  
 For example, settings for the MAX32670EVKIT would be...
 * `"target":"MAX32670"`
 * `"board":"EvKit_V1"`
-* `"debugger":"cmsis-dap"`
+
+The rest of the settings should be suitable for most use-cases.  The only other setting that might need a deeper look here is the `M4_OCD_interface_file`.  The default `cmsis-dap.cfg` setting is suitable for use with a target platform that MAX32625PICO debugger.  If your target platform has an integrated debugger (such as the MAX32670EVKIT), that's it.  Additionally, most evaluation kits will usually come with an _external_ MAX32625PICO debugger, so this setting can be left at its default.  In other cases, see [Advanced Config Options](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#advanced-config-options) in the readme. 
+
+![Reload Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/settings.JPG)
 
 `CTRL+S` to save the changes to the file, and then reload the VS Code window with `CTRL + SHIFT + P` > `Developer: Reload Window`.  This is necessary so that VS Code re-parses all file-paths for our new target platform.
 
-![Reload Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/gpio_reload_window.JPG)
-
 <hr>
 
-### 7 - Configure the Build System
+### 5 - Configure the Build System
 With the project settings configured, everything should be working in the editor.  The `main.c` file can be opened and Intellisense will work properly.
 
 However, in order to actually build this project, we'll need to configure the build system to match the existing source code.  This involves editing the core project `Makefile`.
@@ -391,7 +386,11 @@ or...
 
 <hr>
 
-### 8 - Clean & Build the GPIO Example
+Take option #1 or #2.
+
+In this case, that's all the Makefile configuration that's needed for the project.  See [Editing the Makefile](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#editing-the-makefile) in the readme for more details on other scenarios, such as adding additional source files, changing compiler flags, linking libraries, etc.
+
+### 6 - Clean & Build the GPIO Example
 With the Makefile configured, we're ready to build the project.
 
 As always, with a new project it's best to run a `clean-periph` first to ensure we're starting from scratch.  
@@ -410,7 +409,7 @@ Monitor the terminal for any errors as the Makefile builds the periphal drivers 
 
 <hr>
 
-### 9 - Wrapping Up
+### 7 - Wrapping Up
 From here, the example is ready to be flashed to the target microcontroller, debugged, edited, and explored further.  This same process can be applied to injecting the VS Code setup into any example project or existing source code.  
 
 To summarize, you will...
@@ -421,101 +420,19 @@ To summarize, you will...
 
 <hr>
 
-## Creating a Project from Scratch
-In the previous sections we've gotten started with the "Hello World" example, discussed how to reference example code, and demonstrated injecting the VS Code setup into existing source code.  Working through these examples should give you an idea of what might be involved with creating a new project from scratch, but it's helpful to have a clear procedure and example to reference.  In the example below, we'll walk through building up a simple program from scratch.  This program will have a more advanced project structure with additional source files and sub-folders.
+## Adding Source Code Example
+In the example below, we'll walk through adding in additional source code files.  This program will have a more advanced project structure with sub-folders.  This example will assume you've worked through the basics of project configuration and setup, and already have the project open in VS Code.
 
-_This section assumes you've already met the [requirements](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#requirements) for using the VSCode-Maxim repository.  If not, working through the "Getting Started" section of this UG first is recommended._
-
-### 1 - Create the Project Folder
-To start, create a new folder for the project.  The only requirements for this folder are that it's...
-* Accessible
-* Doesn't have any spaces in the full directory path
-
-In this example, I've created a folder called `MyProject`.
-
-![My Project](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_empty.JPG)
-
-<hr>
-
-### 2 - Inject VSCode-Maxim into the Project Folder
-Next, copy the contents of the `Inject` folder for your target platform from [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) into the newly created project folder.  If you're unsure which folder to use (`MaximLP` vs `MaximSDK`) consult the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md).
-
-In the example below, I'll be building a project for the MAX32670EVKIT.  So the `Inject` folder from `MaximSDK` will be used.
-
-![Inject into MyProject](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_inject.JPG)
-
-The contents of the new project should now look as follows...
-
-![Injected into MyProject](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_injected.JPG)
-
-<hr>
-
-### 3 - Open the Folder in VS Code
-Launch VS Code and open the project folder with `File > Open Folder`.
-
-VS Code should prompt for trust the first time you open the project.  Select _Trust folder and enable all features_.
-
-<hr>
-
-### 4 - Set the Target Platform & Reload
-Open `settings.json` inside of the `.vscode` folder and configure the project settings for your target platform.  See the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md) if you are unsure what to set here.  
-For example, settings for the MAX32670EVKIT would be...
-* `"target":"MAX32670"`
-* `"board":"EvKit_V1"`
-* `"debugger":"cmsis-dap"`
-
-`CTRL+S` to save the changes to the file, and then reload the VS Code window with `CTRL + SHIFT + P` > `Developer: Reload Window`.  This is necessary so that VS Code re-parses all file-paths for our new target platform.
-
-![Reload Window](img/myproject_reload.JPG)
-
-<hr>
-
-### 5 - Create a 'src' Directory
-Next, create a folder inside of the project called `src`.  The Makefile is pre-configured to look for source files inside of this folder by default.  It's recommended to use this configuration, but if you would like you can change the `VPATH` and `IPATH` assignments inside of the project `Makefile`.
-
-![VPATH and IPATH](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/vpath_ipath.JPG)
-
-Right click in VS Code's explorer and select "New Folder".
-
-![New Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_newfolder.JPG)
-
-Name the folder "src" to match the Makefile configuration.
-
-![Src Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_src.JPG)
-
-<hr>
-
-### 6 - Create a 'main.c' File
-Next, create a `main.c` file inside of the newly created `src` folder.  This file will contain the `main` entry-point function of the program.
-
-Right click on the `src` folder and select "New File".
-
-![New File](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_newfile.JPG)
-
-Name it `main.c` and hit Enter.  It should open in the editor.
-
-<hr>
-
-### 7 - Define a 'main' Function
-Define the standard `main` function that will be the entry-point to the program.
-
-![Main function](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_main_empty.JPG)
-
-Fundamentally, that's it.  The project is ready to be built, debugged, and expanded.  Remember:  When starting a new project, it's a good idea to run `clean-periph` once to ensure you're building the peripheral drivers from scratch.
-
-For the sake of this example we'll continue and add in some additional source code to demonstrate additional configuration of the build system.
-
-<hr>
-
-### 8 - Adding Additional Source Code
-Adding and editing additional source code to the project is straightforward.  Files can be created from within VS Code or dragged and dropped into the project explorer.  However, the `Makefile` must be configured properly to add any additional source code to the build.
+Adding and editing additional source code in the VS Code editor is straightforward.  Files can be created from within VS Code or dragged and dropped into the project explorer.  However, the `Makefile` must be configured to add additional source code files to the build.
 
 There are some general rules that can be followed for configuring the `Makefile`:
 * Make sure the any implementation files added (.c) are added to the list of files to compile with the `SRCS` variable.
 * Make sure the `Makefile` knows where to find these implementation files.  You control where it looks with the `VPATH` variable.
 * Header files (.h) don't need to be explicitly added to the build like source files (.c) do, but the `Makefile` needs to know where to look for them.  You control where it looks with the `IPATH` variable.
 
-For example, let's say I add the following source code in its own folder called `mylibrary`, with a `hellolibrary` header (.h) and implementation (.c) file.
+These rules cover basic scenarios.  See [Editing the Makefile](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#editing-the-makefile) in the readme for a more thorough list. 
+
+Let's say I add the following source code in its own folder called `mylibrary`, with a `hellolibrary` header (.h) and implementation (.c) file.
 
 ![Hello Library h](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_hellolibrary_h.JPG)
 
@@ -538,12 +455,5 @@ Now, when we run the `Build` task we can see the hellolibrary.c file added to th
 
 <hr>
 
-### 9 - Wrapping Up
-Above, we've seen how to build up a project from scratch and how to expand it with additional source code.  The procedure outlined here for configuring the Makefile will be suitable for most situations but hasn't covered everything.  For a more detailed list of configuration options, see the [readme](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md).
-
-<hr>
-
 ## Conclusion
 Visual Studio Code is a great free code editor that, with the help of [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim), can be used for embedded development with Maxim's Microcontroller toolchain.  Having worked through this User Guide, you now hopefully have a good understanding of how Maxim's toolchain works, how it's integrated into VS Code, and how to leverage it to develop your own projects.
-
-Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/issues) tracker on Github.

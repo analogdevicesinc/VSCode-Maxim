@@ -3,15 +3,23 @@ import platform
 import os
 from generate import *
 
+# Set up command-line args
+# ---
 parser = argparse.ArgumentParser(description="VSCode-Maxim command line tool.")
 
-parser.add_argument("--os", type=str, choices=["Windows", "Linux"], help="(Optional) Operating system to generate the project files for.  If not specified the script will auto-detect.")
+parser.add_argument("--os", type=str, choices=["Windows", "Linux", "RPi"], help="(Optional) Operating system to generate the project files for.  If not specified the script will auto-detect.")
 parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the MaximSDK.  If this is not specified then the script will attempt to use the MAXIM_PATH environment variable.")
 
 cmd_parser = parser.add_subparsers(dest="cmd", help="sub-command", required=True)
 
-generate_parser = cmd_parser.add_parser("generate", help="Populate a MaximSDK installation's example projects with VS Code project files.")
-generate_parser.add_argument("subcmd", choices=["SDK", "new"], help="What to generate.")
+SDK_parser = cmd_parser.add_parser("SDK", help="Populate a MaximSDK installation's example projects with VS Code project files.")
+
+new_parser = cmd_parser.add_parser("new", help="Create a new VSCode-Maxim project")
+new_parser.add_argument("location", help="Root location of the project to create.  The project will be created in a new folder located at <location>/<name>.")
+new_parser.add_argument("name", help="Name of the project.  The project will be created in a new folder located at <location>/<name>.")
+new_parser.add_argument("target", help="Target microcontroller for the project", choices=whitelist)
+new_parser.add_argument("board", help="Target board to use for the project.")
+# ---
 
 if __name__ == "__main__":
     args = parser.parse_args()
@@ -41,13 +49,13 @@ if __name__ == "__main__":
         args.maxim_path = os.path.abspath(args.maxim_path)
 
     # Process command
-    if args.cmd == "generate":
-        if args.subcmd == "SDK":
-            print(f"Generating .vscode projects for all examples in SDK located at {args.maxim_path}")
-            populate_maximsdk(target_os=args.os, maxim_path=args.maxim_path)
-        elif args.subcmd == "new":
-            pass
-            # TODO: new project creator
+    if args.cmd == "SDK":
+        print(f"Generating .vscode projects for all examples in SDK located at {args.maxim_path}")
+        populate_maximsdk(target_os=args.os, maxim_path=args.maxim_path)
+
+    elif args.cmd == "new":
+        pass
+        # TODO: new project generator
 
 
     

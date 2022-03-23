@@ -182,7 +182,11 @@ For full usage details, please refer to the [official VS Code debugger documenta
 
 # Configuration
 ## Project Settings
-`.vscode/settings.json` is the main project configuration file.  Values set here are parsed into the other .json config files.  When a change is made to this file, VS Code should be restarted (or alternatively reloaded with CTRL+SHIFT+P -> Reload Window) to force a re-parse.  
+`.vscode/settings.json` is the main project configuration file.  Values set here are parsed into the other .json config files.  
+
+**When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -> Reload Window (or alternatively restarted completely) to force a re-parse.**
+
+![Reload Window](img\reload_window.JPG)
 
 The default project configuration should work for most use cases as long as `"target"` and `"board"` are set correctly.
 
@@ -235,6 +239,7 @@ The following configuration options are available:
 
 * `"M4_OCD_interface_file"`
     * Sets the OpenOCD interface file to use to connect to the Arm M4 core.  This should match the debugger being used for the M4 core.
+    * The `MaximSDK/Tools/OpenOCD/scripts/interface` folder is searched for the file specified by this setting.
     * `.cfg` file extension must be included.
     * Default value: `"cmsis-dap.cfg"`
 
@@ -242,15 +247,18 @@ The following configuration options are available:
     * Sets the OpenOCD target file to use for the Arm M4 core.  This should match the target microcontroller.
     * `.cfg` file extension must be included.
     * **On Linux there is a case-sensitivity issue with this setting**.  OpenOCD config files are all lowercase, but `"target"` must be uppercase.  On Linux, manually set this value to the lowercase target .cfg file matching the `"target"` config option.  Ex:  `""M4_OCD_target_file":"max32670.cfg"`
+    * The `MaximSDK/Tools/OpenOCD/scripts/target` folder is searched for the file specified by this setting.
     * Default value: `"${config:target}.cfg"`
 
 * `"RV_OCD_interface_file"`
     * Sets the OpenOCD interface file to use to connect to the RISC-V core.  This should match the debugger being used for the RISC-V core.
+    * The `MaximSDK/Tools/OpenOCD/scripts/interface` folder is searched for the file specified by this setting.
     * `.cfg` file extension must be included.
     * Default value: `"cmsis-dap.cfg"`
 
 * `"RV_OCD_target_file"`
     * Sets the OpenOCD target file to use for the RISC-V core.
+    * The `MaximSDK/Tools/OpenOCD/scripts/target` folder is searched for the file specified by this setting.
     * `.cfg` file extension must be included.
     * Default value: `"${config:target}_riscv.cfg"`
 
@@ -284,7 +292,7 @@ To add additional search paths :
 
 2. Add the include path(s) to the `configurations > includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
 
-3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".  
+3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".
 
 # Project Creation
 ### Option 1.  Copying a Pre-Made Project
@@ -323,6 +331,24 @@ If you want to start from scratch, take this option.
 
 6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.  However, you'll probably want to add some source code.  See [Configuring the Makefile](#configuring-the-makefile).
 
+# Die Types to Part Numbers
+The MaximSDK's peripheral driver filenames are written using die types instead of external part numbers.  This table shows which part numbers correspond to each die type, which is useful through source file definitions.
+
+| Die Type | Part Number |
+| -------- | ----------- |
+| ES17 | MAX32520 |
+| ME10 | MAX32650 |
+| ME11 | MAX32660 |
+| ME13 | MAX32570 |
+| ME14 | MAX32665 |
+| ME15 | MAX32670 |
+| ME16 | MAX32675 |
+| ME17 | MAX32655 |
+| ME18 | MAX32690 |
+| ME21 | MAX32672 |
+| AI85 | MAX78000 |
+| AI87 | MAX78002 |
+
 # Troubleshooting
 ## Testing the Setup
 Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's toolchain accessible from the integrated terminal.  To test that everything is working properly : 
@@ -343,3 +369,12 @@ Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's too
    ![Make -v example output](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/make_test.JPG)
 
 If the tools are not accessible from the terminal, then the system settings and/or project settings must be examined further.  (Troubleshooting guide is in progress)
+
+# Issue Tracker
+Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/issues) tracker on Github.
+
+New issues should contain _at minimum_ the following information:
+* Visual Studio Code version #s (see `Help -> About`)
+* C/C++ Extension version #
+* Target microcontroller and evaluation platform
+* The projects `.vscode` folder and `Makefile` (where applicable).  Standard compression formats such as `.zip`, `.rar`, `.tar.gz`, etc. are all acceptable.
