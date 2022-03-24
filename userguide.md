@@ -6,8 +6,10 @@
 * [Integrating the Toolchain](#integrating-the-toolchain)
 * [Getting Started with VSCode-Maxim](#getting-started-with-vscode-maxim)
 * [Referencing Example Code](#referencing-example-code)
+* [Loading Example Projects](#loading-example-projects)
 * [Injecting into Existing Source Code](#injecting-into-existing-source-code)
-* [Creating a Project from Scratch](#creating-a-project-from-scratch)
+* [Adding Source Code](#adding-source-code)
+* [Conclusion](#conclusion)
 
 ## Introduction
 Integrated Development Environments (IDEs) targeted at embedded systems and microcontroller development can come with a lot of overhead.  They have a tendency to be bulky, unwieldy programs that can take up a lot of hard drive space, and when something isn't configured properly they can be a pain to troubleshoot.  No one likes digging into project settings for hours trying to get their include paths working, troubleshooting five different configuration options just to link a library, or tracking a bug back down to project config option.
@@ -386,7 +388,7 @@ or...
 
 <hr>
 
-Take option #1 or #2.
+Take option 1 or 2.
 
 In this case, that's all the Makefile configuration that's needed for the project.  See [Editing the Makefile](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim#editing-the-makefile) in the readme for more details on other scenarios, such as adding additional source files, changing compiler flags, linking libraries, etc.
 
@@ -420,7 +422,7 @@ To summarize, you will...
 
 <hr>
 
-## Adding Source Code Example
+## Adding Source Code
 In the example below, we'll walk through adding in additional source code files.  This program will have a more advanced project structure with sub-folders.  This example will assume you've worked through the basics of project configuration and setup, and already have the project open in VS Code.
 
 Adding and editing additional source code in the VS Code editor is straightforward.  Files can be created from within VS Code or dragged and dropped into the project explorer.  However, the `Makefile` must be configured to add additional source code files to the build.
