@@ -1,0 +1,87 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}",
+				"${workspaceFolder}/**",
+				"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
+				"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
+				"${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
+				"${config:MAXIM_PATH}/Libraries/CMSIS/Include",
+				"${config:ARM_GCC_path}/arm-none-eabi/include",
+				"${config:ARM_GCC_path}/lib/gcc/arm-none-eabi/${config:v_Arm_GCC}/include",
+				"${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen"
+            ],
+            "defines": [
+                "${config:board}"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc.exe",
+            "browse": {
+                "path": [                    
+                    "${workspaceFolder}",
+					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
+					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source",
+					"${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers"
+                ]
+            }
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}",
+				"${workspaceFolder}/**",
+				"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
+				"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
+				"${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
+				"${config:MAXIM_PATH}/Libraries/CMSIS/Include",
+				"${config:ARM_GCC_path}/arm-none-eabi/include",
+				"${config:ARM_GCC_path}/lib/gcc/arm-none-eabi/${config:v_Arm_GCC}/include",
+				"${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+				"${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen"
+            ],
+            "defines": [
+                "${config:board}"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
+					"${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source",
+					"${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+					"${config:MAXIM_PATH}/Libraries/MiscDrivers"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}
