@@ -176,9 +176,8 @@ def create_project(
 @time_me
 def populate_maximsdk(target_os, maxim_path, overwrite=True):
     # Copy readme into template directory
-    shutil.copy("readme.md", str(Path("MaximSDK/Template/.vscode")))
+    shutil.copy("readme.md", str(Path("MaximSDK/Template/.vscode/")))
 
-    print(f"Generating VS Code project files on {target_os} for MaximSDK located at {maxim_path}...")
     print(f"Scanning {maxim_path}...")
 
     # Check for cache file
