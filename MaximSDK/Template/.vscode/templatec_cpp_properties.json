@@ -31,6 +31,22 @@
                     "##__V_PATHS__##"
                 ]
             }
+        },
+        {
+            "name": "Mac",
+            "includePath": [
+                "##__I_PATHS__##"
+            ],
+            "defines": [
+                "##__DEFINES__##"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc",
+            "browse": {
+                "path": [
+                    "##__V_PATHS__##"
+                ]
+            }
         }
     ],
     "version": 4

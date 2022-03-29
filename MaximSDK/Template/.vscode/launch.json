@@ -12,10 +12,16 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "linux": {
-                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "debugServerPath": "${config:OCD_path}/openocd",
             },
             "windows": {
-                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
+                "debugServerPath": "${config:OCD_path}/openocd.exe",
+            },
+            "osx": {
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "debugServerPath": "${config:OCD_path}/bin/openocd",
             },
             "logging": {
                 "exceptions": true,
@@ -53,10 +59,16 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "linux": {
-                "miDebuggerPath": "${config:RV_GCC_path}/bin/riscv-none-embed-gdb"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "debugServerPath": "${config:OCD_path}/openocd",
             },
             "windows": {
-                "miDebuggerPath": "${config:RV_GCC_path}/bin/riscv-none-embed-gdb.exe"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
+                "debugServerPath": "${config:OCD_path}/openocd.exe",
+            },
+            "osx": {
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "debugServerPath": "${config:OCD_path}/bin/openocd",
             },
             "logging": {
                 "exceptions": true,
