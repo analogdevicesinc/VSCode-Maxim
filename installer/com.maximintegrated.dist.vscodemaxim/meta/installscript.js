@@ -12,29 +12,25 @@ Component.prototype.createOperations = function()
     var kernel_version = systemInfo.kernelVersion;
     var arch = systemInfo.currentCpuArchitecture;
 
-    // Create symbolic links for OpenOCD config files to resolve case sensitivity issues.
-    if (kernel == "linux" || kernel == "darwin") {
+    // Create symbolic links for OpenOCD config files to resolve case sensitivity issues on Linux.
+    if (kernel == "linux") {
         var target_dir = "@TargetDir@/Tools/OpenOCD/scripts/target";
 
         // TODO:  Figure out how to import/call QT classes so that I can script this instead of hard-coding
-        try {
-            component.addOperation("CreateLink", target_dir + "/MAX32520.cfg", target_dir + "/max32520.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX32650.cfg", target_dir + "/max32650.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX32655.cfg", target_dir + "/max32655.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX32660.cfg", target_dir + "/max32660.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX32665.cfg", target_dir + "/max32665.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX32665_nsrst.cfg", target_dir + "/max32665_nsrst.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX32670.cfg", target_dir + "/max32670.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX32672.cfg", target_dir + "/max32672.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX32675.cfg", target_dir + "/max32675.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX32680.cfg", target_dir + "/max32680.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX32690.cfg", target_dir + "/max32690.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX78000.cfg", target_dir + "/max78000.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX78000_nsrst.cfg", target_dir + "/max78000_nsrst.cfg");
-            component.addOperation("CreateLink", target_dir + "/MAX78002.cfg", target_dir + "/max78002.cfg");
-        } catch (e) {
-            console.log(e);
-        }
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32520.cfg", target_dir + "/MAX32520.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32650.cfg", target_dir + "/MAX32650.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32655.cfg", target_dir + "/MAX32655.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32660.cfg", target_dir + "/MAX32660.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32665.cfg", target_dir + "/MAX32665.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32665_nsrst.cfg", target_dir + "/MAX32665_nsrst.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32670.cfg", target_dir + "/MAX32670.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32672.cfg", target_dir + "/MAX32672.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32675.cfg", target_dir + "/MAX32675.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32680.cfg", target_dir + "/MAX32680.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32690.cfg", target_dir + "/MAX32690.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78000.cfg", target_dir + "/MAX78000.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78000_nsrst.cfg", target_dir + "/MAX78000_nsrst.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78002.cfg", target_dir + "/MAX78002.cfg");
     }
 }
 
