@@ -28,7 +28,7 @@ The project folders in this repo have the following dependencies:
 
 4. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.  Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
 
-    ![Open Settings JSON Command](img\open_settings_json.jpg)
+    ![Open Settings JSON Command](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg)
 
 5. Add the following entries _inside_ of the curly braces {}...
 
@@ -146,7 +146,7 @@ For full usage details, please refer to the [official VS Code debugger documenta
 
 **When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -> Reload Window (or alternatively restarted completely) to force a re-parse.**
 
-![Reload Window](img\reload_window.JPG)
+![Reload Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
 
 The default project configuration should work for most use cases as long as `"target"` and `"board"` are set correctly.
 
