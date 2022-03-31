@@ -1,5 +1,4 @@
 {
-    "MAXIM_PATH":"##__MAXIM_PATH__##", 
     "terminal.integrated.env.windows": {
         "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"

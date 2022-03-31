@@ -68,7 +68,6 @@ def create_project(
     out_path: str,
     target: str,
     board: str,
-    maxim_path: str = defaults["MAXIM_PATH"],
     program_file: str = defaults["PROGRAM_FILE"],
     symbol_file: str = defaults["SYMBOL_FILE"],
     m4_ocd_interface_file: str = defaults["M4_OCD_INTERFACE_FILE"],
@@ -144,8 +143,7 @@ def create_project(
                         open(out_loc, "w+") as out_file:
                     for line in in_file.readlines():
                         out_file.write(
-                            line.replace("##__MAXIM_PATH__##", maxim_path).
-                            replace("##__TARGET__##", target.upper()).
+                            line.replace("##__TARGET__##", target.upper()).
                             replace("##__BOARD__##", board).
                             replace("##__PROGRAM_FILE__##", program_file).
                             replace("##__SYMBOL_FILE__##", symbol_file).
@@ -200,8 +198,8 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
         _board = example.target.boards[0].name # Default to first board in list
         for b in example.target.boards:
             if b.name == "EvKit_V1": _board = "EvKit_V1" # Use EvKit_V1 if it's there
-        _program_file="{config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"]
-        _symbol_file="{config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
+        _program_file="${config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"]
+        _symbol_file="${config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
         _ipaths = [] + defaults["I_PATHS"]
         _vpaths = [] + defaults["V_PATHS"]
 
