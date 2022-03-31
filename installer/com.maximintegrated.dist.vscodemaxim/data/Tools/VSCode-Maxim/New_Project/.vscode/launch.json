@@ -12,10 +12,16 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "linux": {
-                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "debugServerPath": "${config:OCD_path}/openocd",
             },
             "windows": {
-                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
+                "debugServerPath": "${config:OCD_path}/openocd.exe",
+            },
+            "osx": {
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "debugServerPath": "${config:OCD_path}/bin/openocd",
             },
             "logging": {
                 "exceptions": true,
@@ -24,7 +30,6 @@
                 "engineLogging": false
             },
             "miDebuggerServerAddress": "localhost:3333",
-            "debugServerPath": "${config:OCD_path}/openocd",
             "debugServerArgs": "-s ${config:OCD_path}/scripts -f interface/${config:M4_OCD_interface_file} -f target/${config:M4_OCD_target_file} -c \"init; reset halt\"",
             "serverStarted": "Info : Listening on port 3333 for gdb connections",
             "filterStderr": true,
@@ -53,10 +58,16 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "linux": {
-                "miDebuggerPath": "${config:RV_GCC_path}/bin/riscv-none-embed-gdb"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "debugServerPath": "${config:OCD_path}/openocd",
             },
             "windows": {
-                "miDebuggerPath": "${config:RV_GCC_path}/bin/riscv-none-embed-gdb.exe"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
+                "debugServerPath": "${config:OCD_path}/openocd.exe",
+            },
+            "osx": {
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "debugServerPath": "${config:OCD_path}/bin/openocd",
             },
             "logging": {
                 "exceptions": true,
@@ -65,7 +76,6 @@
                 "engineLogging": false
             },
             "miDebuggerServerAddress": "localhost:3334",
-            "debugServerPath": "${config:OCD_path}/openocd",
             "debugServerArgs": "-c \"gdb_port 3334\" -s ${config:OCD_path}/scripts -f interface/${config:RV_OCD_interface_file} -f target/${config:RV_OCD_target_file}",
             "serverStarted": "Info : Listening on port 3334 for gdb connections",
             "filterStderr": true,

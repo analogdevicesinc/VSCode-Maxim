@@ -17,74 +17,34 @@ The project folders in this repo have the following dependencies:
 * [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A)
 
 # Installation
-## Windows 10
-1. Download & install the Maxim Microcontrollers SDK via the [Windows Installer](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A).  See [AN7219](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7219.html) for a detailed installation guide if needed.  (If the SDK is already installed, run the "MaintenanceTool.exe" to update it to the latest version)
+1. Download & install the Maxim Microcontrollers SDK for your OS from the links below.
+    * [Windows](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0010820A)
+    * [Linux (Ubuntu)](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018720A)
+    * [MacOS](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018610A)
 
-    **Ensure all components are selected!**
+2. Download & install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).  The tested version for this release is v1.65.2
 
-    ![All components selected](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/installer_components.JPG)
+3. Launch Visual Studio Code.
 
-2. Set the `MAXIM_PATH` environment variable to the installation location of the SDK.  If you are unsure how to set an environment variable, see [this](https://www.onmsft.com/how-to/how-to-set-an-environment-variable-in-windows-10) article.  Ex:
+4. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.  Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
 
-    ![Variable Name = MAXIM_PATH, Variable Value = C:/MaximSDK](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/maxim_path_env.JPG)
+    ![Open Settings JSON Command](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg)
 
-3. Download the latest Windows 10 release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
+5. Add the following entries _inside_ of the curly braces {}...
 
-4. Copy the files from the `MaximSDK` folder into the root directory of your MaximSDK installation and overwrite.  This will populate the example projects with VS Code project folders and make any necessary patches to the SDK.
-
-    ![Drag and Drop Installation](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/drag_and_drop_install.jpg)
-
-5. Download & install [Visual Studio Code](https://code.visualstudio.com/).
-
-6. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
-
-7. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual and `extensions.autoUpdate` to None.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.  Additionally, feature changes on the vscode-cpptools extension may cause instability.  Tested version #s can be found on each Release page.
-
-8. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
-
-## Linux
-### Ubuntu
-1. Download & install the Maxim Microcontrollers SDK via the [Linux Installer](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0018720A).  See [AN7219](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7219.html) for a detailed installation guide if needed.  (If the SDK is already installed, run the "MaintenanceTool" to update it to the latest version)
-
-    **Ensure all components are selected!**
-
-    ![All components selected](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/installer_components.JPG)
-
-2. Add MAXIM_PATH to your system environment variables.
-    1. Create a new file `/etc/profile.d/maximsdk-env.sh` with the contents `export MAXIM_PATH=[MaximSDK installation location]`.  
-    
-        For example...
-
-        ```bash
-        # in /etc/profile.d/maximsdk-env.sh ...
-        export MAXIM_PATH=/home/yourusername/MaximSDK
-        ```
-
-        ... and save the file.
-
-    2. Reboot your system to refresh environment variables system-wide.
-
-3. Download the latest Linux release of this project from the [Releases](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases) page and extract to an accessible location.
-
-4. Copy the `60-openocd.rules` file from the VSCode-Maxim release into `/etc/udev/rules.d/` and refresh udev rules.  The following terminal commands can be used from within the VSCode-Maxim release folder...
-
-    ```bash
-    cp 60-openocd.rules /etc/udev/rules.d/
-    udevadm control --reload 
+    ```json
+    {
+        ...
+        "MAXIM_PATH":"<Installation location of the MaximSDK>", //Change this to the installation location of the MaximSDK from step 1.
+        "update.mode": "manual", // Disable auto updates of VS Code (Optional but strongly recommended)
+        "extensions.autoUpdate": false, // Disable auto updates of extensions (Optional but strongly recommended)
+        ...
+    }
     ```
 
-5. Copy the files from the `MaximSDK` folder into the root directory of your MaximSDK installation and overwrite.  This will populate the example projects with VS Code project folders and make any necessary patches to the SDK.
+6. Save your changes to the file with `CTRL + S`.  VS Code will prompt for a restart.  Restart for the changes to take effect.
 
-    ![Drag and Drop Installation](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/drag_and_drop_install.jpg)
-    (Note:  The image above shows a Windows file explorer...  The principal is the same on any OS)
-
-6. Download & install [Visual Studio Code](https://code.visualstudio.com/).
-
-7. Install official Microsoft [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
-
-8. (Recommended) Disable VS Code auto updates in `File -> Preferences -> Settings` by setting `update.mode` to manual and `extensions.autoUpdate` to None.  VS Code updates on a monthly basis, and sometimes an auto-update can break the project files.  Additionally, feature changes on the vscode-cpptools extension may cause instability.  Tested version #s can be found on each Release page.
-
-9. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
+7. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
 
 # Usage
 ## Introduction
@@ -182,7 +142,11 @@ For full usage details, please refer to the [official VS Code debugger documenta
 
 # Configuration
 ## Project Settings
-`.vscode/settings.json` is the main project configuration file.  Values set here are parsed into the other .json config files.  When a change is made to this file, VS Code should be restarted (or alternatively reloaded with CTRL+SHIFT+P -> Reload Window) to force a re-parse.  
+`.vscode/settings.json` is the main project configuration file.  Values set here are parsed into the other .json config files.  
+
+**When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -> Reload Window (or alternatively restarted completely) to force a re-parse.**
+
+![Reload Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
 
 The default project configuration should work for most use cases as long as `"target"` and `"board"` are set correctly.
 
@@ -235,6 +199,7 @@ The following configuration options are available:
 
 * `"M4_OCD_interface_file"`
     * Sets the OpenOCD interface file to use to connect to the Arm M4 core.  This should match the debugger being used for the M4 core.
+    * The `MaximSDK/Tools/OpenOCD/scripts/interface` folder is searched for the file specified by this setting.
     * `.cfg` file extension must be included.
     * Default value: `"cmsis-dap.cfg"`
 
@@ -242,15 +207,18 @@ The following configuration options are available:
     * Sets the OpenOCD target file to use for the Arm M4 core.  This should match the target microcontroller.
     * `.cfg` file extension must be included.
     * **On Linux there is a case-sensitivity issue with this setting**.  OpenOCD config files are all lowercase, but `"target"` must be uppercase.  On Linux, manually set this value to the lowercase target .cfg file matching the `"target"` config option.  Ex:  `""M4_OCD_target_file":"max32670.cfg"`
+    * The `MaximSDK/Tools/OpenOCD/scripts/target` folder is searched for the file specified by this setting.
     * Default value: `"${config:target}.cfg"`
 
 * `"RV_OCD_interface_file"`
     * Sets the OpenOCD interface file to use to connect to the RISC-V core.  This should match the debugger being used for the RISC-V core.
+    * The `MaximSDK/Tools/OpenOCD/scripts/interface` folder is searched for the file specified by this setting.
     * `.cfg` file extension must be included.
     * Default value: `"cmsis-dap.cfg"`
 
 * `"RV_OCD_target_file"`
     * Sets the OpenOCD target file to use for the RISC-V core.
+    * The `MaximSDK/Tools/OpenOCD/scripts/target` folder is searched for the file specified by this setting.
     * `.cfg` file extension must be included.
     * Default value: `"${config:target}_riscv.cfg"`
 
@@ -284,7 +252,7 @@ To add additional search paths :
 
 2. Add the include path(s) to the `configurations > includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
 
-3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".  
+3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".
 
 # Project Creation
 ### Option 1.  Copying a Pre-Made Project
@@ -323,6 +291,24 @@ If you want to start from scratch, take this option.
 
 6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.  However, you'll probably want to add some source code.  See [Configuring the Makefile](#configuring-the-makefile).
 
+# Die Types to Part Numbers
+The MaximSDK's peripheral driver filenames are written using die types instead of external part numbers.  This table shows which part numbers correspond to each die type, which is useful through source file definitions.
+
+| Die Type | Part Number |
+| -------- | ----------- |
+| ES17 | MAX32520 |
+| ME10 | MAX32650 |
+| ME11 | MAX32660 |
+| ME13 | MAX32570 |
+| ME14 | MAX32665 |
+| ME15 | MAX32670 |
+| ME16 | MAX32675 |
+| ME17 | MAX32655 |
+| ME18 | MAX32690 |
+| ME21 | MAX32672 |
+| AI85 | MAX78000 |
+| AI87 | MAX78002 |
+
 # Troubleshooting
 ## Testing the Setup
 Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's toolchain accessible from the integrated terminal.  To test that everything is working properly : 
@@ -343,3 +329,12 @@ Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's too
    ![Make -v example output](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/make_test.JPG)
 
 If the tools are not accessible from the terminal, then the system settings and/or project settings must be examined further.  (Troubleshooting guide is in progress)
+
+# Issue Tracker
+Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/issues) tracker on Github.
+
+New issues should contain _at minimum_ the following information:
+* Visual Studio Code version #s (see `Help -> About`)
+* C/C++ Extension version #
+* Target microcontroller and evaluation platform
+* The projects `.vscode` folder and `Makefile` (where applicable).  Standard compression formats such as `.zip`, `.rar`, `.tar.gz`, etc. are all acceptable.
