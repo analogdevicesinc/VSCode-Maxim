@@ -1,9 +1,9 @@
 <Package>
     <DisplayName>Visual Studio Code Support</DisplayName>
-    <Description>Visual Studio Code project files and templates integrating MaximSDK toolchain and peripheral drivers.</Description>
+    <Description>Project files, templates, and documentation for integrating Visual Studio Code and the MaximSDK.</Description>
     <ReleaseDate>2022-03-02</ReleaseDate>
     <Dependencies>net.sourceforge.openocd, net.launchpad.gcc.arm.embedded, net.launchpad.gcc.riscv.embedded, com.maximintegrated.libraries.periphdrivers</Dependencies>
-    <Version>1.3.0</Version>
+    <Version>1.3.1</Version>
     <Script>installscript.js</Script>
     <Default>true</Default>
     <SortingPriority>1</SortingPriority>
