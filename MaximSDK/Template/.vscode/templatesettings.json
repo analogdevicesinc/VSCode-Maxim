@@ -31,6 +31,8 @@
     "OCD_path":"##__OCD_PATH__##",
     "ARM_GCC_path":"##__ARM_GCC_PATH__##",
     "xPack_GCC_path":"##__XPACK_GCC_PATH__##",
-    "Make_path":"##__MAKE_PATH__##"
+    "Make_path":"##__MAKE_PATH__##",
+
+    "C_Cpp.default.intelliSenseMode": "gcc-arm"
 }
 
