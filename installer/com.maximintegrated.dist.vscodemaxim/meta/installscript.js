@@ -31,6 +31,25 @@ Component.prototype.createOperations = function()
         component.addOperation("Execute", "ln", "-sf", target_dir + "/max78000.cfg", target_dir + "/MAX78000.cfg");
         component.addOperation("Execute", "ln", "-sf", target_dir + "/max78000_nsrst.cfg", target_dir + "/MAX78000_nsrst.cfg");
         component.addOperation("Execute", "ln", "-sf", target_dir + "/max78002.cfg", target_dir + "/MAX78002.cfg");
+    } else if (kernel == "darwin") {
+        // Add OpenOCD dependencies with Homebrew.
+		var result = QMessageBox.question("This installer will now attempt to install some dependencies of OpenOCD on your system via Homebrew.  Is this OK?\n\nIn order to do this, Homebrew must be present on your system.  The presence of Homebrew can be tested with the terminal command 'brew --version'.\n\nPress 'Yes' to continue with the installation.\nPress 'Open' to open the official Homebrew homepage (https://brew.sh).  The current installation will be safely reverted and cancelled.  Please run the installater again after installing Homebrew.\nPress 'No' to skip this step.  OpenOCD may not work, and you will need to manually satisfy the package dependencies at a later time.\nPress 'Cancel' to safely cancel the installation entirely.\n\nThe following packages will be installed: libusb-compat, libftdi, hidapi, libusb");
+		
+		if (result == QMessageBox.Yes) {
+			// Install packages
+			component.addElevatedOperation("Execute", "brew", "install", "libusb-compat", "libftdi", "hidapi", "libusb"); 
+		} else if (result == QMessageBox.Open) {
+			// Open Homebrew homepage
+			installer.openUrl("https://brew.sh/"); 
+			// Cancel installation
+			installer.interrupt(); 
+		} else if (result == QMessageBox.No) {
+			// Do nothing - skip the Homebrew install
+		} else if (result == QMessageBox.Cancel) {
+			installer.interrupt();
+		} else {
+			// Impossible!!!
+		}
     }
 }
 
