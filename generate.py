@@ -197,7 +197,10 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
         _target = example.target.name
         _board = example.target.boards[0].name # Default to first board in list
         for b in example.target.boards:
-            if b.name == "EvKit_V1": _board = "EvKit_V1" # Use EvKit_V1 if it's there
+            # Use EvKit_V1 if possible.
+            # Some boards modify EvKit_V1 (ex: QN_EvKit_V1)
+            if "EvKit_V1" in b.name: _board = b.name 
+            
         _program_file="${config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"]
         _symbol_file="${config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
         _ipaths = [] + defaults["I_PATHS"]
