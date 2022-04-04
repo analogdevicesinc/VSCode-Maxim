@@ -40,7 +40,7 @@ Component.prototype.createOperations = function()
 			component.addElevatedOperation("Execute", "{0}", "brew", "install", "libusb-compat", "libftdi", "hidapi", "libusb"); 
 		} else if (result == QMessageBox.Open) {
 			// Open Homebrew homepage
-			installer.openUrl("https://brew.sh/"); 
+			QDesktopServices.openUrl("https://brew.sh/"); 
 			// Cancel installation
 			installer.interrupt(); 
 		} else if (result == QMessageBox.No) {
