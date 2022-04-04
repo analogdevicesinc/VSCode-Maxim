@@ -17,23 +17,23 @@ Component.prototype.createOperations = function()
         var target_dir = "@TargetDir@/Tools/OpenOCD/scripts/target";
 
         // TODO:  Figure out how to import/call QT classes so that I can script this instead of hard-coding
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32520.cfg", target_dir + "/MAX32520.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32650.cfg", target_dir + "/MAX32650.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32655.cfg", target_dir + "/MAX32655.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32660.cfg", target_dir + "/MAX32660.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32665.cfg", target_dir + "/MAX32665.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32665_nsrst.cfg", target_dir + "/MAX32665_nsrst.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32670.cfg", target_dir + "/MAX32670.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32672.cfg", target_dir + "/MAX32672.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32675.cfg", target_dir + "/MAX32675.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32680.cfg", target_dir + "/MAX32680.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32690.cfg", target_dir + "/MAX32690.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78000.cfg", target_dir + "/MAX78000.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78000_nsrst.cfg", target_dir + "/MAX78000_nsrst.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78002.cfg", target_dir + "/MAX78002.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32520.cfg", target_dir + "/MAX32520.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32520.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32650.cfg", target_dir + "/MAX32650.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32650.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32655.cfg", target_dir + "/MAX32655.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32655.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32660.cfg", target_dir + "/MAX32660.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32660.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32665.cfg", target_dir + "/MAX32665.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32665.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32665_nsrst.cfg", target_dir + "/MAX32665_nsrst.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32665_nsrst.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32670.cfg", target_dir + "/MAX32670.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32670.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32672.cfg", target_dir + "/MAX32672.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32672.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32675.cfg", target_dir + "/MAX32675.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32675.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32680.cfg", target_dir + "/MAX32680.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32680.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32690.cfg", target_dir + "/MAX32690.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32690.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78000.cfg", target_dir + "/MAX78000.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX78000.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78000_nsrst.cfg", target_dir + "/MAX78000_nsrst.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX78000_nsrst.cfg");
+        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78002.cfg", target_dir + "/MAX78002.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX78002.cfg");
     } else if (kernel == "darwin") {
         // Add OpenOCD dependencies with Homebrew.
-		var result = QMessageBox.question("installer.vscode", "Installer", "This installer will now attempt to install some dependencies of OpenOCD on your system via Homebrew.  Is this OK?\n\nIn order to do this, Homebrew must be present on your system.  The presence of Homebrew can be tested with the terminal command 'brew --version'.\n\nPress 'Yes' to continue with the installation.\n\nPress 'Open' to open the official Homebrew homepage (https://brew.sh).  The current installation will be safely reverted and cancelled.  Please run the installater again after installing Homebrew.\n\nPress 'No' to skip this step.  OpenOCD may not work, and you will need to manually satisfy the package dependencies at a later time.\n\nPress 'Cancel' to safely cancel the installation entirely.\n\nThe following packages will be installed: libusb-compat, libftdi, hidapi, libusb", QMessageBox.Yes | QMessageBox.Open | QMessageBox.No | QMessageBox.Cancel);
+		var result = QMessageBox.question("installer.vscode", "MaximSDK Installer", "This installer will now attempt to install some dependencies of OpenOCD on your system via Homebrew.  Is this OK?\n\nIn order to do this, Homebrew must be present on your system.  The presence of Homebrew can be tested with the terminal command 'brew --version'.\n\nPress 'Yes' to continue with the installation.\n\nPress 'Open' to open the official Homebrew homepage (https://brew.sh).  The current installation will be safely reverted and cancelled.  Please run the installater again after installing Homebrew.\n\nPress 'No' to skip this step.  OpenOCD may not work, and you will need to manually satisfy the package dependencies at a later time.\n\nPress 'Cancel' to safely cancel the installation entirely.\n\nThe following packages will be installed: libusb-compat, libftdi, hidapi, libusb", QMessageBox.Yes | QMessageBox.Open | QMessageBox.No | QMessageBox.Cancel);
 		
 		if (result == QMessageBox.Yes) {
 			// Install packages
@@ -55,16 +55,40 @@ Component.prototype.createOperations = function()
 
 Component.prototype.installationFinished = function() 
 {
+    var tag = "v1.3.1";
+    var tag_dir = "https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/tree/" + tag;
+    var release_dir = "https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases/tag/" + tag;
+
+    QMessageBox.information("vscode-maxim.test", "Installer", "isInstaller():" + installer.isInstaller() +"\n\nisUpdater():" + installer.isUpdater() + "isPackageManager():" + installer.isPackageManager() + "\n\nSuccess:" + (installer.status == QInstaller.Success));
+    
     // Open readme file to complete installation.
-    if (installer.status == QInstaller.Success) {
-        var result = QMessageBox.question("vscode-maxim.finished", "Installer", "You have installed Visual Studio Code support for the SDK (VSCode-Maxim).  Some minor manual setup is required to complete the installation, including downloading and installing Visual Studio Code itself.\n\nThe VSCode-Maxim readme will now be opened.  Please follow the installation instructions in that document.\n\nIf you select 'Cancel', the readme will not be opened.  Please complete the installation instructions at a later time.  The readme can be found in the VSCode-Maxim folder inside of the 'Tools' directory in the SDK.", QMessageBox.Ok | QMessageBox.Cancel);
+    // isInstaller() = true on fresh install
+    // isPackageManager() = true on "Add/remove components"
+    // https://doc.qt.io/qtinstallerframework/scripting-installer.html
+    if ((installer.isInstaller() || installer.isPackageManager()) && installer.status == QInstaller.Success) {
+        var result = QMessageBox.question("vscode-maxim.finished", "MaximSDK Installer", "You have installed Visual Studio Code support for the SDK (VSCode-Maxim).  Some minor manual setup is required to complete the installation.\n\nThe VSCode-Maxim readme will now be opened in your browser.  Please follow the installation instructions in that document.\n\nIf you select 'Cancel', the readme will not be opened.  Please complete the installation instructions at a later time.  The readme can be found in the VSCode-Maxim folder inside of the 'Tools' directory in the SDK.", QMessageBox.Ok | QMessageBox.Cancel);
 
         if (result == QMessageBox.Ok) {
             try {
-                QDesktopServices.openUrl("file:///" + installer.value("TargetDir") + "/Tools/VSCode-Maxim/readme.md");
+                QDesktopServices.openUrl(tag_dir + "/readme.md#vscode-maxim");
             } catch(e) {
                 console.log(e);
-                QMessageBox.warning("vscode-maxim.readmefail", "Installer", "Failed to automatically open @TargetDir@/Tools/VSCode-Maxim/readme.md\n\nPlease open this file manually.", QMessageBox.Ok);
+                QMessageBox.warning("vscode-maxim.readmefail", "MaximSDK Installer", "Failed to open the online copy of the readme.\n\nPlease open this file manually (@TargetDir@/Tools/VSCode-Maxim/readme.md)", QMessageBox.Ok);
+            }
+        }
+    } 
+    
+    // Open release notes on update.
+    // isUpdater() = true in update mode
+    else if (installer.isUpdater() && installer.status == QInstaller.Success) {
+        var result = QMessageBox.question("vscode-maxim.finished", "MaximSDK Installer", "Visual Studio Code support for the Maxim Microcontrollers SDK (VSCode-Maxim) has been updated to" + tag + "\n\nThe release notes for this update will now be opened in your browser.", QMessageBox.Ok | QMessageBox.Cancel);
+
+        if (result == QMessageBox.Ok) {
+            try {
+                QDesktopServices.openUrl(release_dir);
+            } catch(e) {
+                console.log(e);
+                QMessageBox.warning("vscode-maxim.releasefail", "MaximSDK Installer", "Failed to open the online release notes.",QMessageBox.Ok);
             }
         }
     }

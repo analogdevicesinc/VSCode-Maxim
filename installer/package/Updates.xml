@@ -12,8 +12,10 @@
   <Script>installscript.js</Script>
   <Default>true</Default>
   <SortingPriority>1</SortingPriority>
-  <UpdateFile CompressedSize="19597" OS="Any" UncompressedSize="96199"/>
+  <UpdateFile UncompressedSize="94454" CompressedSize="19220" OS="Any"/>
   <DownloadableArchives>Tools.7z</DownloadableArchives>
-  <SHA1>fe2c72230cb3e4fc57eb102e2b9918ffd8360714</SHA1>
+  <SHA1>0a3c87ffdd1c93099bb1bbc053267f142b5b8693</SHA1>
  </PackageUpdate>
+ <SHA1>42b6202ae020ebe34cbb3ba6bd22418e3093f2a4</SHA1>
+ <MetadataName>2022-04-01-2146_meta.7z</MetadataName>
 </Updates>
