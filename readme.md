@@ -112,12 +112,14 @@ The usage guidelines below are specific to Maxim's Makefiles.  The [GNU Make Man
 ## Debugging
 Debugging is enabled by Visual Studio Code's integrated debugger.  Launch configurations are provided by the `.vscode/launch.json` file.
 
+Flashing does not happen automatically when launching the debugger.  Before debugging, ensure that you have run the "Flash" build task for your program.
+
 ![Debug Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger.JPG)
 
 ### Launching the Debugger
 1. Ensure that a debugger is attached to the target microcontroller on the correct port.  (Refer to the datasheet of your evaluation board for instructions on connecting a debugger)
 
-2. Flash the program to the microcontroller with the "Flash" Build Task (CTRL+SHIFT+B).  Flashing does not happen automatically when launching the debugger.
+2. Flash the program to the microcontroller with the "Flash" Build Task (CTRL+SHIFT+B).  **Flashing does not happen automatically when launching the debugger.**
 
 3. Launch the debugger with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D) and the green "launch" arrow.
 
