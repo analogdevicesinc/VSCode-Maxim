@@ -91,17 +91,17 @@ def sync():
     shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/flash.gdb", "MaximSDK/Template/.vscode/")
 
-def release(version, maxim_path):
+def release(version):
     sync()
     
     r_dir = Path(f"./Releases/VSCode-Maxim-{version}") # Release directory
 
-    maxim_path = Path(maxim_path)
-    vscode_folders = maxim_path.rglob("*/.vscode")
-    for i in vscode_folders:
-        print(f"Copying {i}")
-        out_dir = r_dir.joinpath(Path(str(i).replace(i.anchor, ""))) # Strip drive info and pre-pend output directory
-        shutil.copytree(i, out_dir, dirs_exist_ok=True)
+    # maxim_path = Path(maxim_path)
+    # vscode_folders = maxim_path.rglob("*/.vscode")
+    # for i in vscode_folders:
+    #     print(f"Copying {i}")
+    #     out_dir = r_dir.joinpath(Path(str(i).replace(i.anchor, ""))) # Strip drive info and pre-pend output directory
+    #     shutil.copytree(i, out_dir, dirs_exist_ok=True)
 
     print("Copying Inject & New_Project folders")
     shutil.copytree(Path("MaximSDK/Inject"), r_dir.joinpath("Inject"), dirs_exist_ok=True)
