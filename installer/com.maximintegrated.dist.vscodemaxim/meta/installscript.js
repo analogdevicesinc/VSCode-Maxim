@@ -12,45 +12,10 @@ Component.prototype.createOperations = function()
     var kernel_version = systemInfo.kernelVersion;
     var arch = systemInfo.currentCpuArchitecture;
 
-    // Create symbolic links for OpenOCD config files to resolve case sensitivity issues on Linux.
-    if (kernel == "linux") {
-        var target_dir = "@TargetDir@/Tools/OpenOCD/scripts/target";
+    // Symbolic links for OpenOCD config files should be created in
+    // the target package's installscript.js to resolve case sensitivity
+    // on Linux
 
-        // TODO:  Figure out how to import/call QT classes so that I can script this instead of hard-coding
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32520.cfg", target_dir + "/MAX32520.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32520.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32650.cfg", target_dir + "/MAX32650.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32650.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32655.cfg", target_dir + "/MAX32655.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32655.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32660.cfg", target_dir + "/MAX32660.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32660.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32665.cfg", target_dir + "/MAX32665.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32665.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32665_nsrst.cfg", target_dir + "/MAX32665_nsrst.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32665_nsrst.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32670.cfg", target_dir + "/MAX32670.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32670.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32672.cfg", target_dir + "/MAX32672.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32672.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32675.cfg", target_dir + "/MAX32675.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32675.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32680.cfg", target_dir + "/MAX32680.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32680.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max32690.cfg", target_dir + "/MAX32690.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX32690.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78000.cfg", target_dir + "/MAX78000.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX78000.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78000_nsrst.cfg", target_dir + "/MAX78000_nsrst.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX78000_nsrst.cfg");
-        component.addOperation("Execute", "ln", "-sf", target_dir + "/max78002.cfg", target_dir + "/MAX78002.cfg", "UNDOEXECUTE", "rm", target_dir + "/MAX78002.cfg");
-    } else if (kernel == "darwin") {
-        // Add OpenOCD dependencies with Homebrew.
-		var result = QMessageBox.question("installer.vscode", "MaximSDK Installer", "This installer will now attempt to install some dependencies of OpenOCD on your system via Homebrew.  Is this OK?\n\nIn order to do this, Homebrew must be present on your system.  The presence of Homebrew can be tested with the terminal command 'brew --version'.\n\nPress 'Yes' to continue with the installation.\n\nPress 'Open' to open the official Homebrew homepage (https://brew.sh).  The current installation will be safely reverted and cancelled.  Please run the installater again after installing Homebrew.\n\nPress 'No' to skip this step.  OpenOCD may not work, and you will need to manually satisfy the package dependencies at a later time.\n\nPress 'Cancel' to safely cancel the installation entirely.\n\nThe following packages will be installed: libusb-compat, libftdi, hidapi, libusb", QMessageBox.Yes | QMessageBox.Open | QMessageBox.No | QMessageBox.Cancel);
-		
-		if (result == QMessageBox.Yes) {
-			// Install packages
-			component.addElevatedOperation("Execute", "{0}", "brew", "install", "libusb-compat", "libftdi", "hidapi", "libusb"); 
-		} else if (result == QMessageBox.Open) {
-			// Open Homebrew homepage
-			QDesktopServices.openUrl("https://brew.sh/"); 
-			// Cancel installation
-			installer.interrupt(); 
-		} else if (result == QMessageBox.No) {
-			// Do nothing - skip the Homebrew install
-		} else if (result == QMessageBox.Cancel) {
-			installer.interrupt();
-		} else {
-			// Impossible!!!
-		}
-    }
 }
 
 Component.prototype.installationFinished = function() 
@@ -58,8 +23,6 @@ Component.prototype.installationFinished = function()
     var tag = "v1.3.1";
     var tag_dir = "https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/tree/" + tag;
     var release_dir = "https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases/tag/" + tag;
-
-    QMessageBox.information("vscode-maxim.test", "Installer", "isInstaller():" + installer.isInstaller() +"\n\nisUpdater():" + installer.isUpdater() + "isPackageManager():" + installer.isPackageManager() + "\n\nSuccess:" + (installer.status == QInstaller.Success));
     
     // Open readme file to complete installation.
     // isInstaller() = true on fresh install
