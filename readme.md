@@ -112,7 +112,7 @@ The usage guidelines below are specific to Maxim's Makefiles.  The [GNU Make Man
 ## Debugging
 Debugging is enabled by Visual Studio Code's integrated debugger.  Launch configurations are provided by the `.vscode/launch.json` file.
 
-Flashing does not happen automatically when launching the debugger.  Before debugging, ensure that you have run the "Flash" build task for your program.
+**Flashing does not happen automatically when launching the debugger.**  Run the "Flash" [build task](#build-tasks) for your program before debugging.
 
 ![Debug Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger.JPG)
 
@@ -312,6 +312,10 @@ The MaximSDK's peripheral driver filenames are written using die types instead o
 | AI87 | MAX78002 |
 
 # Troubleshooting
+Before troubleshooting, ensure that you are using the project files from the latest VSCode-Maxim version, and that the version number of Visual Studio Code and the C/C++ extension match the release notes.  Sometimes, issues are caused by VS Code auto-updates.
+
+Additionally, ensure that your MaximSDK is updated to the latest version. You can use the "MaintenanceTool" application in the root directory of the SDK installation.
+
 ## Testing the Setup
 Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's toolchain accessible from the integrated terminal.  To test that everything is working properly : 
 
@@ -331,6 +335,43 @@ Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's too
    ![Make -v example output](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/make_test.JPG)
 
 If the tools are not accessible from the terminal, then the system settings and/or project settings must be examined further.  (Troubleshooting guide is in progress)
+
+## Common Issues Caused by a Bad MAXIM_PATH
+* Large 'Problem' count when opening VS Code
+
+    ![Problems Screenshot](img\issue_includeerrors.jpg)
+
+* "Unable to resolve configuration with compilerPath..."
+
+    ![Compiler Path Issue](img\issue_compilerpath.jpg)
+
+The issues above are usually caused by a missing or improperly set "MAXIM_PATH" global settings.json variable.  
+
+If you see the issues below ensure that you have set "MAXIM_PATH" in your _global_ user settings.json file, and that this path matches the location of the MaximSDK installation on your system.
+
+This can be resolved by double checking that the [Installation](#installation) procedure has been followed exactly.
+
+You can check the MAXIM_PATH on the terminal with the following commands...
+
+(Windows cmd)
+```
+echo %MAXIM_PATH%
+```
+(Windows powershell)
+```
+echo $env:MAXIM_PATH
+```
+(Linux/MacOS)
+```
+printenv | grep MAXIM_PATH
+```
+
+... which should print the location of the MaximSDK location.
+
+## Strange Debugger Behavior
+If you debugger is behaving strangely (which might consist of skipping code, throwing hard faults, failing to find function definitions, etc.) ensure that the program you're debugging matches the latest build output of the project.  These symptoms are usually caused by a mismatch between the build output file and the contents of the micro's flash.
+
+This issue is can usually be fixed by running the "Flash" build task.  Remember - flashing does not happen automatically when launching the debugger.
 
 # Issue Tracker
 Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/issues) tracker on Github.
