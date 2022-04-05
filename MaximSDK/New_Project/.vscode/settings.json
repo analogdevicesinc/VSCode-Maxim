@@ -31,7 +31,7 @@
     "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
     "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/${config:v_Arm_GCC}",
     "xPack_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/${config:v_xPack_GCC}",
-    "Make_path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin",
+    "Make_path":"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin",
 
     "C_Cpp.default.intelliSenseMode": "gcc-arm"
 }
