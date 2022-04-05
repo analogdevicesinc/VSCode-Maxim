@@ -26,11 +26,13 @@ The project folders in this repo have the following dependencies:
 
 3. Launch Visual Studio Code.
 
-4. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.  Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
+4. Install the official [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+
+5. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.  Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
 
     ![Open Settings JSON Command](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg)
 
-5. Add the following entries _inside_ of the curly braces {}...
+6. Add the following entries _inside_ of the curly braces {}...
 
     ```json
     {
@@ -42,9 +44,9 @@ The project folders in this repo have the following dependencies:
     }
     ```
 
-6. Save your changes to the file with `CTRL + S`.  VS Code will prompt for a restart.  Restart for the changes to take effect.
+7. Save your changes to the file with `CTRL + S`.  VS Code will prompt for a restart.  Restart for the changes to take effect.
 
-7. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
+8. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
 
 # Usage
 ## Introduction
@@ -112,7 +114,7 @@ The usage guidelines below are specific to Maxim's Makefiles.  The [GNU Make Man
 ## Debugging
 Debugging is enabled by Visual Studio Code's integrated debugger.  Launch configurations are provided by the `.vscode/launch.json` file.
 
-Flashing does not happen automatically when launching the debugger.  Before debugging, ensure that you have run the "Flash" build task for your program.
+**Flashing does not happen automatically when launching the debugger.**  Run the "Flash" [build task](#build-tasks) for your program before debugging.
 
 ![Debug Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger.JPG)
 
@@ -178,12 +180,13 @@ The following configuration options are available:
 ![MAX78000 Boards](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_boards.JPG)
 
 ## Advanced Config Options
-* `"terminal.integrated.env.[platform]:Path"`
-    * This prepends the location of toolchain binaries to the system `Path` used by VSCode's integrated terminal.  Don't touch unless you know what you're doing :)
-
 * `"MAXIM_PATH"`
-    * This option must point to the root installation directory of the MaximSDK.  By default, the MAXIM_PATH environment variable is used, which is suitable for most use cases.  
-    * Default value: `"${env:MAXIM_PATH}"`
+    * This option must point to the root installation directory of the MaximSDK.  
+    * It should be placed in the _global_ user settings.json file during first-time VSCode-Maxim setup.  See [Installation](#installation).
+
+* `"terminal.integrated.env.[platform]:Path"`
+    * This prepends the location of toolchain binaries to the system `Path` used by VSCode's integrated terminal.
+    * Don't touch unless you know what you're doing :)
 
 * `"project_name"`
     * Sets the name of project.  This is used in other config options such as `program_file`.
@@ -208,7 +211,6 @@ The following configuration options are available:
 * `"M4_OCD_target_file"`
     * Sets the OpenOCD target file to use for the Arm M4 core.  This should match the target microcontroller.
     * `.cfg` file extension must be included.
-    * **On Linux there is a case-sensitivity issue with this setting**.  OpenOCD config files are all lowercase, but `"target"` must be uppercase.  On Linux, manually set this value to the lowercase target .cfg file matching the `"target"` config option.  Ex:  `""M4_OCD_target_file":"max32670.cfg"`
     * The `MaximSDK/Tools/OpenOCD/scripts/target` folder is searched for the file specified by this setting.
     * Default value: `"${config:target}.cfg"`
 
@@ -216,7 +218,7 @@ The following configuration options are available:
     * Sets the OpenOCD interface file to use to connect to the RISC-V core.  This should match the debugger being used for the RISC-V core.
     * The `MaximSDK/Tools/OpenOCD/scripts/interface` folder is searched for the file specified by this setting.
     * `.cfg` file extension must be included.
-    * Default value: `"cmsis-dap.cfg"`
+    * Default value: `"ftdi/olimex-arm-usb-ocd-h.cfg"`
 
 * `"RV_OCD_target_file"`
     * Sets the OpenOCD target file to use for the RISC-V core.
@@ -224,11 +226,15 @@ The following configuration options are available:
     * `.cfg` file extension must be included.
     * Default value: `"${config:target}_riscv.cfg"`
 
-* `"GCC_version"`
+* `"v_Arm_GCC"`
     * Sets the version of the Arm Embedded GCC to use, including toolchain binaries and the standard library version.
+    * This gets parsed into `ARM_GCC_path`.
+    * Default value:  `"10.3"`
 
 * `"v_xPack_GCC"`
     * Sets the version of the xPack RISC-V GCC to use.
+    * This gets parsed into `xPack_GCC_path`.
+    * Default value: `"10.2.0-1.2"`
 
 * `"OCD_path"`
     * Where to find the OpenOCD.
@@ -236,15 +242,15 @@ The following configuration options are available:
 
 * `"ARM_GCC_path"`
     * Where to find the Arm Embedded GCC Toolchain.
-    * Default value: `"${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi-${config:GCC_version}"`
+    * Default value: `"${config:MAXIM_PATH}/Tools/GNUTools/${config:v_Arm_GCC}"`
 
-* `"RV_GCC_path"`
+* `"xPack_GCC_path"`
     * Where to find the RISC-V GCC Toolchain.
-    * Default value: `${config:MAXIM_PATH}/Tools/xPacks/riscv-none-embed-gcc/${config:v_xPack_GCC}`
+    * Default value: `"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/${config:v_xPack_GCC}"`
 
 * `"Make_path"`
     * Where to find Make binaries (only used on Windows)
-    * Default value: `"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin"`
+    * Default value: `"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin"`
 
 ## Setting Search Paths for Intellisense
 VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the C standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
@@ -255,6 +261,24 @@ To add additional search paths :
 2. Add the include path(s) to the `configurations > includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
 
 3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".
+
+# Die Types to Part Numbers
+The MaximSDK's peripheral driver filenames are written using die types instead of external part numbers.  This table shows which part numbers correspond to each die type, which is useful when browsing through source file definitions in Maxim's peripheral drivers.
+
+| Die Type | Part Number |
+| -------- | ----------- |
+| ES17 | MAX32520 |
+| ME10 | MAX32650 |
+| ME11 | MAX32660 |
+| ME13 | MAX32570 |
+| ME14 | MAX32665 |
+| ME15 | MAX32670 |
+| ME16 | MAX32675 |
+| ME17 | MAX32655 |
+| ME18 | MAX32690 |
+| ME21 | MAX32672 |
+| AI85 | MAX78000 |
+| AI87 | MAX78002 |
 
 # Project Creation
 ### Option 1.  Copying a Pre-Made Project
@@ -293,25 +317,11 @@ If you want to start from scratch, take this option.
 
 6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.  However, you'll probably want to add some source code.  See [Configuring the Makefile](#configuring-the-makefile).
 
-# Die Types to Part Numbers
-The MaximSDK's peripheral driver filenames are written using die types instead of external part numbers.  This table shows which part numbers correspond to each die type, which is useful through source file definitions.
-
-| Die Type | Part Number |
-| -------- | ----------- |
-| ES17 | MAX32520 |
-| ME10 | MAX32650 |
-| ME11 | MAX32660 |
-| ME13 | MAX32570 |
-| ME14 | MAX32665 |
-| ME15 | MAX32670 |
-| ME16 | MAX32675 |
-| ME17 | MAX32655 |
-| ME18 | MAX32690 |
-| ME21 | MAX32672 |
-| AI85 | MAX78000 |
-| AI87 | MAX78002 |
-
 # Troubleshooting
+Before troubleshooting, ensure that you are using the project files from the latest VSCode-Maxim version, and that the version number of Visual Studio Code and the C/C++ extension match the release notes.  Sometimes, issues are caused by VS Code auto-updates.
+
+Additionally, ensure that your MaximSDK is updated to the latest version. You can use the "MaintenanceTool" application in the root directory of the SDK installation.
+
 ## Testing the Setup
 Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's toolchain accessible from the integrated terminal.  To test that everything is working properly : 
 
@@ -331,6 +341,43 @@ Opening a VSCode-Maxim project with `File > Open Folder` should make Maxim's too
    ![Make -v example output](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/make_test.JPG)
 
 If the tools are not accessible from the terminal, then the system settings and/or project settings must be examined further.  (Troubleshooting guide is in progress)
+
+## Common Issues Caused by a Bad MAXIM_PATH
+* Large 'Problem' count when opening VS Code
+
+    ![Problems Screenshot](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/issue_includeerrors.jpg)
+
+* "Unable to resolve configuration with compilerPath..."
+
+    ![Compiler Path Issue](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/issue_compilerpath.jpg)
+
+The issues above are usually caused by a missing or improperly set "MAXIM_PATH" global settings.json variable.  
+
+If you see the issues below ensure that you have set "MAXIM_PATH" in your _global_ user settings.json file, and that this path matches the location of the MaximSDK installation on your system.
+
+This can be resolved by double checking that the [Installation](#installation) procedure has been followed exactly.
+
+You can check the MAXIM_PATH on the terminal with the following commands...
+
+(Windows cmd)
+```
+echo %MAXIM_PATH%
+```
+(Windows powershell)
+```
+echo $env:MAXIM_PATH
+```
+(Linux/MacOS)
+```
+printenv | grep MAXIM_PATH
+```
+
+... which should print the location of the MaximSDK location.
+
+## Strange Debugger Behavior
+If you debugger is behaving strangely (which might consist of skipping code, throwing hard faults, failing to find function definitions, etc.) ensure that the program you're debugging matches the latest build output of the project.  These symptoms are usually caused by a mismatch between the build output file and the contents of the micro's flash.
+
+This issue is can usually be fixed by running the "Flash" build task.  Remember - flashing does not happen automatically when launching the debugger.
 
 # Issue Tracker
 Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/issues) tracker on Github.
