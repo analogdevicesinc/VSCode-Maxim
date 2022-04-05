@@ -262,6 +262,24 @@ To add additional search paths :
 
 3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".
 
+# Die Types to Part Numbers
+The MaximSDK's peripheral driver filenames are written using die types instead of external part numbers.  This table shows which part numbers correspond to each die type, which is useful when browsing through source file definitions in Maxim's peripheral drivers.
+
+| Die Type | Part Number |
+| -------- | ----------- |
+| ES17 | MAX32520 |
+| ME10 | MAX32650 |
+| ME11 | MAX32660 |
+| ME13 | MAX32570 |
+| ME14 | MAX32665 |
+| ME15 | MAX32670 |
+| ME16 | MAX32675 |
+| ME17 | MAX32655 |
+| ME18 | MAX32690 |
+| ME21 | MAX32672 |
+| AI85 | MAX78000 |
+| AI87 | MAX78002 |
+
 # Project Creation
 ### Option 1.  Copying a Pre-Made Project
 Copying a pre-made example project is a great way to get rolling quickly, and is currently the recommended method for creating new projects.  
@@ -298,24 +316,6 @@ If you want to start from scratch, take this option.
 5. `CTRL+SHIFT+P -> Reload Window` to re-parse the project settings.
 
 6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.  However, you'll probably want to add some source code.  See [Configuring the Makefile](#configuring-the-makefile).
-
-# Die Types to Part Numbers
-The MaximSDK's peripheral driver filenames are written using die types instead of external part numbers.  This table shows which part numbers correspond to each die type, which is useful through source file definitions.
-
-| Die Type | Part Number |
-| -------- | ----------- |
-| ES17 | MAX32520 |
-| ME10 | MAX32650 |
-| ME11 | MAX32660 |
-| ME13 | MAX32570 |
-| ME14 | MAX32665 |
-| ME15 | MAX32670 |
-| ME16 | MAX32675 |
-| ME17 | MAX32655 |
-| ME18 | MAX32690 |
-| ME21 | MAX32672 |
-| AI85 | MAX78000 |
-| AI87 | MAX78002 |
 
 # Troubleshooting
 Before troubleshooting, ensure that you are using the project files from the latest VSCode-Maxim version, and that the version number of Visual Studio Code and the C/C++ extension match the release notes.  Sometimes, issues are caused by VS Code auto-updates.
