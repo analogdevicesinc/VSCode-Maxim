@@ -87,7 +87,9 @@ def sync():
     for f in os.scandir("MaximSDK/Inject/.vscode"): 
         shutil.copy(f, "MaximSDK/New_Project/.vscode/")
 
+    # Copy files into template folder
     shutil.copy("MaximSDK/Inject/.vscode/launch.json", "MaximSDK/Template/.vscode/")
+    shutil.copy("MaximSDK/Inject/.vscode/c_cpp_properties.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/flash.gdb", "MaximSDK/Template/.vscode/")
 
