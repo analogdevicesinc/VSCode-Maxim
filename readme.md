@@ -22,7 +22,7 @@ The project folders in this repo have the following dependencies:
     * [Linux (Ubuntu)](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018720A)
     * [MacOS](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018610A)
 
-2. Download & install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).  The tested version for this release is v1.65.2
+2. Download & install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).
 
 3. Launch Visual Studio Code.
 
