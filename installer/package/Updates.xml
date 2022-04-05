@@ -1,0 +1,19 @@
+<Updates>
+ <ApplicationName>{AnyApplication}</ApplicationName>
+ <ApplicationVersion>1.0.0</ApplicationVersion>
+ <Checksum>true</Checksum>
+ <PackageUpdate>
+  <Name>com.maximintegrated.dist.vscodemaxim</Name>
+  <DisplayName>Visual Studio Code Support</DisplayName>
+  <Description>Project files, templates, and documentation for integrating Visual Studio Code and the MaximSDK.</Description>
+  <ReleaseDate>2022-03-02</ReleaseDate>
+  <Dependencies>net.sourceforge.openocd, net.launchpad.gcc.arm.embedded, net.launchpad.gcc.riscv.embedded, com.maximintegrated.libraries.periphdrivers</Dependencies>
+  <Version>1.4.0</Version>
+  <Script>installscript.js</Script>
+  <Default>true</Default>
+  <SortingPriority>1</SortingPriority>
+  <UpdateFile CompressedSize="20134" OS="Any" UncompressedSize="95518"/>
+  <DownloadableArchives>Tools.7z</DownloadableArchives>
+  <SHA1>64fe609aeef35790b1a8b84cbdf986ad8137f577</SHA1>
+ </PackageUpdate>
+</Updates>

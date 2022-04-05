@@ -29,8 +29,7 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-*******************************************************************************
-*/
+*******************************************************************************/
 """
 
 import os
@@ -88,21 +87,23 @@ def sync():
     for f in os.scandir("MaximSDK/Inject/.vscode"): 
         shutil.copy(f, "MaximSDK/New_Project/.vscode/")
 
+    # Copy files into template folder
     shutil.copy("MaximSDK/Inject/.vscode/launch.json", "MaximSDK/Template/.vscode/")
+    shutil.copy("MaximSDK/Inject/.vscode/c_cpp_properties.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/flash.gdb", "MaximSDK/Template/.vscode/")
 
-def release(version, maxim_path):
+def release(version):
     sync()
     
     r_dir = Path(f"./Releases/VSCode-Maxim-{version}") # Release directory
 
-    maxim_path = Path(maxim_path)
-    vscode_folders = maxim_path.rglob("*/.vscode")
-    for i in vscode_folders:
-        print(f"Copying {i}")
-        out_dir = r_dir.joinpath(Path(str(i).replace(i.anchor, ""))) # Strip drive info and pre-pend output directory
-        shutil.copytree(i, out_dir, dirs_exist_ok=True)
+    # maxim_path = Path(maxim_path)
+    # vscode_folders = maxim_path.rglob("*/.vscode")
+    # for i in vscode_folders:
+    #     print(f"Copying {i}")
+    #     out_dir = r_dir.joinpath(Path(str(i).replace(i.anchor, ""))) # Strip drive info and pre-pend output directory
+    #     shutil.copytree(i, out_dir, dirs_exist_ok=True)
 
     print("Copying Inject & New_Project folders")
     shutil.copytree(Path("MaximSDK/Inject"), r_dir.joinpath("Inject"), dirs_exist_ok=True)

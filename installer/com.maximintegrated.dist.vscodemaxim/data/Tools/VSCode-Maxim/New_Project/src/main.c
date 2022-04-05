@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+* Copyright (C) 2021 Maxim Integrated Products, Inc., All Rights Reserved.
 *
 * Permission is hereby granted, free of charge, to any person obtaining a
 * copy of this software and associated documentation files (the "Software"),
@@ -29,3 +29,41 @@
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
 *******************************************************************************/
+
+/**
+ * @file    main.c
+ * @brief   Hello World!
+ * @details This example uses the UART to print to a terminal and flashes an LED.
+ */
+
+/***** Includes *****/
+#include <stdio.h>
+#include <stdint.h>
+#include "mxc_device.h"
+#include "led.h"
+#include "pb.h"
+#include "board.h"
+#include "mxc_delay.h"
+
+/***** Definitions *****/
+#define LED 0 // LED to flash.  We default to '0', since LED driver definitions may vary across micros.
+
+/***** Globals *****/
+
+/***** Functions *****/
+
+// *****************************************************************************
+int main(void)
+{
+    int count = 0;
+    
+    printf("Hello World!\n");
+
+    while (1) {
+        LED_On(LED);
+        MXC_Delay(500000);
+        LED_Off(LED);
+        MXC_Delay(500000);
+        printf("count = %d\n", count++);
+    }
+}

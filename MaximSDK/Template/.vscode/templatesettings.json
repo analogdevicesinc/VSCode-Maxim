@@ -1,11 +1,14 @@
 {
-    "MAXIM_PATH":"##__MAXIM_PATH__##", 
     "terminal.integrated.env.windows": {
         "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.env.linux": {
         "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
+        "MAXIM_PATH":"${config:MAXIM_PATH}"
+    },
+    "terminal.integrated.env.osx": {
+        "PATH":"${config:OCD_path}/bin:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     
@@ -28,6 +31,16 @@
     "OCD_path":"##__OCD_PATH__##",
     "ARM_GCC_path":"##__ARM_GCC_PATH__##",
     "xPack_GCC_path":"##__XPACK_GCC_PATH__##",
-    "Make_path":"##__MAKE_PATH__##"
+    "Make_path":"##__MAKE_PATH__##",
+
+    "C_Cpp.default.includePath": [
+        "##__I_PATHS__##"
+    ],
+    "C_Cpp.default.browse.path": [
+        "##__V_PATHS__##"
+    ],
+    "C_Cpp.default.defines": [
+        "##__DEFINES__##"
+    ]
 }
 
