@@ -45,9 +45,9 @@ defaults = parse_json("MaximSDK/Inject/.vscode/settings.json")
 c_cpp_properties = parse_json("MaximSDK/Inject/.vscode/c_cpp_properties.json")
 win32 = dict(c_cpp_properties["CONFIGURATIONS"][0]) # Win32 configuration is always first
 
-defaults["DEFINES"] = win32["defines"]
-defaults["I_PATHS"] = win32["includePath"]
-defaults["V_PATHS"] = win32["browse"]["path"]
+# defaults["DEFINES"] = win32["defines"]
+# defaults["I_PATHS"] = win32["includePath"]
+# defaults["V_PATHS"] = win32["browse"]["path"]
 
 whitelist = [
     "MAX32650",
@@ -73,9 +73,9 @@ def create_project(
     m4_ocd_target_file: str = defaults["M4_OCD_TARGET_FILE"],
     rv_ocd_interface_file: str = defaults["RV_OCD_INTERFACE_FILE"],
     rv_ocd_target_file: str = defaults["RV_OCD_TARGET_FILE"],
-    defines: list = defaults["DEFINES"],
-    i_paths: list = defaults["I_PATHS"],
-    v_paths: list = defaults["V_PATHS"],
+    defines: list = defaults["C_CPP.DEFAULT.DEFINES"],
+    i_paths: list = defaults["C_CPP.DEFAULT.INCLUDEPATH"],
+    v_paths: list = defaults["C_CPP.DEFAULT.BROWSE.PATH"],
     v_arm_gcc: str = defaults["V_ARM_GCC"],
     v_xpack_gcc: str = defaults["V_XPACK_GCC"],
     ocd_path: str = defaults["OCD_PATH"],
@@ -97,21 +97,21 @@ def create_project(
         tmp = defines
         tmp = list(map(lambda s: s.strip("-D"), tmp))  # VS Code doesn't want -D
         tmp = list(map("\"{0}\"".format, tmp))  # Surround with quotes
-        defines_parsed = ",\n\t\t\t\t".join(tmp)  # csv, newline, and tab alignment
+        defines_parsed = ",\n        ".join(tmp)  # csv, newline, and tab (w/ spaces) alignment
         # ---
     else:
-        defines_parsed = ",\n\t\t\t\t".join(defines)
+        defines_parsed = ",\n        ".join(defines)
 
     # Parse include paths...
     tmp = i_paths
     tmp = list(map("\"{0}\"".format, tmp))  # Surround with quotes
-    i_paths_parsed = ",\n\t\t\t\t".join(tmp).replace(target, "${config:target}").replace("\\", "/")
+    i_paths_parsed = ",\n        ".join(tmp).replace(target, "${config:target}").replace("\\", "/")
 
 
     # Parse browse paths...
     tmp = v_paths
     tmp = list(map("\"{0}\"".format, tmp))  # Surround with quotes
-    v_paths_parsed = ",\n\t\t\t\t\t".join(tmp).replace(target, "${config:target}").replace("\\", "/")  # csv, newline, and tab alignment
+    v_paths_parsed = ",\n        ".join(tmp).replace(target, "${config:target}").replace("\\", "/")  # csv, newline, and tab alignment
 
     # Create template...
     for directory, _, files in sorted(os.walk(template_dir)):
@@ -202,8 +202,8 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
             
         _program_file="${config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"]
         _symbol_file="${config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
-        _ipaths = [] + defaults["I_PATHS"]
-        _vpaths = [] + defaults["V_PATHS"]
+        _ipaths = [] + defaults["C_CPP.DEFAULT.INCLUDEPATH"]
+        _vpaths = [] + defaults["C_CPP.DEFAULT.BROWSE.PATH"]
 
         # Add include and browse paths for the libraries that this example uses
         for l in example.libs:

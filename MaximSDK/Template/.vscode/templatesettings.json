@@ -33,6 +33,14 @@
     "xPack_GCC_path":"##__XPACK_GCC_PATH__##",
     "Make_path":"##__MAKE_PATH__##",
 
-    "C_Cpp.default.intelliSenseMode": "gcc-arm"
+    "C_Cpp.default.includePath": [
+        "##__I_PATHS__##"
+    ],
+    "C_Cpp.default.browse.path": [
+        "##__V_PATHS__##"
+    ],
+    "C_Cpp.default.defines": [
+        "##__DEFINES__##"
+    ]
 }
 
