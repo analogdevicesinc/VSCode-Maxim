@@ -120,9 +120,11 @@ def release(version):
     shutil.copytree(Path("./Releases/VSCode-Maxim-v140"), Path("./installer/com.maximintegrated.dist.vscodemaxim/data/Tools/VSCode-Maxim"), dirs_exist_ok=True)
 
     # Update version # and release date in package.xml
+    # ---
     today = date.today()
     lines = []
-    with open(Path("installer/com.maximintegrated.dist.vscodemaxim/meta/package.xml"), "r") as xml:
+    package_path = Path("installer/com.maximintegrated.dist.vscodemaxim/meta/package.xml")
+    with open(package_path, "r") as xml:
         lines = xml.readlines()
         for i in range(len(lines)):
             if "<Version>" in lines[i]:
@@ -132,8 +134,21 @@ def release(version):
                 lines[i] = f"    <ReleaseDate>{today.isoformat()}</ReleaseDate>\n"
 
     
-    with open(Path("installer/com.maximintegrated.dist.vscodemaxim/meta/package.xml"), "w") as xml:
+    with open(package_path, "w") as xml:
         xml.writelines(lines)
+
+    # ---
+    
+    # Update tag in installscript.js
+    installscript_path = Path("installer/com.maximintegrated.dist.vscodemaxim/meta/installscript.js")
+    with open(installscript_path, "r") as js:
+        lines = js.readlines()
+        for i in range(len(lines)):
+            if "var tag =" in lines[i]:
+                lines[i] = f"    var tag = \"{version[1]}.{version[2]}.{version[3]}\";\n"
+
+    with open(installscript_path, "w") as js:
+        js.writelines(lines)
 
     # Update release date
     print("Done!")
