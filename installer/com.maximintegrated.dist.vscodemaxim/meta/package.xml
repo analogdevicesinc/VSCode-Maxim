@@ -1,8 +1,9 @@
 <Package>
     <DisplayName>Visual Studio Code Support</DisplayName>
-    <Description>Project files, templates, and documentation for integrating Visual Studio Code and the MaximSDK.</Description>
-    <ReleaseDate>2022-04-06</ReleaseDate>
+    <Description>Project files, templates, and documentation for integrating Visual Studio Code and the MaximSDK.  Example projects come pre-populated with .vscode project folders, and this package contains information on how to use them.  It installs to "Tools/VSCode-Maxim".</Description>
+    <ReleaseDate>2022-04-08</ReleaseDate>
     <Dependencies>net.sourceforge.openocd, net.launchpad.gcc.arm.embedded, net.launchpad.gcc.riscv.embedded, com.maximintegrated.libraries.periphdrivers</Dependencies>
+    <Script>installscript.js</Script>
     <Version>1.4.0</Version>
     <SortingPriority>1</SortingPriority>
 </Package>
