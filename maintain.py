@@ -42,6 +42,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from utils import time_me
 from generate import populate_maximsdk
+from datetime import date
 
 curplatform = platform.system() # Get OS
 
@@ -114,6 +115,42 @@ def release(version):
     shutil.copy("userguide.md", r_dir)
     shutil.copy("LICENSE.md", r_dir)
 
+    # Copy in to installer package
+    print("Updating installer package...")
+    shutil.copytree(Path("./Releases/VSCode-Maxim-v140"), Path("./installer/com.maximintegrated.dist.vscodemaxim/data/Tools/VSCode-Maxim"), dirs_exist_ok=True)
+
+    # Update version # and release date in package.xml
+    # ---
+    today = date.today()
+    lines = []
+    package_path = Path("installer/com.maximintegrated.dist.vscodemaxim/meta/package.xml")
+    with open(package_path, "r") as xml:
+        lines = xml.readlines()
+        for i in range(len(lines)):
+            if "<Version>" in lines[i]:
+                lines[i] = f"    <Version>{version[1]}.{version[2]}.{version[3]}</Version>\n"
+
+            elif "<ReleaseDate>" in lines[i]:
+                lines[i] = f"    <ReleaseDate>{today.isoformat()}</ReleaseDate>\n"
+
+    
+    with open(package_path, "w") as xml:
+        xml.writelines(lines)
+
+    # ---
+    
+    # Update tag in installscript.js
+    installscript_path = Path("installer/com.maximintegrated.dist.vscodemaxim/meta/installscript.js")
+    with open(installscript_path, "r") as js:
+        lines = js.readlines()
+        for i in range(len(lines)):
+            if "var tag =" in lines[i]:
+                lines[i] = f"    var tag = \"{version[1]}.{version[2]}.{version[3]}\";\n"
+
+    with open(installscript_path, "w") as js:
+        js.writelines(lines)
+
+    # Update release date
     print("Done!")
 
 # Tests cleaning and compiling example projects for target platforms.  If no targets, boards, projects, etc. are specified then it will auto-detect

@@ -22,31 +22,41 @@ The project folders in this repo have the following dependencies:
     * [Linux (Ubuntu)](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018720A)
     * [MacOS](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018610A)
 
-2. Download & install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).  The tested version for this release is v1.65.2
+2. Run the installer executable.
 
-3. Launch Visual Studio Code.
+3. During component selection, ensure that "Visual Studio Code Support" is selected.
 
-4. Install the official [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+    ![Selected Components](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/installer_components.JPG)
 
-5. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.  Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
+4. Finish the MaximSDK installation, and proceed to step 5 below to set up Visual Studio Code.
+
+5. Download & install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).
+
+6. Launch Visual Studio Code.
+
+7. Install the Microsoft [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
+
+8. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.
+
+9. Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
 
     ![Open Settings JSON Command](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg)
 
-6. Add the following entries _inside_ of the curly braces {}...
+10. Add the following entries _inside_ of the curly braces {}...
 
     ```json
     {
         ...
-        "MAXIM_PATH":"<Installation location of the MaximSDK>", //Change this to the installation location of the MaximSDK from step 1.
+        "MAXIM_PATH":"<MaximSDK root directory>", //Change this to the installation location of the MaximSDK from step 1.
         "update.mode": "manual", // Disable auto updates of VS Code (Optional but strongly recommended)
         "extensions.autoUpdate": false, // Disable auto updates of extensions (Optional but strongly recommended)
         ...
     }
     ```
 
-7. Save your changes to the file with `CTRL + S`.  VS Code will prompt for a restart.  Restart for the changes to take effect.
+11. Save your changes to the file with `CTRL + S`.  VS Code will prompt for a restart.  Restart for the changes to take effect.
 
-8. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  See Usage below.
+12. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  The MaximSDK example projects come pre-populated with .vscode project folders, and the "Tools/VSCode-Maxim" folder of the SDK contains documentation and new project templates.  See [Usage](#usage) below for more details on using the projects.
 
 # Usage
 ## Introduction
@@ -256,11 +266,11 @@ The following configuration options are available:
 VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the C standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
 
 To add additional search paths :
-1. Open the `.vscode/c_cpp_properties.json` file.  
+1. Open the `.vscode/settings.json` file.  
 
-2. Add the include path(s) to the `configurations > includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
+2. Add the include path(s) to the `C_Cpp.default.includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
 
-3. Add the path(s) to any relevant implementation files to the `"browse":"path"` list.  This list contains the paths that will be searched when using "Go to Definition".
+3. Add the path(s) to any relevant implementation files to the `C_Cpp.default.browse.path` list.  This list contains the paths that will be searched when using "Go to Definition".
 
 # Die Types to Part Numbers
 The MaximSDK's peripheral driver filenames are written using die types instead of external part numbers.  This table shows which part numbers correspond to each die type, which is useful when browsing through source file definitions in Maxim's peripheral drivers.
@@ -284,7 +294,7 @@ The MaximSDK's peripheral driver filenames are written using die types instead o
 ### Option 1.  Copying a Pre-Made Project
 Copying a pre-made example project is a great way to get rolling quickly, and is currently the recommended method for creating new projects.  
 
-The release package for this project contains a `New_Project` folder designed for such purposes.  Additionally, any of the VS Code-enabled Example projects can be copied from the SDK.
+The release package for this project (Located at Tools/VSCode-Maxim in the MaximSDK) contains a `New_Project` folder designed for such purposes.  Additionally, any of the VS Code-enabled Example projects can be copied from the SDK.
 
 1. Copy the existing project folder to an accessible location.  This will be the location of your new project.
 
