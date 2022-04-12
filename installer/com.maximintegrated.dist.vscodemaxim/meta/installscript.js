@@ -16,8 +16,9 @@ Component.prototype.createOperations = function()
     // the target package's installscript.js to resolve case sensitivity
     // on Linux
 
-    installer.finishButtonClicked.connect(this, Component.prototype.installationFinished);
-
+    if (component.enabled) {
+        installer.finishButtonClicked.connect(this, Component.prototype.installationFinished);
+    }
 }
 
 Component.prototype.installationFinished = function() 

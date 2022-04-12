@@ -4,6 +4,6 @@
     <ReleaseDate>2022-04-12</ReleaseDate>
     <Dependencies>net.sourceforge.openocd, net.launchpad.gcc.arm.embedded, net.launchpad.gcc.riscv.embedded, com.maximintegrated.libraries.periphdrivers</Dependencies>
     <Script>installscript.js</Script>
-    <Version>1.4.0-1</Version>
+    <Version>1.4.0-2</Version>
     <SortingPriority>1</SortingPriority>
 </Package>
