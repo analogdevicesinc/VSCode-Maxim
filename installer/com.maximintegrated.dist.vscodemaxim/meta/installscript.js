@@ -1,6 +1,6 @@
 function Component()
 {
-    installer.finishButtonClicked.connect(this, Component.prototype.installationFinished);
+    
 }
 
 Component.prototype.createOperations = function()
@@ -15,6 +15,8 @@ Component.prototype.createOperations = function()
     // Symbolic links for OpenOCD config files should be created in
     // the target package's installscript.js to resolve case sensitivity
     // on Linux
+
+    installer.finishButtonClicked.connect(this, Component.prototype.installationFinished);
 
 }
 
