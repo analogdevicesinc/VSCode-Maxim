@@ -145,7 +145,7 @@ def release(version):
         lines = js.readlines()
         for i in range(len(lines)):
             if "var tag =" in lines[i]:
-                lines[i] = f"    var tag = \"{version[1]}.{version[2]}.{version[3]}\";\n"
+                lines[i] = f"    var tag = \"v{version[1]}.{version[2]}.{version[3]}\";\n"
 
     with open(installscript_path, "w") as js:
         js.writelines(lines)
