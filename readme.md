@@ -367,7 +367,7 @@ If you see the issues below ensure that you have set "MAXIM_PATH" in your _globa
 
 This can be resolved by double checking that the [Installation](#installation) procedure has been followed exactly.
 
-You can check the MAXIM_PATH on the terminal with the following commands...
+You can check the MAXIM_PATH on the VS Code terminal with the following commands...
 
 (Windows cmd)
 ```
@@ -382,7 +382,7 @@ echo $env:MAXIM_PATH
 printenv | grep MAXIM_PATH
 ```
 
-... which should print the location of the MaximSDK location.
+... which should print the exact location of the MaximSDK installation.
 
 ## Strange Debugger Behavior
 If you debugger is behaving strangely (which might consist of skipping code, throwing hard faults, failing to find function definitions, etc.) ensure that the program you're debugging matches the latest build output of the project.  These symptoms are usually caused by a mismatch between the build output file and the contents of the micro's flash.
