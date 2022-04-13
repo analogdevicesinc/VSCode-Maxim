@@ -355,11 +355,11 @@ If the tools are not accessible from the terminal, then the system settings and/
 ## Common Issues Caused by a Bad MAXIM_PATH
 * Large 'Problem' count when opening VS Code
 
-    ![Problems Screenshot](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/issue_includeerrors.jpg)
+    ![Problems Screenshot](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/issue_includeerrors.jpg)
 
 * "Unable to resolve configuration with compilerPath..."
 
-    ![Compiler Path Issue](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/issue_compilerpath.jpg)
+    ![Compiler Path Issue](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/issue_compilerpath.jpg)
 
 The issues above are usually caused by a missing or improperly set "MAXIM_PATH" global settings.json variable.  
 
