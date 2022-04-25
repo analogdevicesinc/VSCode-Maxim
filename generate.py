@@ -42,12 +42,6 @@ from sdk import *
 
 # Load default values for template from master "inject" folder so that we don't have to maintain multiple copies of the settings
 defaults = parse_json("MaximSDK/Inject/.vscode/settings.json")
-c_cpp_properties = parse_json("MaximSDK/Inject/.vscode/c_cpp_properties.json")
-win32 = dict(c_cpp_properties["CONFIGURATIONS"][0]) # Win32 configuration is always first
-
-# defaults["DEFINES"] = win32["defines"]
-# defaults["I_PATHS"] = win32["includePath"]
-# defaults["V_PATHS"] = win32["browse"]["path"]
 
 whitelist = [
     "MAX32650",
