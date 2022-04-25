@@ -27,7 +27,7 @@
             "type": "shell",
             "command": "arm-none-eabi-gdb",
             "args": [                
-                "--ex=\"cd ${workspaceFolder}\"",
+                "--cd=\"${workspaceFolder}\"",
                 "--se=\"build/${config:program_file}\"",
                 "--symbols=build/${config:symbol_file}",
                 "-x=\"${workspaceFolder}/.vscode/flash.gdb\"",                
