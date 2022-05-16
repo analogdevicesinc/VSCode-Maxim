@@ -93,6 +93,7 @@ def sync():
     shutil.copy("MaximSDK/Inject/.vscode/c_cpp_properties.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/flash.gdb", "MaximSDK/Template/.vscode/")
+    shutil.copy("readme.md", "MaximSDK/Template/.vscode/")
 
 def release(version):
     sync()
@@ -150,18 +151,22 @@ def release(version):
     with open(installscript_path, "w") as js:
         js.writelines(lines)
 
+    # Update dat afolder in installer package
+    shutil.copytree(r_dir, Path("installer/com.maximintegrated.dist.vscodemaxim/data/Tools/VSCode-Maxim/"), dirs_exist_ok=True)
+
     # Update release date
     print("Done!")
 
 # Tests cleaning and compiling example projects for target platforms.  If no targets, boards, projects, etc. are specified then it will auto-detect
 def test(maxim_path, targets=None, boards=None, projects=None):
+    maxim_path = Path(maxim_path).resolve().as_posix()
     env = os.environ.copy()
 
     # Simulate the VS Code terminal by appending to the Path
     if curplatform == 'Linux':
-        env["PATH"] = f"{maxim_path}/Tools/OpenOCD:{maxim_path}/Tools/GNUTools/gcc-arm-none-eabi-9.2.1/bin:{maxim_path}/Tools/xPacks/riscv-none-embed-gcc/8.3.0-1.1/bin:" + env["PATH"] # Linux
+        env["PATH"] = f"{maxim_path}/Tools/GNUTools/10.3/bin:{maxim_path}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin:" + env["PATH"]
     elif curplatform == 'Windows':
-        env["PATH"] = f"{maxim_path}/Tools/MinGW/msys/1.0/bin;{maxim_path}/Tools/OpenOCD;{maxim_path}/Tools/GNUTools/bin;{maxim_path}/Tools/xPack/riscv-none-embed-gcc/bin;" + env["PATH"] # Windows
+        env["PATH"] = f"{maxim_path}/Tools/GNUTools/10.3/bin;{maxim_path}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin;" + env["PATH"]
     
     LOG_DIR = os.getcwd()
 
@@ -173,6 +178,7 @@ def test(maxim_path, targets=None, boards=None, projects=None):
     # Log system info
     log(timestamp(), logfile)
     log(f"[PLATFORM] {platform.platform()}", logfile)
+    log(f"[MAXIM_PATH] {maxim_path}", logfile)
 
     # Get list of target micros if none is specified
     if targets is None:
@@ -270,7 +276,7 @@ def test(maxim_path, targets=None, boards=None, projects=None):
                 else: log(f"{timestamp()}[{board}] --- [BUILD]\t[SUCCESS] {round(duration, 4)}s", logfile)                
 
                 # Test clean (make clean)
-                clean_cmd = f"make clean TARGET={target} MAXIM_PATH={maxim_path} BOARD={board} MAKE=make"
+                clean_cmd = f"make distclean TARGET={target} MAXIM_PATH={maxim_path} BOARD={board} MAKE=make"
                 res = ps(clean_cmd, env=env) # Run clean command
 
                 # Error check clean command
