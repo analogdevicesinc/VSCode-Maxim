@@ -1,6 +1,6 @@
 function Component()
 {
-    
+    installer.installationStarted.connect(this, Component.prototype.installationStarted);
 }
 
 Component.prototype.createOperations = function()
@@ -21,9 +21,14 @@ Component.prototype.createOperations = function()
     }
 }
 
+Component.prototype.installationStarted = function()
+{
+    console.log("Test installation started!");
+}
+
 Component.prototype.installationFinished = function() 
 {
-    var tag = "v1.4.1";
+    var tag = "v1.4.2";
     var tag_url = "https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/tree/" + tag;
     var release_url = "https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases/tag/" + tag;
     
