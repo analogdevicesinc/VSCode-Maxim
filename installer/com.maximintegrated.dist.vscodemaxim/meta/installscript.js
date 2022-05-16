@@ -1,6 +1,6 @@
 function Component()
 {
-    installer.installationStarted.connect(this, Component.prototype.installationStarted);
+    
 }
 
 Component.prototype.createOperations = function()
@@ -19,11 +19,6 @@ Component.prototype.createOperations = function()
     if (component.enabled) {
         installer.finishButtonClicked.connect(this, Component.prototype.installationFinished);
     }
-}
-
-Component.prototype.installationStarted = function()
-{
-    console.log("Test installation started!");
 }
 
 Component.prototype.installationFinished = function() 
