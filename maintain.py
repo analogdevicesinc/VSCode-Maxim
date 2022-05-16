@@ -93,6 +93,7 @@ def sync():
     shutil.copy("MaximSDK/Inject/.vscode/c_cpp_properties.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/flash.gdb", "MaximSDK/Template/.vscode/")
+    shutil.copy("readme.md", "MaximSDK/Template/.vscode/")
 
 def release(version):
     sync()
@@ -149,6 +150,9 @@ def release(version):
 
     with open(installscript_path, "w") as js:
         js.writelines(lines)
+
+    # Update dat afolder in installer package
+    shutil.copytree(r_dir, Path("installer/com.maximintegrated.dist.vscodemaxim/data/Tools/VSCode-Maxim/"), dirs_exist_ok=True)
 
     # Update release date
     print("Done!")
