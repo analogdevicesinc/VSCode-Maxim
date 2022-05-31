@@ -73,6 +73,7 @@ class Library():
     vpaths: tuple
     whitelist: bool
     targets: tuple
+    defines: tuple
 
     def from_libinfo(filepath):
         """
@@ -90,6 +91,7 @@ class Library():
             _vpaths = tuple(i for i in libinfo["vpaths"])
             _whitelist = libinfo["whitelist"]
             _targets = tuple(i for i in libinfo["targets"]) if "targets" in keys else None
+            _defines = libinfo["defines"] if "defines" in keys else None
 
             return Library(
                 _name,
@@ -97,7 +99,8 @@ class Library():
                 _ipaths,
                 _vpaths,
                 _whitelist,
-                _targets
+                _targets,
+                _defines
             )
 
     def get_ipaths(self, target=None):

@@ -47,6 +47,7 @@ whitelist = [
     "MAX32650",
     "MAX32655",
     "MAX32660",
+    "MAX32662",
     "MAX32665",
     "MAX32670",
     "MAX32672",
@@ -198,6 +199,7 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
         _symbol_file="${config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
         _ipaths = [] + defaults["C_CPP.DEFAULT.INCLUDEPATH"]
         _vpaths = [] + defaults["C_CPP.DEFAULT.BROWSE.PATH"]
+        _defines = [] + defaults["C_CPP.DEFAULT.DEFINES"]
 
         # Add include and browse paths for the libraries that this example uses
         for l in example.libs:
@@ -214,6 +216,9 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
                     replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").
                     replace(example.target.name, "${config:target}")
                 )
+
+            if l.defines is not None:
+                _defines += l.defines
 
         # Linux OpenOCD .cfg files are case senstive.  Need to hard-code a lowercase value.
         _m4_ocd_target_file = f"{str.lower(example.target.name)}.cfg" if target_os == "Linux" else defaults["M4_OCD_TARGET_FILE"]
@@ -242,7 +247,8 @@ def populate_maximsdk(target_os, maxim_path, overwrite=True):
             arm_gcc_path=_arm_gcc_path,
             xpack_gcc_path=_xpack_gcc_path,
             v_arm_gcc=_v_arm_gcc,
-            v_xpack_gcc=_v_xpack_gcc
+            v_xpack_gcc=_v_xpack_gcc,
+            defines = _defines
         )
 
         count += 1
