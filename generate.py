@@ -40,8 +40,12 @@ from subprocess import run
 from utils import parse_json
 from sdk import *
 
+# Get location of this file.
+# Need to use this so that template look-ups are decoupled from the caller's working directory 
+here = Path(__file__).parent
+
 # Load default values for template from master "inject" folder so that we don't have to maintain multiple copies of the settings
-defaults = parse_json("MaximSDK/Inject/.vscode/settings.json")
+defaults = parse_json(here.joinpath("MaximSDK/Inject/.vscode/settings.json"))
 
 whitelist = [
     "MAX32650",
@@ -79,11 +83,14 @@ def create_project(
     make_path: str = defaults["MAKE_PATH"]
 ):
 
-    template_dir = os.path.abspath(os.path.join("MaximSDK", "Template"))  # Where to find the VS Code template directory relative to this script
+    template_dir = here.joinpath("MaximSDK/Template").absolute()  # Where to find the VS Code template directory relative to this script
     template_prefix = "template"  # Filenames beginning with this will have substitution
 
     if not os.path.exists(template_dir):
         raise(Exception(f"Failed to find project template folder '{template_dir}'.  Check the location and existence of these files."))
+
+    # Copy readme into template directory so the latest version gets pushed to project folders
+    shutil.copy(here.joinpath("readme.md"), str(Path(template_dir).joinpath(".vscode/")))
 
     tmp = []  # Work-horse list, linter be nice
     if defines != []:
@@ -164,93 +171,3 @@ def create_project(
                 shutil.copy(os.path.join(directory, file), out_path)
                 os.chmod(out_path, 0o764)
                 #print(f"Wrote {os.path.basename(file)}") # Uncomment to debug
-
-@time_me
-def populate_maximsdk(target_os, maxim_path, overwrite=True):
-    # Copy readme into template directory
-    shutil.copy("readme.md", str(Path("MaximSDK/Template/.vscode/")))
-
-    print(f"Scanning {maxim_path}...")
-
-    # Check for cache file
-    cachefile = Path(maxim_path).joinpath(".cache").joinpath("msdk")
-
-    if (cachefile.exists()):
-        print("Loading from cache file...")
-        sdk = SDK.thaw(cachefile)
-    else:
-        sdk = SDK.from_search(maxim_path)
-        sdk.freeze(cachefile)
-    
-    count = 0
-    for example in sdk.examples:
-        #print(f"Generating VSCode-Maxim project for {example.path} ...")
-
-        # Common options
-        _path = example.path
-        _target = example.target.name
-        _board = example.target.boards[0].name # Default to first board in list
-        for b in example.target.boards:
-            # Use EvKit_V1 if possible.
-            # Some boards modify EvKit_V1 (ex: QN_EvKit_V1)
-            if "EvKit_V1" in b.name: _board = b.name 
-            
-        _program_file="${config:project_name}-combined.elf" if example.riscv else defaults["PROGRAM_FILE"]
-        _symbol_file="${config:project_name}.elf" if example.riscv else defaults["SYMBOL_FILE"]
-        _ipaths = [] + defaults["C_CPP.DEFAULT.INCLUDEPATH"]
-        _vpaths = [] + defaults["C_CPP.DEFAULT.BROWSE.PATH"]
-        _defines = [] + defaults["C_CPP.DEFAULT.DEFINES"]
-
-        # Add include and browse paths for the libraries that this example uses
-        for l in example.libs:
-            for ipath in l.get_ipaths(example.target.name):
-                _ipaths.append(
-                    str(ipath.as_posix()).
-                    replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").
-                    replace(example.target.name, "${config:target}")
-                )
-
-            for vpath in l.get_vpaths(example.target.name):
-                _vpaths.append(
-                    str(vpath.as_posix()).
-                    replace(sdk.maxim_path.as_posix(), "${config:MAXIM_PATH}").
-                    replace(example.target.name, "${config:target}")
-                )
-
-            if l.defines is not None:
-                _defines += l.defines
-
-        # Linux OpenOCD .cfg files are case senstive.  Need to hard-code a lowercase value.
-        _m4_ocd_target_file = f"{str.lower(example.target.name)}.cfg" if target_os == "Linux" else defaults["M4_OCD_TARGET_FILE"]
-
-        # RPi Tools
-        if target_os == "RPi":
-            _arm_gcc_path = "${config:MAXIM_PATH}/Tools/GNUTools/gcc-arm-none-eabi/${config:v_Arm_GCC}"
-            _xpack_gcc_path = "${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/${config:v_xPack_GCC}"
-            _v_arm_gcc = "10.3.1"
-            _v_xpack_gcc = "10.2.0-1.2"
-        else:
-            _arm_gcc_path = defaults["ARM_GCC_PATH"]
-            _xpack_gcc_path = defaults["XPACK_GCC_PATH"]
-            _v_arm_gcc = defaults["V_ARM_GCC"]
-            _v_xpack_gcc = defaults["V_XPACK_GCC"]
-
-        create_project(
-            _path,
-            _target,
-            _board,
-            program_file=_program_file,
-            symbol_file=_symbol_file,
-            i_paths=_ipaths,
-            v_paths=_vpaths,
-            m4_ocd_target_file=_m4_ocd_target_file,
-            arm_gcc_path=_arm_gcc_path,
-            xpack_gcc_path=_xpack_gcc_path,
-            v_arm_gcc=_v_arm_gcc,
-            v_xpack_gcc=_v_xpack_gcc,
-            defines = _defines
-        )
-
-        count += 1
-
-    print(f"Done!  Created {count} projects.")
