@@ -32,10 +32,35 @@
 *******************************************************************************/
 """
 
-from dataclasses import dataclass
+from collections.abc import MutableMapping
+from string import Template
 import json
-from dataclasses import dataclass
-from pathlib import Path
+
+class UpperDict(MutableMapping):
+    def __init__(self, *args, **kwargs):
+        self.d = dict()
+        self.update(dict(*args, **kwargs))
+
+    def _parse_key(self, key):
+        return str(key).upper().replace(".", "_")
+
+    def __setitem__(self, key, value) -> None:
+        self.d[self._parse_key(key)] = value
+
+    def __getitem__(self, key):
+        return self.d[self._parse_key(key)]
+
+    def __delitem__(self, key) -> None:
+        del self.d[self._parse_key(key)]
+
+    def __iter__(self):
+        return iter(self.d)
+
+    def __len__(self):
+        return len(self.d)
+
+class MSDKTemplate(Template):
+    delimiter = "##__"
 
 def parse_json(filename):
     """
@@ -43,13 +68,7 @@ def parse_json(filename):
     """
     f = open(filename, "r")
     d = json.load(f)
-
-    # Convert key values to uppercase for easier template parsing
-    keys = list(d.keys()) # Keys are changing on the fly, so can't use a view object
-    for k in keys:
-        d[k.upper()] = d.pop(k)
-    
-    return d
+    return UpperDict(d)
 
 # Timer wrapper function
 import time

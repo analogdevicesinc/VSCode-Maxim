@@ -34,10 +34,8 @@
 
 import os
 import shutil
-import argparse
-import platform
-from subprocess import run
-from utils import parse_json
+import stat
+from .utils import parse_json
 from sdk import *
 
 # Get location of this file.
@@ -82,38 +80,40 @@ def create_project(
     xpack_gcc_path: str = defaults["XPACK_GCC_PATH"],
     make_path: str = defaults["MAKE_PATH"]
 ):
+    """
+    Generates Visual Studio Code project files from the VSCode-Maxim project.
+    """
 
-    template_dir = here.joinpath("MaximSDK/Template").absolute()  # Where to find the VS Code template directory relative to this script
-    template_prefix = "template"  # Filenames beginning with this will have substitution
+    out_path = Path(out_path)
 
-    if not os.path.exists(template_dir):
-        raise(Exception(f"Failed to find project template folder '{template_dir}'.  Check the location and existence of these files."))
+    template_dir = here.joinpath("MaximSDK/Template").resolve()
+    # Where to find the VS Code template directory relative to this script
 
-    # Copy readme into template directory so the latest version gets pushed to project folders
-    shutil.copy(here.joinpath("readme.md"), str(Path(template_dir).joinpath(".vscode/")))
+    template_prefix = "template"
+    # Filenames beginning with this will have substitution
+
+    if not template_dir.exists():
+        raise Exception(f"Failed to find project template folder '{template_dir}'.")
 
     tmp = []  # Work-horse list, linter be nice
+    # Parse compiler definitions...
     if defines != []:
-        # Parse defines...
-        # ---
         tmp = defines
         tmp = list(map(lambda s: s.strip("-D"), tmp))  # VS Code doesn't want -D
-        tmp = list(map("\"{0}\"".format, tmp))  # Surround with quotes
+        tmp = list(map(lambda s: f"\"{s}\"", tmp))  # Surround with quotes
         defines_parsed = ",\n        ".join(tmp)  # csv, newline, and tab (w/ spaces) alignment
-        # ---
     else:
-        defines_parsed = ",\n        ".join(defines)
+        defines_parsed = ""
 
     # Parse include paths...
     tmp = i_paths
-    tmp = list(map("\"{0}\"".format, tmp))  # Surround with quotes
+    tmp = list(map(lambda s: f"\"{s}\"", tmp))  # Surround with quotes
     i_paths_parsed = ",\n        ".join(tmp).replace(target, "${config:target}").replace("\\", "/")
-
 
     # Parse browse paths...
     tmp = v_paths
-    tmp = list(map("\"{0}\"".format, tmp))  # Surround with quotes
-    v_paths_parsed = ",\n        ".join(tmp).replace(target, "${config:target}").replace("\\", "/")  # csv, newline, and tab alignment
+    tmp = list(map(lambda s: f"\"{s}\"", tmp))  # Surround with quotes
+    v_paths_parsed = ",\n        ".join(tmp).replace(target, "${config:target}").replace("\\", "/")
 
     # Create template...
     for directory, _, files in sorted(os.walk(template_dir)):
@@ -121,13 +121,13 @@ def create_project(
         # but excluding '.' and '..'), yields a 3-tuple (dirpath, dirnames, filenames)
 
         # Get current directory relative to root
-        rel_dir = os.path.relpath(directory, template_dir)
+        rel_dir = Path(directory).relative_to(Path(template_dir))
 
         # Figure out whether we're in a subfolder of the template directory,
         # and form output path accordingly.
-        if rel_dir != '.':
+        if rel_dir != Path('.'):
             # We're in a sub-folder.  Replicate this folder in the output directory
-            out_path = os.path.join(out_path, rel_dir)
+            out_path = Path(out_path).joinpath(rel_dir)
             os.makedirs(out_path, exist_ok=True)
         else:
             # We're in the root template folder, no need to create a directory.
@@ -139,35 +139,36 @@ def create_project(
             if file.startswith(template_prefix):
 
                 # There is a template file to copy.  Perform string substitution in output file.
-                out_loc = os.path.join(out_path, file[len(template_prefix):])
-                with open(os.path.join(directory, file)) as in_file, \
-                        open(out_loc, "w+") as out_file:
-                    for line in in_file.readlines():
-                        out_file.write(
-                            line.replace("##__TARGET__##", target.upper()).
-                            replace("##__BOARD__##", board).
-                            replace("##__PROGRAM_FILE__##", program_file).
-                            replace("##__SYMBOL_FILE__##", symbol_file).
-                            replace("##__M4_OCD_INTERFACE_FILE__##", m4_ocd_interface_file).
-                            replace("##__M4_OCD_TARGET_FILE__##", m4_ocd_target_file).
-                            replace("##__RV_OCD_INTERFACE_FILE__##", rv_ocd_interface_file).
-                            replace("##__RV_OCD_TARGET_FILE__##", rv_ocd_target_file).
-                            replace("\"##__I_PATHS__##\"", i_paths_parsed).  # Next 3 are surrounded in quotes in the template because of the linter
-                            replace("\"##__DEFINES__##\"", defines_parsed).
-                            replace("\"##__V_PATHS__##\"", v_paths_parsed).
-                            replace("##__V_ARM_GCC__##", v_arm_gcc).
-                            replace("##__V_XPACK_GCC__##", v_xpack_gcc).
-                            replace("##__OCD_PATH__##", ocd_path).
-                            replace("##__ARM_GCC_PATH__##", arm_gcc_path).
-                            replace("##__XPACK_GCC_PATH__##", xpack_gcc_path).
-                            replace("##__MAKE_PATH__##", make_path)
-                        )
+                out_loc = Path(out_path).joinpath(file[len(template_prefix):])  # Remove prefix
+                template = Path(directory).joinpath(file)
+                with open(template, 'r', encoding="UTF-8") as in_file, \
+                        open(out_loc, "w+", encoding="UTF-8") as out_file:
+                    content = in_file.read()
+                    out_file.write(
+                        content.replace("##__TARGET__##", target.upper()).
+                        replace("##__BOARD__##", board).
+                        replace("##__PROGRAM_FILE__##", program_file).
+                        replace("##__SYMBOL_FILE__##", symbol_file).
+                        replace("##__M4_OCD_INTERFACE_FILE__##", m4_ocd_interface_file).
+                        replace("##__M4_OCD_TARGET_FILE__##", m4_ocd_target_file).
+                        replace("##__RV_OCD_INTERFACE_FILE__##", rv_ocd_interface_file).
+                        replace("##__RV_OCD_TARGET_FILE__##", rv_ocd_target_file).
+                        replace("\"##__I_PATHS__##\"", i_paths_parsed).
+                        replace("\"##__DEFINES__##\"", defines_parsed).
+                        replace("\"##__V_PATHS__##\"", v_paths_parsed).
+                        replace("##__V_ARM_GCC__##", v_arm_gcc).
+                        replace("##__V_XPACK_GCC__##", v_xpack_gcc).
+                        replace("##__OCD_PATH__##", ocd_path).
+                        replace("##__ARM_GCC_PATH__##", arm_gcc_path).
+                        replace("##__XPACK_GCC_PATH__##", xpack_gcc_path).
+                        replace("##__MAKE_PATH__##", make_path)
+                    )
 
-                os.chmod(out_loc, 0o764)
+                os.chmod(out_loc, stat.S_IRWXU | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH)
                 # print(f"Wrote {os.path.basename(out_loc)}")  # Uncomment to debug
 
             else:
                 # There is a non-template file to copy
                 shutil.copy(os.path.join(directory, file), out_path)
-                os.chmod(out_path, 0o764)
-                #print(f"Wrote {os.path.basename(file)}") # Uncomment to debug
+                os.chmod(out_path, stat.S_IRWXU | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH)
+                # print(f"Wrote {os.path.basename(file)}") # Uncomment to debug
