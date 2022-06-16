@@ -60,7 +60,7 @@
             "command": "openocd",
             "args": [
                 "-s",
-                "${config:MAXIM_PATH}/Tools/OpenOCD/scripts",
+                "${config:OCD_path}/scripts",
                 "-f",
                 "interface/${config:M4_OCD_interface_file}",
                 "-f",
