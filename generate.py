@@ -35,8 +35,8 @@
 import os
 import shutil
 import stat
-from .utils import parse_json
-from sdk import *
+from utils import *
+from pathlib import Path
 
 # Get location of this file.
 # Need to use this so that template look-ups are decoupled from the caller's working directory 
@@ -64,6 +64,7 @@ def create_project(
     out_path: str,
     target: str,
     board: str,
+    overwrite = False,
     program_file: str = defaults["PROGRAM_FILE"],
     symbol_file: str = defaults["SYMBOL_FILE"],
     m4_ocd_interface_file: str = defaults["M4_OCD_INTERFACE_FILE"],
@@ -78,7 +79,7 @@ def create_project(
     ocd_path: str = defaults["OCD_PATH"],
     arm_gcc_path: str = defaults["ARM_GCC_PATH"],
     xpack_gcc_path: str = defaults["XPACK_GCC_PATH"],
-    make_path: str = defaults["MAKE_PATH"]
+    make_path: str = defaults["MAKE_PATH"],
 ):
     """
     Generates Visual Studio Code project files from the VSCode-Maxim project.
@@ -115,6 +116,7 @@ def create_project(
     tmp = list(map(lambda s: f"\"{s}\"", tmp))  # Surround with quotes
     v_paths_parsed = ",\n        ".join(tmp).replace(target, "${config:target}").replace("\\", "/")
 
+    updated = []
     # Create template...
     for directory, _, files in sorted(os.walk(template_dir)):
         # ^ For each directory in the directory tree rooted at top (including top itself,
@@ -133,42 +135,66 @@ def create_project(
             # We're in the root template folder, no need to create a directory.
             pass
 
+        
         # Any files to copy?
         for file in sorted(files):
 
             if file.startswith(template_prefix):
 
                 # There is a template file to copy.  Perform string substitution in output file.
-                out_loc = Path(out_path).joinpath(file[len(template_prefix):])  # Remove prefix
+                out_file = Path(out_path).joinpath(file[len(template_prefix):])  # Remove prefix
                 template = Path(directory).joinpath(file)
-                with open(template, 'r', encoding="UTF-8") as in_file, \
-                        open(out_loc, "w+", encoding="UTF-8") as out_file:
-                    content = in_file.read()
-                    out_file.write(
-                        content.replace("##__TARGET__##", target.upper()).
-                        replace("##__BOARD__##", board).
-                        replace("##__PROGRAM_FILE__##", program_file).
-                        replace("##__SYMBOL_FILE__##", symbol_file).
-                        replace("##__M4_OCD_INTERFACE_FILE__##", m4_ocd_interface_file).
-                        replace("##__M4_OCD_TARGET_FILE__##", m4_ocd_target_file).
-                        replace("##__RV_OCD_INTERFACE_FILE__##", rv_ocd_interface_file).
-                        replace("##__RV_OCD_TARGET_FILE__##", rv_ocd_target_file).
-                        replace("\"##__I_PATHS__##\"", i_paths_parsed).
-                        replace("\"##__DEFINES__##\"", defines_parsed).
-                        replace("\"##__V_PATHS__##\"", v_paths_parsed).
-                        replace("##__V_ARM_GCC__##", v_arm_gcc).
-                        replace("##__V_XPACK_GCC__##", v_xpack_gcc).
-                        replace("##__OCD_PATH__##", ocd_path).
-                        replace("##__ARM_GCC_PATH__##", arm_gcc_path).
-                        replace("##__XPACK_GCC_PATH__##", xpack_gcc_path).
-                        replace("##__MAKE_PATH__##", make_path)
-                    )
 
-                os.chmod(out_loc, stat.S_IRWXU | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH)
-                # print(f"Wrote {os.path.basename(out_loc)}")  # Uncomment to debug
+                content = None
+                with open(template, 'r', encoding="UTF-8") as f:
+                    content = f.read()
+                    content = content.replace("##__TARGET__##", target.upper()). \
+                        replace("##__BOARD__##", board). \
+                        replace("##__PROGRAM_FILE__##", program_file). \
+                        replace("##__SYMBOL_FILE__##", symbol_file). \
+                        replace("##__M4_OCD_INTERFACE_FILE__##", m4_ocd_interface_file). \
+                        replace("##__M4_OCD_TARGET_FILE__##", m4_ocd_target_file). \
+                        replace("##__RV_OCD_INTERFACE_FILE__##", rv_ocd_interface_file). \
+                        replace("##__RV_OCD_TARGET_FILE__##", rv_ocd_target_file). \
+                        replace("\"##__I_PATHS__##\"", i_paths_parsed). \
+                        replace("\"##__DEFINES__##\"", defines_parsed). \
+                        replace("\"##__V_PATHS__##\"", v_paths_parsed). \
+                        replace("##__V_ARM_GCC__##", v_arm_gcc). \
+                        replace("##__V_XPACK_GCC__##", v_xpack_gcc). \
+                        replace("##__OCD_PATH__##", ocd_path). \
+                        replace("##__ARM_GCC_PATH__##", arm_gcc_path). \
+                        replace("##__XPACK_GCC_PATH__##", xpack_gcc_path). \
+                        replace("##__MAKE_PATH__##", make_path)
+
+                write = True
+                if out_file.exists():
+                    if not overwrite or compare_content(content, out_file):
+                        write = False
+
+                if write:
+                    with open(out_file, "w+", encoding="UTF-8") as f:
+                        f.write(content)
+                    os.chmod(out_file, stat.S_IRWXU | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH)
+                    if out_file not in updated:
+                        updated.append(out_file)
+
+                    # print(f"Wrote {os.path.basename(out_loc)}")  # Uncomment to debug
 
             else:
                 # There is a non-template file to copy
-                shutil.copy(os.path.join(directory, file), out_path)
-                os.chmod(out_path, stat.S_IRWXU | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH)
-                # print(f"Wrote {os.path.basename(file)}") # Uncomment to debug
+                in_file = Path(directory).joinpath(file)
+                out_file = Path(out_path).joinpath(file)
+                
+                write = True
+                if out_file.exists():
+                    if not overwrite or (hash_file(in_file) == hash_file(out_file)):
+                        write = False
+
+                if write:
+                    shutil.copy(in_file, out_path)
+                    os.chmod(out_file, stat.S_IRWXU | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH)
+                    if out_file not in updated:
+                        updated.append(out_file)
+                    # print(f"Wrote {os.path.basename(file)}") # Uncomment to debug
+
+    return (len(updated) > 0)

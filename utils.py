@@ -35,6 +35,9 @@
 from collections.abc import MutableMapping
 from string import Template
 import json
+from pathlib import Path
+import hashlib
+import os
 
 class UpperDict(MutableMapping):
     def __init__(self, *args, **kwargs):
@@ -84,3 +87,42 @@ def time_me(f):
         return res
 
     return wrapper
+
+def hash(val):
+    if not isinstance(val, bytes):
+        val = bytes(val, encoding="utf-8")
+    return hashlib.sha1(val).digest()
+
+def hash_file(filepath):
+    return hash(open(Path(filepath), 'rb').read())
+
+def hash_folder(folderpath) -> bytes:
+    folderpath = Path(folderpath)
+    result = b''
+    for dir, subdirs, files in os.walk(folderpath):
+        for f in sorted(files):
+            file_path = Path(dir).joinpath(f)
+            relative_path = file_path.relative_to(folderpath)
+
+            result = hash(result + hash_file(file_path) + bytes(str(relative_path), encoding="utf-8"))
+            
+    return result
+
+def compare_content(content: str, file: Path) -> bool:
+    """
+    Compare the 'content' string to the existing content in 'file'.
+
+    It seems that when a file gets written there may be some metadata that is affecting
+    the hash functions.  As a result, this function writes 'content' to a temporary file,
+    then checks for equality using the temp file.
+    """
+    if not file.exists():
+        return False
+
+    tmp = file.parent.joinpath("tmp")
+    with open(tmp, "w", encoding='utf-8') as f:
+        f.write(content)
+
+    match = (hash_file(file) == hash_file(tmp))
+    os.remove(tmp)
+    return match
