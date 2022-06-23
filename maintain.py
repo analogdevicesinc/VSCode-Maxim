@@ -68,6 +68,10 @@ def time_me(f):
 
     return wrapper
 
+@time_me
+def run_cmd(*args, **kwargs):
+    return run(*args, **kwargs)
+
 def sync():
     # Inject .vscode folder into example projects
     print("Copying from Inject folder into example project and template...")
@@ -149,10 +153,10 @@ def test(maxim_path, targets=None, boards=None, projects=None):
     env = os.environ.copy()
 
     # Simulate the VS Code terminal by appending to the Path
-    if curplatform == 'Linux':
-        env["PATH"] = f"{maxim_path.as_posix()}/Tools/GNUTools/10.3/bin:{maxim_path.as_posix()}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin:" + env["PATH"]
-    elif curplatform == 'Windows':
-        env["PATH"] = f"{maxim_path.as_posix()}/Tools/GNUTools/10.3/bin;{maxim_path.as_posix()}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin;{maxim_path.as_posix()}/Tools/MSYS2/usr/bin;" + env["PATH"]
+    # if curplatform == 'Linux':
+    #     env["PATH"] = f"{maxim_path.as_posix()}/Tools/GNUTools/10.3/bin:{maxim_path.as_posix()}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin:" + env["PATH"]
+    # elif curplatform == 'Windows':
+    #     env["PATH"] = f"{maxim_path.as_posix()}/Tools/GNUTools/10.3/bin;{maxim_path.as_posix()}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin;{maxim_path.as_posix()}/Tools/MSYS2/usr/bin;" + env["PATH"]
     
     log_dir = Path(os.getcwd()).joinpath("buildlogs")
 
@@ -239,8 +243,8 @@ def test(maxim_path, targets=None, boards=None, projects=None):
                 success = True
 
                 # Test build (make all)
-                build_cmd = f"make all TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} MAKE=make"
-                res = run(build_cmd, env=env, cwd=project, shell=True, capture_output=True) # Run build command
+                build_cmd = f"make -r -j 8 all TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} MAKE=make"
+                res = run_cmd(build_cmd, env=env, cwd=project, shell=True, capture_output=True, encoding="utf-8") # Run build command
 
                 # Error check build command
                 if res.returncode != 0:
@@ -256,18 +260,17 @@ def test(maxim_path, targets=None, boards=None, projects=None):
                         f.write(f"[BOARD] {board}\n")
                         f.write(f"[BUILD COMMAND] {build_cmd}\n")
                         f.write("===============\n")
-                        for line in str(res.stdout + res.stderr, encoding="ASCII").splitlines():
-                            f.write(line + '\n')
+                        f.write(res.stdout + res.stderr)
 
                 else: log(f"{timestamp()}[{board}] --- [BUILD]\t[SUCCESS] {round(duration, 4)}s", logfile)                
 
                 # Test clean (make clean)
                 clean_cmd = f"make distclean TARGET={target} MAXIM_PATH={maxim_path} BOARD={board} MAKE=make"
-                res = run(clean_cmd, env=env, cwd=project, shell=True, capture_output=True) # Run clean command
+                res = run_cmd(clean_cmd, env=env, cwd=project, shell=True, capture_output=True, encoding="utf-8") # Run clean command
 
                 # Error check clean command
                 if res.returncode != 0:
-                    log(f"{timestamp()}[{board}] --- [CLEAN]\t[SUCCESS] {str(res.stderr, encoding='ASCII')}", logfile)
+                    log(f"{timestamp()}[{board}] --- [CLEAN]\t[SUCCESS] {res.stderr}", logfile)
                     success = False
                 else: log(f"{timestamp()}[{board}] --- [CLEAN]\t[SUCCESS] {round(duration, 4)}s", logfile)
 
