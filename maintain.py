@@ -303,6 +303,11 @@ release_parser.add_argument("version", type=str, help="Version # for the release
 
 sync_parser = cmd_parser.add_parser("sync", help="Sync all .vscode project folders")
 
+test_parser = cmd_parser.add_parser("test", help="Run a build test of the SDK.")
+test_parser.add_argument("--targets", type=str, nargs="+", required=False, help="Target microcontrollers to test.")
+test_parser.add_argument("--boards", type=str, nargs="+", required=False, help="Boards to test.  Should match the BSP folder-name exactly.")
+test_parser.add_argument("--projects", type=str, nargs="+", required=False, help="Examples to populate.  Should match the example's folder name.")
+
 if __name__ == "__main__":
     args = parser.parse_args()
 
@@ -323,3 +328,6 @@ if __name__ == "__main__":
     
     elif args.cmd == "sync":
         sync()
+    
+    elif args.cmd == "test":
+        test(args.maxim_path, targets=args.targets, boards=args.boards, projects=args.projects)
