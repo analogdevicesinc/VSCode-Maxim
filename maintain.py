@@ -219,7 +219,7 @@ def test(maxim_path, targets=None, boards=None, projects=None):
         if projects is None:
             projects = []
             for dirpath, subdirs, items in os.walk(maxim_path.joinpath("Examples", target)):
-                if 'Makefile' in items and "main.c" in items:
+                if 'Makefile' in items and ("main.c" in items or "project.mk" in items):
                     projects.append(Path(dirpath)) 
 
             log(f"[PROJECTS] Detected {projects}", logfile)
