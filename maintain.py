@@ -108,7 +108,7 @@ def release(version):
 
     # Copy in to installer package
     print("Updating installer package...")
-    shutil.copytree(Path("./Releases/VSCode-Maxim-v140"), Path("./installer/com.maximintegrated.dist.vscodemaxim/data/Tools/VSCode-Maxim"), dirs_exist_ok=True)
+    shutil.copytree(r_dir, Path("./installer/com.maximintegrated.dist.vscodemaxim/data/Tools/VSCode-Maxim"), dirs_exist_ok=True)
 
     # Update version # and release date in package.xml
     # ---
@@ -324,7 +324,7 @@ if __name__ == "__main__":
             exit()
 
     if args.cmd == "release":
-        release(args.version, args.maxim_path)
+        release(args.version)
     
     elif args.cmd == "sync":
         sync()
