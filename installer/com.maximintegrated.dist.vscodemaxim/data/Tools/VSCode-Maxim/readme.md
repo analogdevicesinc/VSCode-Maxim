@@ -56,7 +56,7 @@ The project folders in this repo have the following dependencies:
     {
         // There may be other settings up here...
         
-        "MAXIM_PATH":"C:/MaximSDK",
+        "MAXIM_PATH":"C:/MaximSDK", // Only use forward slahes '/' when setting this path!
         "update.mode": "manual",
         "extensions.autoUpdate": false,
         
