@@ -32,10 +32,38 @@
 *******************************************************************************/
 """
 
-from dataclasses import dataclass
+from collections.abc import MutableMapping
+from string import Template
 import json
-from dataclasses import dataclass
 from pathlib import Path
+import hashlib
+import os
+
+class UpperDict(MutableMapping):
+    def __init__(self, *args, **kwargs):
+        self.d = dict()
+        self.update(dict(*args, **kwargs))
+
+    def _parse_key(self, key):
+        return str(key).upper().replace(".", "_")
+
+    def __setitem__(self, key, value) -> None:
+        self.d[self._parse_key(key)] = value
+
+    def __getitem__(self, key):
+        return self.d[self._parse_key(key)]
+
+    def __delitem__(self, key) -> None:
+        del self.d[self._parse_key(key)]
+
+    def __iter__(self):
+        return iter(self.d)
+
+    def __len__(self):
+        return len(self.d)
+
+class MSDKTemplate(Template):
+    delimiter = "##__"
 
 def parse_json(filename):
     """
@@ -43,13 +71,7 @@ def parse_json(filename):
     """
     f = open(filename, "r")
     d = json.load(f)
-
-    # Convert key values to uppercase for easier template parsing
-    keys = list(d.keys()) # Keys are changing on the fly, so can't use a view object
-    for k in keys:
-        d[k.upper()] = d.pop(k)
-    
-    return d
+    return UpperDict(d)
 
 # Timer wrapper function
 import time
@@ -65,3 +87,42 @@ def time_me(f):
         return res
 
     return wrapper
+
+def hash(val):
+    if not isinstance(val, bytes):
+        val = bytes(val, encoding="utf-8")
+    return hashlib.sha1(val).digest()
+
+def hash_file(filepath):
+    return hash(open(Path(filepath), 'rb').read())
+
+def hash_folder(folderpath) -> bytes:
+    folderpath = Path(folderpath)
+    result = b''
+    for dir, subdirs, files in os.walk(folderpath):
+        for f in sorted(files):
+            file_path = Path(dir).joinpath(f)
+            relative_path = file_path.relative_to(folderpath)
+
+            result = hash(result + hash_file(file_path) + bytes(str(relative_path), encoding="utf-8"))
+            
+    return result
+
+def compare_content(content: str, file: Path) -> bool:
+    """
+    Compare the 'content' string to the existing content in 'file'.
+
+    It seems that when a file gets written there may be some metadata that is affecting
+    the hash functions.  As a result, this function writes 'content' to a temporary file,
+    then checks for equality using the temp file.
+    """
+    if not file.exists():
+        return False
+
+    tmp = file.parent.joinpath("tmp")
+    with open(tmp, "w", encoding='utf-8') as f:
+        f.write(content)
+
+    match = (hash_file(file) == hash_file(tmp))
+    os.remove(tmp)
+    return match

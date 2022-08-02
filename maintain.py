@@ -39,17 +39,15 @@ import time
 import shutil
 import argparse
 from pathlib import Path
-from dataclasses import dataclass
-from utils import time_me
-from generate import populate_maximsdk
 from datetime import date
 
 curplatform = platform.system() # Get OS
 
 def log(string, file):
-    print(string)
-    file.write(f"{string}\n")
-    file.flush()
+    with open(file, "a") as f:
+        print(string)
+        f.write(f"{string}\n")
+        f.flush()
 
 def timestamp():
     now = time.localtime()
@@ -70,17 +68,9 @@ def time_me(f):
 
     return wrapper
 
-# Run powershell command.  On linux, run a shell command
 @time_me
-def ps(cmd, env=None):
-    if curplatform == 'Linux':
-        if env is None: result = run(cmd, capture_output=True, shell=True)
-        else: result = run(cmd, env=env, capture_output=True, shell=True)
-    elif curplatform == 'Windows':
-        if env is None: result = run(["powershell", cmd], capture_output=True)
-        else: result = run(["powershell", cmd], env=env, capture_output=True)
-
-    return result
+def run_cmd(*args, **kwargs):
+    return run(*args, **kwargs)
 
 def sync():
     # Inject .vscode folder into example projects
@@ -118,7 +108,7 @@ def release(version):
 
     # Copy in to installer package
     print("Updating installer package...")
-    shutil.copytree(Path("./Releases/VSCode-Maxim-v140"), Path("./installer/com.maximintegrated.dist.vscodemaxim/data/Tools/VSCode-Maxim"), dirs_exist_ok=True)
+    shutil.copytree(r_dir, Path("./installer/com.maximintegrated.dist.vscodemaxim/data/Tools/VSCode-Maxim"), dirs_exist_ok=True)
 
     # Update version # and release date in package.xml
     # ---
@@ -159,21 +149,21 @@ def release(version):
 
 # Tests cleaning and compiling example projects for target platforms.  If no targets, boards, projects, etc. are specified then it will auto-detect
 def test(maxim_path, targets=None, boards=None, projects=None):
-    maxim_path = Path(maxim_path).resolve().as_posix()
+    maxim_path = Path(maxim_path).resolve()
     env = os.environ.copy()
 
     # Simulate the VS Code terminal by appending to the Path
-    if curplatform == 'Linux':
-        env["PATH"] = f"{maxim_path}/Tools/GNUTools/10.3/bin:{maxim_path}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin:" + env["PATH"]
-    elif curplatform == 'Windows':
-        env["PATH"] = f"{maxim_path}/Tools/GNUTools/10.3/bin;{maxim_path}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin;" + env["PATH"]
+    # if curplatform == 'Linux':
+    #     env["PATH"] = f"{maxim_path.as_posix()}/Tools/GNUTools/10.3/bin:{maxim_path.as_posix()}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin:" + env["PATH"]
+    # elif curplatform == 'Windows':
+    #     env["PATH"] = f"{maxim_path.as_posix()}/Tools/GNUTools/10.3/bin;{maxim_path.as_posix()}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin;{maxim_path.as_posix()}/Tools/MSYS2/usr/bin;" + env["PATH"]
     
-    LOG_DIR = os.getcwd()
+    log_dir = Path(os.getcwd()).joinpath("buildlogs")
 
     # Create log file
-    try: os.mkdir(f"{LOG_DIR}/buildlogs")
-    except FileExistsError: pass
-    logfile = open(f"{LOG_DIR}/test.log", 'w')
+    if not log_dir.exists():
+        os.mkdir(log_dir)
+    logfile = log_dir.joinpath("test.log")
     
     # Log system info
     log(timestamp(), logfile)
@@ -197,9 +187,10 @@ def test(maxim_path, targets=None, boards=None, projects=None):
     targets = sorted(targets)
 
     # Create subfolders for target-specific logfiles
-    for t in targets: 
-        try: os.mkdir(f"{LOG_DIR}/buildlogs/{t}")
-        except FileExistsError: pass
+    for t in targets:
+        sub_dir = log_dir.joinpath(t)
+        if not sub_dir.exists():
+            os.mkdir(sub_dir)
 
     # Track failed projects for end summary
     failed = []
@@ -212,9 +203,9 @@ def test(maxim_path, targets=None, boards=None, projects=None):
         # Get list of supported boards for this target.
         if boards is None:
             boards = []
-            for dirpath, subdirs, items in os.walk(f"{maxim_path}/Libraries/Boards/{target}"):
-                if "board.mk" in items and curplatform == 'Linux': boards.append(dirpath.split('/')[-1]) # Linux
-                elif "board.mk" in items and curplatform == 'Windows': boards.append(dirpath.split('\\')[-1]) # Board string will be the last folder in the directory path # Windows
+            for dirpath, subdirs, items in os.walk(maxim_path.joinpath("Libraries", "Boards", target)):
+                if "board.mk" in items:
+                    boards.append(Path(dirpath).name)
 
             log(f"[BOARDS] Detected {boards}", logfile)
 
@@ -227,9 +218,9 @@ def test(maxim_path, targets=None, boards=None, projects=None):
         # Get list of examples for this target.  If a Makefile is in the root directory it's an example.
         if projects is None:
             projects = []
-            for dirpath, subdirs, items in os.walk(f"{maxim_path}/Examples/{target}"):
-                if 'Makefile' in items:
-                    projects.append(dirpath)  
+            for dirpath, subdirs, items in os.walk(maxim_path.joinpath("Examples", target)):
+                if 'Makefile' in items and ("main.c" in items or "project.mk" in items):
+                    projects.append(Path(dirpath)) 
 
             log(f"[PROJECTS] Detected {projects}", logfile)
 
@@ -241,20 +232,19 @@ def test(maxim_path, targets=None, boards=None, projects=None):
 
         # Test each project
         for project in projects:
-            if curplatform == 'Linux': project_stripped = project.split('/')[-1] # Linux
-            elif curplatform == 'Windows': project_stripped = project.split('\\')[-1] # Windows
+            project_name = project.name
+            print(project_name)
 
             log("---------------------", logfile)
-            log(f"[{target}]\t[{project_stripped}]", logfile)
-            os.chdir(project) # Need to us os.chdir to set working directory of subprocesses
+            log(f"[{target}]\t[{project_name}]", logfile)
 
             for board in boards:
-                buildlog = f"{target}_{board}_{project_stripped}.log"
+                buildlog = f"{target}_{board}_{project_name}.log"
                 success = True
 
                 # Test build (make all)
-                build_cmd = f"make all TARGET={target} MAXIM_PATH={maxim_path} BOARD={board} MAKE=make"
-                res = ps(build_cmd, env=env) # Run build command
+                build_cmd = f"make -r -j 8 all TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} MAKE=make"
+                res = run_cmd(build_cmd, env=env, cwd=project, shell=True, capture_output=True, encoding="utf-8") # Run build command
 
                 # Error check build command
                 if res.returncode != 0:
@@ -263,32 +253,31 @@ def test(maxim_path, targets=None, boards=None, projects=None):
                     log(f"{timestamp()}[{board}] --- [BUILD]\t[FAILED] Return code {res.returncode}.  See buildlogs/{buildlog}", logfile)            
                     
                     # Log detailed output to separate output file
-                    with open(f"{LOG_DIR}/buildlogs/{target}/{buildlog}", 'w') as f:
+                    with open(log_dir.joinpath(target, buildlog), 'w') as f:
                         f.write("===============\n")
                         f.write(timestamp() + '\n')
                         f.write(f"[PROJECT] {project}\n")
                         f.write(f"[BOARD] {board}\n")
                         f.write(f"[BUILD COMMAND] {build_cmd}\n")
                         f.write("===============\n")
-                        for line in str(res.stdout + res.stderr, encoding="ASCII").splitlines():
-                            f.write(line + '\n')
+                        f.write(res.stdout + res.stderr)
 
                 else: log(f"{timestamp()}[{board}] --- [BUILD]\t[SUCCESS] {round(duration, 4)}s", logfile)                
 
                 # Test clean (make clean)
                 clean_cmd = f"make distclean TARGET={target} MAXIM_PATH={maxim_path} BOARD={board} MAKE=make"
-                res = ps(clean_cmd, env=env) # Run clean command
+                res = run_cmd(clean_cmd, env=env, cwd=project, shell=True, capture_output=True, encoding="utf-8") # Run clean command
 
                 # Error check clean command
                 if res.returncode != 0:
-                    log(f"{timestamp()}[{board}] --- [CLEAN]\t[SUCCESS] {str(res.stderr, encoding='ASCII')}", logfile)
+                    log(f"{timestamp()}[{board}] --- [CLEAN]\t[SUCCESS] {res.stderr}", logfile)
                     success = False
                 else: log(f"{timestamp()}[{board}] --- [CLEAN]\t[SUCCESS] {round(duration, 4)}s", logfile)
 
                 # Add any failed projects to running list
                 project_info = {
                     "target":target,
-                    "project":project_stripped,
+                    "project":project_name,
                     "board":board,
                     "path":project,
                     "logfile":f"buildlogs/{buildlog}"
@@ -314,6 +303,11 @@ release_parser.add_argument("version", type=str, help="Version # for the release
 
 sync_parser = cmd_parser.add_parser("sync", help="Sync all .vscode project folders")
 
+test_parser = cmd_parser.add_parser("test", help="Run a build test of the SDK.")
+test_parser.add_argument("--targets", type=str, nargs="+", required=False, help="Target microcontrollers to test.")
+test_parser.add_argument("--boards", type=str, nargs="+", required=False, help="Boards to test.  Should match the BSP folder-name exactly.")
+test_parser.add_argument("--projects", type=str, nargs="+", required=False, help="Examples to populate.  Should match the example's folder name.")
+
 if __name__ == "__main__":
     args = parser.parse_args()
 
@@ -330,7 +324,10 @@ if __name__ == "__main__":
             exit()
 
     if args.cmd == "release":
-        release(args.version, args.maxim_path)
+        release(args.version)
     
     elif args.cmd == "sync":
         sync()
+    
+    elif args.cmd == "test":
+        test(args.maxim_path, targets=args.targets, boards=args.boards, projects=args.projects)
