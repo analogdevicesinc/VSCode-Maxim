@@ -6,7 +6,7 @@ If you are viewing this document from within Visual Studio Code, press `CTRL+SHI
 
 ## Introduction
 
-This repository is dedicated to maintaining [Visual Studio Code](https://code.visualstudio.com/) project files that integrate with [Maxim Integrated's](https://www.maximintegrated.com/en/products/microcontrollers.html) Microcontroller SDK.  The following features are enabled by the project files:
+VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Device's MSDK](https://github.com/Analog-Devices-MSDK/msdk) and the [MAX-series](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.  The following features are enabled by the project files:
 
 * Code editing with intellisense and definition look-ups down to the register level
 * Code compilation with the ability to easily re-target a project for different microcontrollers and boards
@@ -14,8 +14,6 @@ This repository is dedicated to maintaining [Visual Studio Code](https://code.vi
 * GUI and command-line debugging
 
 ## Dependencies
-
-The project folders in this repo have the following dependencies:
 
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools)
@@ -34,7 +32,7 @@ The project folders in this repo have the following dependencies:
 
     ![Selected Components](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/installer_components.JPG)
 
-4. Finish the MaximSDK installation, and proceed to step 5 below to set up Visual Studio Code.
+4. Finish the MaximSDK installation, taking note of where the MaximSDK was installed.
 
 5. Download & install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).
 
@@ -70,23 +68,25 @@ The project folders in this repo have the following dependencies:
 
 ## Usage
 
-This section covers basic usage of the VSCode-Maxim project files.  For documentation on Visual Studio Code itself, please refer to the official docs [here](https://code.visualstudio.com/Docs).  
-
-Prior experience with Visual Studio Code is not required to understand this section or use the project files, but some basic familiarity is helpful.  For new users, this initial familiarity can be gained by working through the full [User Guide](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/userguide.md).
+This section covers basic usage of the VSCode-Maxim project files.  For documentation on Visual Studio Code itself, please refer to the official docs [here](https://code.visualstudio.com/Docs).
 
 ### Opening Projects
 
-Visual Studio Code is built around a "working directory" paradigm.  VS Code's editor is always running from inside of a working directory, and the main mechanism for changing that directory is `File -> Open Folder...`  
+Visual Studio Code is built around a "working directory" paradigm.  The editor is always rooted in a working directory, and the main mechanism for changing that directory is `File -> Open Folder...`.
 
 ![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
 
-VS Code will look in the opened folder for a `.vscode` _sub_-folder to load project-specific settings from.
+As a result, you'll notice that there is no "New Project" mechanism.  A "project" in VS Code is simply a folder.  It will look inside of the opened folder for a `.vscode` _sub_-folder to load project-specific settings from.
 
-Opening an existing project is as simple as `File -> Open Folder...`.  A project that is configured for VS Code will have, at minimum, a .vscode sub-folder and a Makefile in its directory.  Ex:
+A project that is configured for VS Code will have, at minimum, a .vscode sub-folder and a Makefile in its directory _(Note:  You may need to enable viewing of hidden items in your file explorer to see the .vscode sub-folder)_.  Ex:
 
 ![Example Directory Contents](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/opening_projects_2.jpg)
 
-Note:  You may need to enable viewing of hidden items in your file explorer to see the .vscode sub-folder.
+### Where to Find Projects
+
+The [Examples](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) in the MSDK come with with pre-configured .vscode project folders.  These projects can be opened "out of the box", but it's good practice to copy example folders _outside_ of the MSDK so that the original copies are kept as clean references.  The examples can be freely moved to any location _without a space in its path_.
+
+Additionally, empty project templates and a drag-and-drop folder for "injecting" VSCode-Maxim into a project can be found under `Tools/VSCode-Maxim` in the MaximSDK installation.
 
 ### Build Tasks
 
@@ -95,19 +95,30 @@ Once a project is opened 4 available build tasks will become available via `Term
 ![Build Tasks Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
 
 * Build
-  * Compiles the code.
+  * Compiles the code with a `make all` command.
+  * Additional options are passed into Make on the command-line based on the project's settings.json file.
   * The `./build` directory will be created and will contain the output binary, as well as all intermediary object files.
 
 * Clean
-  * This task cleans the build output, removing the `./build` directory and all of its contents.
+  * Cleans the build output, removing the `./build` directory and all of its contents.
 
 * Clean-Periph
   * This task is the same as 'clean', but it also removes the build output for Maxim's peripheral drivers.
   * Use this if you would like to recompile the peripheral drivers from source on the next build.
 
 * Flash
-  * This task runs the Build task, and then flashes the output binary to the microcontroller.
-  * A debugger must be connected to the correct debugger port on the target microcontroller.  Refer to the datasheet of your microcontrollers evaluation board for instructions on connecting a debugger.
+  * Launching this task automatically runs the `Build` task first.  Then, it flashes the output binary to the microcontroller.
+  * It uses the GDB `load` and `compare-sections` commands, and handles launching an OpenOCD internally via a pipe connection.
+  * The flashed program will be halted until the microcontroller is reset, power cycled, or a debugger is connected.
+  * A debugger must be connected correctly to use this task.  Refer to the datasheet of your microcontroller's evaluation board for instructions.
+  
+* Flash & Run
+  * This is the same as the `Flash` task, but it also will launch execution of the program once flashing is complete.
+  
+* Erase Flash
+  * Completely erases all of the application code in the flash memory bank.
+  * Once complete, the target microcontroller will be effectively "blank".
+  * This can be useful for recovering from Low-Power (LP) lockouts, bad firmware, etc.
 
 ### Editing the Makefile
 
