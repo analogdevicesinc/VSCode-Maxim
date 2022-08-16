@@ -86,7 +86,7 @@ A project that is configured for VS Code will have, at minimum, a .vscode sub-fo
 
 The [Examples](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) in the MSDK come with with pre-configured .vscode project folders.  These projects can be opened "out of the box", but it's good practice to copy example folders _outside_ of the MSDK so that the original copies are kept as clean references.  The examples can be freely moved to any location _without a space in its path_.
 
-Additionally, empty project templates and a drag-and-drop folder for "injecting" VSCode-Maxim into a project can be found under `Tools/VSCode-Maxim` in the MaximSDK installation.
+Additionally, empty project templates and a drag-and-drop folder for "injecting" a VSCode-Maxim project can be found under `Tools/VSCode-Maxim` in the MaximSDK installation.
 
 ### Build Tasks
 
