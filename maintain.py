@@ -83,7 +83,7 @@ def sync():
     shutil.copy("MaximSDK/Inject/.vscode/c_cpp_properties.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
     shutil.copy("MaximSDK/Inject/.vscode/flash.gdb", "MaximSDK/Template/.vscode/")
-    shutil.copy("readme.md", "MaximSDK/Template/.vscode/")
+    shutil.copy("README.md", "MaximSDK/Template/.vscode/")
 
 def release(version):
     sync()
