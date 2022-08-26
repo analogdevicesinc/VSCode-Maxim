@@ -396,6 +396,7 @@ In most cases, you should do this from inside of **project.mk**.
 For example, if I wanted to enable hardware floating-point acceleration for my project, I would use the `MFLOAT_ABI` configuration variable to set its value to `hard`.  The contents of **project.mk** might then look as follows:
 
 (_Inside project.mk_)
+
 ```Makefile
 # This file can be used to set build configuration
 # variables.  These variables are defined in a file called 
