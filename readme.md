@@ -416,7 +416,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 It should also be noted that configuration variables can be set on the **command-line** as well.  For example...
 
 ```shell
-$ make MFlOAT_ABI=hard
+$ make MFLOAT_ABI=hard
 ```
 
 ... will have the same effect.
@@ -517,7 +517,7 @@ If you want to start from scratch, take this option.
 
 5. `CTRL+SHIFT+P -> Reload Window` to re-parse the project settings.
 
-6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.  However, you'll probably want to add some source code.  See [Editing the Makefile](#editing-the-makefile).
+6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.
 
 ## Issue Tracker
 
