@@ -362,7 +362,7 @@ Root Project Directory
 
 Additionally, the "core" `Makefile` will come pre-configured for a specific target microcontroller and Board Support Package (BSP).  The default BSP will match the main EVKIT for the device.  In VSCode-Maxim, the two [Basic Config Options](#basic-config-options) can be used to easily override the target microcontroller and BSP.  These options are passed to `make` on the command-line when the ["Build" task](#build-tasks) is run.
 
-For more advanced build configuration, `project.mk` should be used.
+For more advanced build configuration, configuration variables should be used.
 
 ### How to Set a Configuration Variable
 
@@ -374,7 +374,7 @@ To set a configuration variable, use the syntax...
 VARIABLE=VALUE
 ```
 
-... and write a line like this into the `project.mk` file.  The `=` operater is used for _most_ configuration variables with a few exceptions (that are clearly documented) when a variable should contain a _list_ of values.  In such cases, use the syntax...
+The `=` operater is used for _most_ configuration variables with a few exceptions (that are clearly documented) when a variable should contain a _list_ of values.  In such cases, use the syntax...
 
 ```Makefile
 VARIABLE+=VALUE1
@@ -383,7 +383,9 @@ VARIABLE+=VALUE2
 
 ... to _add_ values to the list.
 
-For example, if I wanted to enable hardware floating-point acceleration for my project, I would use the `MFLOAT_ABI` configuration variable to set its value to `hard` **project.mk**.  The contents might then look as follows:
+In most cases, you should do this from inside of **project.mk**.  
+
+For example, if I wanted to enable hardware floating-point acceleration for my project, I would use the `MFLOAT_ABI` configuration variable to set its value to `hard`.  The contents of **project.mk** might then look as follows:
 
 (_Inside project.mk_)
 ```Makefile
@@ -408,7 +410,7 @@ $ make MFlOAT_ABI=hard
 
 ... will have the same effect.
 
-Additionally, **environment variables** can be used.  For example...
+Additionally, **environment variables** can be used.  For example (on linux)...
 
 ```shell
 $ export TARGET=MAX78000
@@ -436,7 +438,7 @@ The project's `Makefile` can be opened to see a full list of available config op
 | `TARGET` | Set the target microcontroller | `TARGET=MAX78000` |
 | `BOARD` | Set the Board Support Package (BSP) | `BOARD=FTHR_RevA` | Every microcontroller has a number of BSPs available for it that can be found in the `Libraries/Boards/TARGET` folder of the MaximSDK.  When you change this option, it's usually a good idea to fully clean your project, then re-build.
 **SDK**
-| `MAXIM_PATH` | (Optional) Specify the location of the MaximSDK | `MAXIM_PATH=/home/me/MaximSDK` | This optional variable can be used to change where the Makefile looks for the MaximSDK.  By default, the Makefile will attempt to locate the MaximSDK with a relative path moving "up" from its original location.  This option is most useful when a project is moved _outside_ of the SDK and you're developing on the command-line, since VS Code and Eclipse will set this via an environment variable.  It's also useful for re-targeting a project to point to the development repository.
+| `MAXIM_PATH` | (Optional) Specify the location of the MaximSDK | `MAXIM_PATH=/path/to/MSDK` | This optional variable can be used to change where the Makefile looks for the MaximSDK.  By default, the Makefile will attempt to locate the MaximSDK with a relative path moving "up" from its original location.  This option is most useful when a project is moved _outside_ of the SDK and you're developing on the command-line, since VS Code and Eclipse will set this via an environment variable.  It's also useful for re-targeting a project to point to the development repository.
 | `CAMERA` | (Optional) Set the Camera drivers to use | `CAMERA=HM0360_MONO` | This option is only useful for the MAX78000 and MAX78002, and sets the camera drivers to use for the project.  Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`.  Camera drivers can be found in the `Libraries/MiscDrivers/Camera` folder of the MaximSDK.  Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` Makefile in the active BSP for more details.
 **Source Code**
 | `VPATH` | Where to search for source (.c) files | `VPATH+=your/source/path` | **Use the `+=` operator with this option**.  This controls where the Makefile will look for **source code** files.  If `AUTOSEARCH` is enabled (which it is by default) this controls which paths will be searched.  If `AUTOSEARCH` is disabled, this tells the Makefile where to look for the files specified by `SRCS`.
@@ -449,7 +451,7 @@ The project's `Makefile` can be opened to see a full list of available config op
 | `PROJ_CFLAGS` | Add a compiler flag to the build | `PROJ_CFLAGS+=-Wextra`, `PROJ_CFLAGS+=-DMYDEFINE` | Compiler flags can be added with this option, including compiler definitions.  For each value, the same syntax should be used as if the compiler flag was passed in via the command-line.  These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options.
 | `MFLOAT_ABI` | Set the floating point acceleration level | `MFLOAT_ABI=hard` | Sets the floating-point acceleration level.  Permitted values are `hard`, `soft`, `softfp` (default).  To enable full hardware acceleration instructions use `hard`, but keep in mind that _all_ libraries your source code uses must also be compiled with `hard`.  If there is any conflict, you'll get a linker error.  For more details, see `-mfloat-abi` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html).
 **Linker**
-| `LINKERFILE` | Set the linkerfile to use | `LINKERFILE=customlinker.ld` | You can use a different linkerfile with this option.  The file should exists in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MaximSDK, or it should be placed inside the root directory of the project.
+| `LINKERFILE` | Set the linkerfile to use | `LINKERFILE=newlinker.ld` | You can use a different linkerfile with this option.  The file should exists in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MaximSDK, or it should be placed inside the root directory of the project.
 **Libraries**
 | `LIB_BOARD` | Include the BSP library (enabled by default) | `LIB_BOARD=0` | Inclusion of the Board-Support Package (BSP) library, which is enabled by default, can be toggled with this variable.  This library contains important startup code specific to a microcontroller's evaluation platform, such as serial port initialization, power sequencing, external peripheral initalization, etc.  Set to `0` to disable, or `1` to enable.
 | `LIB_PERIPHDRIVERS` | Include the peripheral driver library (enabled by default) | `LIB_PERIPHDRIVERS=0` | The peripheral driver library can be toggled with this option.  If disabled, you'll lose access to the higher-level driver functions but still have access to the register-level files.  Set to `0` to disable, or `1` to enable.
