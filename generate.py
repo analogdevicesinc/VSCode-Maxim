@@ -35,7 +35,8 @@
 import os
 import shutil
 import stat
-from utils import *
+# from utils import *
+from . import utils
 from pathlib import Path
 
 # Get location of this file.
@@ -43,7 +44,7 @@ from pathlib import Path
 here = Path(__file__).parent
 
 # Load default values for template from master "inject" folder so that we don't have to maintain multiple copies of the settings
-defaults = parse_json(here.joinpath("MaximSDK/Inject/.vscode/settings.json"))
+defaults = utils.parse_json(here.joinpath("MaximSDK/Inject/.vscode/settings.json"))
 
 whitelist = [
     "MAX32650",
@@ -61,7 +62,8 @@ whitelist = [
 ]
 
 def create_project(
-    out_path: str,
+    out_root: str,
+    out_stem: str,
     target: str,
     board: str,
     overwrite = False,
@@ -85,7 +87,7 @@ def create_project(
     Generates Visual Studio Code project files from the VSCode-Maxim project.
     """
 
-    out_path = Path(out_path)
+    out_path = Path(out_root).joinpath(out_stem)
 
     template_dir = here.joinpath("MaximSDK/Template").resolve()
     # Where to find the VS Code template directory relative to this script

@@ -33,7 +33,6 @@
 """
 
 from collections.abc import MutableMapping
-from string import Template
 import json
 from pathlib import Path
 import hashlib
@@ -61,9 +60,6 @@ class UpperDict(MutableMapping):
 
     def __len__(self):
         return len(self.d)
-
-class MSDKTemplate(Template):
-    delimiter = "##__"
 
 def parse_json(filename):
     """
