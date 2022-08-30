@@ -38,6 +38,7 @@ import stat
 # from utils import *
 from . import utils
 from pathlib import Path
+from .maintain import sync
 
 # Get location of this file.
 # Need to use this so that template look-ups are decoupled from the caller's working directory 
@@ -86,6 +87,8 @@ def create_project(
     """
     Generates Visual Studio Code project files from the VSCode-Maxim project.
     """
+
+    sync()
 
     out_path = Path(out_root).joinpath(out_stem)
 
