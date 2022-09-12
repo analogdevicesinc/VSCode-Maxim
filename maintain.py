@@ -41,6 +41,8 @@ import argparse
 from pathlib import Path
 from datetime import date
 
+here = Path(__file__).parent
+
 curplatform = platform.system() # Get OS
 
 def log(string, file):
@@ -74,16 +76,20 @@ def run_cmd(*args, **kwargs):
 
 def sync():
     # Inject .vscode folder into example projects
-    print("Copying from Inject folder into example project and template...")
-    for f in os.scandir("MaximSDK/Inject/.vscode"): 
-        shutil.copy(f, "MaximSDK/New_Project/.vscode/")
+    inject_dir = here.joinpath("MaximSDK", "Inject", ".vscode")
+    new_proj_dir = here.joinpath("MaximSDK", "New_Project", ".vscode")
+    template_dir = here.joinpath("MaximSDK", "Template", ".vscode")
+
+    print("Syncing VSCode template...")
+    for f in os.scandir(inject_dir):
+        shutil.copy(f, new_proj_dir)
 
     # Copy files into template folder
-    shutil.copy("MaximSDK/Inject/.vscode/launch.json", "MaximSDK/Template/.vscode/")
-    shutil.copy("MaximSDK/Inject/.vscode/c_cpp_properties.json", "MaximSDK/Template/.vscode/")
-    shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
-    shutil.copy("MaximSDK/Inject/.vscode/flash.gdb", "MaximSDK/Template/.vscode/")
-    shutil.copy("README.md", "MaximSDK/Template/.vscode/")
+    shutil.copy(inject_dir.joinpath("launch.json"), template_dir)
+    shutil.copy(inject_dir.joinpath("c_cpp_properties.json"), template_dir)
+    shutil.copy(inject_dir.joinpath("tasks.json"), template_dir)
+    shutil.copy(inject_dir.joinpath("flash.gdb"), template_dir)
+    shutil.copy(here.joinpath("README.md"), template_dir)
 
 def release(version):
     sync()

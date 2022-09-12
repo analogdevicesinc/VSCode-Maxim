@@ -47,6 +47,8 @@ here = Path(__file__).parent
 # Load default values for template from master "inject" folder so that we don't have to maintain multiple copies of the settings
 defaults = utils.parse_json(here.joinpath("MaximSDK/Inject/.vscode/settings.json"))
 
+synced=False
+
 whitelist = [
     "MAX32650",
     "MAX32655",
@@ -88,7 +90,10 @@ def create_project(
     Generates Visual Studio Code project files from the VSCode-Maxim project.
     """
 
-    sync()
+    global synced
+    if not synced:
+        sync()
+        synced = True
 
     out_path = Path(out_root).joinpath(out_stem)
 
