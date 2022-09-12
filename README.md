@@ -99,28 +99,28 @@ Once a project is opened 4 available build tasks will become available via `Term
 
 ![Build Tasks Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
 
-* Build
+#### Build
   * Compiles the code with a `make all` command.
   * Additional options are passed into Make on the command-line based on the project's settings.json file.
   * The `./build` directory will be created and will contain the output binary, as well as all intermediary object files.
 
-* Clean
+#### Clean
   * Cleans the build output, removing the `./build` directory and all of its contents.
 
-* Clean-Periph
+#### Clean-Periph
   * This task is the same as 'clean', but it also removes the build output for Maxim's peripheral drivers.
   * Use this if you would like to recompile the peripheral drivers from source on the next build.
 
-* Flash
+#### Flash
   * Launching this task automatically runs the `Build` task first.  Then, it flashes the output binary to the microcontroller.
   * It uses the GDB `load` and `compare-sections` commands, and handles launching an OpenOCD internally via a pipe connection.
   * The flashed program will be halted until the microcontroller is reset, power cycled, or a debugger is connected.
   * A debugger must be connected correctly to use this task.  Refer to the datasheet of your microcontroller's evaluation board for instructions.
   
-* Flash & Run
+#### Flash & Run
   * This is the same as the `Flash` task, but it also will launch execution of the program once flashing is complete.
   
-* Erase Flash
+#### Erase Flash
   * Completely erases all of the application code in the flash memory bank.
   * Once complete, the target microcontroller will be effectively "blank".
   * This can be useful for recovering from Low-Power (LP) lockouts, bad firmware, etc.
@@ -141,7 +141,7 @@ In general, Maxim's microcontrollers have the following debugger limitations at 
 
 * The device can not be debugged while the device is in Sleep, Low Power Mode, Micro Power Mode, Standby, Backup, or Shutdown mode.  These modes shut down the SWD clock.
 
-* These limitations can sometimes make the device difficult or impossible to connect to if firmware has locked out the debugger.  In such cases, the "Erase Flash" task can be used to recover the part.
+* These limitations can sometimes make the device difficult or impossible to connect to if firmware has locked out the debugger.  In such cases, the ["Erase Flash"](#erase-flash) task can be used to recover the part.
 
 #### Launching the Debugger
 
