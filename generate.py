@@ -170,7 +170,7 @@ def create_project(
 
                 write = True
                 if out_file.exists():
-                    if not overwrite or compare_content(content, out_file):
+                    if not overwrite or utils.compare_content(content, out_file):
                         write = False
 
                 if write:
@@ -189,7 +189,7 @@ def create_project(
                 
                 write = True
                 if out_file.exists():
-                    if not overwrite or (hash_file(in_file) == hash_file(out_file)):
+                    if not overwrite or (utils.hash_file(in_file) == utils.hash_file(out_file)):
                         write = False
 
                 if write:
