@@ -28,6 +28,8 @@ The following features are supported:
 
 ## Installation
 
+The steps below are also available in video form in "Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code" [here](https://www.maximintegrated.com/en/products/microcontrollers/artificial-intelligence.html/tab4/vd_1_2eaktism#.YyDxHaE8U_Y.mailto).
+
 1. Download & install the Maxim Microcontrollers SDK for your OS from the links below.
     * [Windows](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0010820A)
     * [Linux (Ubuntu)](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018720A)
@@ -446,9 +448,9 @@ The precedence hierarchy for the value of a configuration variable is:
 
 ...meaning if a value is set on the command-line _and_ project.mk, the command-line value will take precedence.  However, the ["override" directive](https://www.gnu.org/software/make/manual/make.html#Override-Directive) can be used in project.mk to give it max precedence.
 
-### Configuration Variables Reference
+### Configuration Variables Table
 
-The project's `Makefile` can be opened to see a full list of available config options, but they are nested among the implementation details of the Makefile itself.  This might be fine for those familiar with reading Makefiles, but a clean reference table is also available below.
+The project's `Makefile` can be opened to see a full list of available config options, but they are nested among the implementation details of the Makefile itself.  A full reference table is also available below.
 
 | Variable | Description | Example | Details |
 |--- | --- | --- | ---|
@@ -482,6 +484,12 @@ The project's `Makefile` can be opened to see a full list of available config op
 | `LIB_LWIP` | Include the lwIP library | `LIB_LWIP=1` | |
 | `LIB_MAXUSB` | Include the MaxUSB library | `LIB_MAXUSB=1` | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers.  Set to `0` to disable, or `1` to enable.
 | `LIB_SDHC` | Include the SDHC library | `LIB_SDHC=1` | This options toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards.  Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem.
+**Secure Boot Tools (SBT)**
+| `SBT` | Toggle SBT integration | `SBT=1` | Toggles integration with the [Secure Boot Tools (SBTs)](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7637.html).  These are a suite of applications designed for use with microcontrollers that have secure bootloaders.  When this is enabled, some additional rules become available such as `make sla` and `make scpa`.  Set to `0` to disable or `1` to enable.
+| `MAXIM_SBT_DIR` | Where to find the SBTs | `MAXIM_SBT_DIR=C:/MaximSBT` | This option can be used to manually specify the location of the SBTs.  Usually, this is not necessary.  By default, the `Tools/SBT` directory of the MaximSDK will be searched.  If the [SBT installer](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0015360C) is used, it will set the `MAXIM_SBT_DIR` environment variable to point to itself automatically.
+| `TARGET_SEC` | Secure part number to use | `TARGET_SEC=MAX32651` | Some secure microcontrollers have multiple secure variants, and this option can be used to specify the variant to use with the SBTs.  Defaults are intelligently selected, and can be found in `$(MAXIM_SBT_DIR)/SBT-config.mk`
+| `SCP_PACKETS` | Where to build the scp_packets folder | | Defaults to `build/scp_packets` |
+| `TEST_KEY` | Which test key to sign applications with | | Defaults to `$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key`, which is the Maxim test key that can be used for development.
 
 ## Project Creation
 
