@@ -450,7 +450,7 @@ The precedence hierarchy for the value of a configuration variable is:
 
 ### Configuration Variables Table
 
-The project's `Makefile` can be opened to see a full list of available config options, but they are nested among the implementation details of the Makefile itself.  A full reference table is also available below.
+The following configuration variables are available.
 
 | Variable | Description | Example | Details |
 |--- | --- | --- | ---|
