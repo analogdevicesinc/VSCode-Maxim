@@ -249,7 +249,7 @@ def test(maxim_path, targets=None, boards=None, projects=None):
                 success = True
 
                 # Test build (make all)
-                build_cmd = f"make -r -j 8 all TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} MAKE=make"
+                build_cmd = f"make -r -j 8 TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} MAKE=make"
                 res = run_cmd(build_cmd, env=env, cwd=project, shell=True, capture_output=True, encoding="utf-8") # Run build command
 
                 # Error check build command
