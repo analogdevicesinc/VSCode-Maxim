@@ -198,31 +198,33 @@ The following configuration options are available:
 ### Basic Config Options
 
 #### `"target"`
-  * This sets the target microcontroller for the project.
-  * It sets the `TARGET` [Build Configuration](#build-configuration) variable.
-  * Supported values:
-    * `"MAX32520"`
-    * `"MAX32570"`
-    * `"MAX32650"`
-    * `"MAX32655"`
-    * `"MAX32660"`
-    * `"MAX32662"`
-    * `"MAX32665"` (for MAX32665-MAX32668)
-    * `"MAX32670"`
-    * `"MAX32672"`
-    * `"MAX32675"`
-    * `"MAX32680"`
-    * `"MAX32690"`
-    * `"MAX78000"`
-    * `"MAX78002"`
+
+* This sets the target microcontroller for the project.
+* It sets the `TARGET` [Build Configuration](#build-configuration) variable.
+* Supported values:
+  * `"MAX32520"`
+  * `"MAX32570"`
+  * `"MAX32650"`
+  * `"MAX32655"`
+  * `"MAX32660"`
+  * `"MAX32662"`
+  * `"MAX32665"` (for MAX32665-MAX32668)
+  * `"MAX32670"`
+  * `"MAX32672"`
+  * `"MAX32675"`
+  * `"MAX32680"`
+  * `"MAX32690"`
+  * `"MAX78000"`
+  * `"MAX78002"`
 
 #### `"board"`
-  * This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
-  * Supported values:
-    * ... can be found in the `Libraries/Boards` folder of the MaximSDK
-    * For example, the supported options for the MAX78000 are `"EvKit_V1"`, `"FTHR_RevA"`, and `"MAXREFDES178"`.
 
-    ![MAX78000 Boards](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_boards.JPG)
+* This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
+* Supported values:
+  * ... can be found in the `Libraries/Boards` folder of the MaximSDK
+  * For example, the supported options for the MAX78000 are `"EvKit_V1"`, `"FTHR_RevA"`, and `"MAXREFDES178"`.
+
+  ![MAX78000 Boards](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_boards.JPG)
 
 ### Advanced Config Options
 
