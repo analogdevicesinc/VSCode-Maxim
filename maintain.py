@@ -32,7 +32,7 @@
 *******************************************************************************/
 """
 
-import os
+import os, sys
 from subprocess import run
 import platform
 import time
@@ -41,7 +41,16 @@ import argparse
 from pathlib import Path
 from datetime import date
 
-here = Path(__file__).parent
+# Get location of this file.
+# Need to use this so that template look-ups are decoupled from the caller's working directory 
+if getattr(sys, 'frozen', False):
+    # https://pyinstaller.org/en/stable/runtime-information.html#run-time-information
+    # Use sys.executable if app is bundled by pyinstaller
+    here = Path(sys.executable).parent
+    _vscode_dir = here.joinpath("VSCode")
+else:
+    here = Path(__file__).parent
+    _vscode_dir = here
 
 curplatform = platform.system() # Get OS
 
@@ -76,11 +85,11 @@ def run_cmd(*args, **kwargs):
 
 def sync():
     # Inject .vscode folder into example projects
-    inject_dir = here.joinpath("MaximSDK", "Inject", ".vscode")
-    new_proj_dir = here.joinpath("MaximSDK", "New_Project", ".vscode")
-    template_dir = here.joinpath("MaximSDK", "Template", ".vscode")
+    inject_dir = _vscode_dir.joinpath("MaximSDK", "Inject", ".vscode")
+    new_proj_dir = _vscode_dir.joinpath("MaximSDK", "New_Project", ".vscode")
+    template_dir = _vscode_dir.joinpath("MaximSDK", "Template", ".vscode")
 
-    print("Syncing VSCode template...")
+    # print("Syncing VSCode template...")
     for f in os.scandir(inject_dir):
         shutil.copy(f, new_proj_dir)
 
@@ -89,7 +98,7 @@ def sync():
     shutil.copy(inject_dir.joinpath("c_cpp_properties.json"), template_dir)
     shutil.copy(inject_dir.joinpath("tasks.json"), template_dir)
     shutil.copy(inject_dir.joinpath("flash.gdb"), template_dir)
-    shutil.copy(here.joinpath("README.md"), template_dir)
+    shutil.copy(_vscode_dir.joinpath("README.md"), template_dir)
 
 def release(version):
     sync()

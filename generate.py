@@ -32,7 +32,7 @@
 *******************************************************************************/
 """
 
-import os
+import sys, os
 import shutil
 import stat
 # from utils import *
@@ -42,10 +42,19 @@ from .maintain import sync
 
 # Get location of this file.
 # Need to use this so that template look-ups are decoupled from the caller's working directory 
-here = Path(__file__).parent
+if getattr(sys, 'frozen', False):
+    # https://pyinstaller.org/en/stable/runtime-information.html#run-time-information
+    # Use sys.executable if app is bundled by pyinstaller
+    here = Path(sys.executable).parent
+    _defaults = here.joinpath("VSCode/MaximSDK/Inject/.vscode/settings.json")
+    template_dir = here.joinpath("VSCode/MaximSDK/Template").resolve()
+else:
+    here = Path(__file__).parent
+    _defaults = here.joinpath("MaximSDK/Inject/.vscode/settings.json")
+    template_dir = here.joinpath("MaximSDK/Template").resolve()
 
 # Load default values for template from master "inject" folder so that we don't have to maintain multiple copies of the settings
-defaults = utils.parse_json(here.joinpath("MaximSDK/Inject/.vscode/settings.json"))
+defaults = utils.parse_json(_defaults)
 
 synced=False
 
@@ -96,9 +105,6 @@ def create_project(
         synced = True
 
     out_path = Path(out_root).joinpath(out_stem)
-
-    template_dir = here.joinpath("MaximSDK/Template").resolve()
-    # Where to find the VS Code template directory relative to this script
 
     template_prefix = "template"
     # Filenames beginning with this will have substitution
