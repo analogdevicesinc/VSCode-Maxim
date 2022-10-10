@@ -79,6 +79,7 @@ def create_project(
     target: str,
     board: str,
     overwrite = False,
+    backup = False,
     program_file: str = defaults["PROGRAM_FILE"],
     symbol_file: str = defaults["SYMBOL_FILE"],
     m4_ocd_interface_file: str = defaults["M4_OCD_INTERFACE_FILE"],
@@ -207,6 +208,8 @@ def create_project(
                         write = False
 
                 if write:
+                    if backup and out_file.exists():
+                        shutil.copy(out_file, out_path.joinpath(f"{out_file.name}.backup"))
                     shutil.copy(in_file, out_path)
                     os.chmod(out_file, stat.S_IRWXU | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH)
                     if out_file not in updated:
