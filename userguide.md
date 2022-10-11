@@ -113,7 +113,7 @@ First, launch a terminal with `Terminal > New Terminal`.
 
 ![New Terminal](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/myproject_terminal.jpg)
 
-Next, we'll run through the commands in the ["Testing the Setup"](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/blob/main/readme.md#testing-the-setup) of the readme to see that the toolchain is accessible.  This is critical for everything else to work.  The project settings in the `.vscode` folder will add the locations of the toolchain to the terminal's `PATH`, which will allow them to be accessed directly.
+Next, we'll run through the commands in the ["Testing the Setup"](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/wiki/Troubleshooting#testing-the-setup) of the wiki to see that the toolchain is accessible.  This is critical for everything else to work.  The project settings in the `.vscode` folder will add the locations of the toolchain to the terminal's `PATH`, which will allow them to be accessed directly.
 
 For example, running `make -v` in the terminal should output a version # for Make, as shown below.
 
