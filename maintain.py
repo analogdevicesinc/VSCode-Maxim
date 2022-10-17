@@ -117,7 +117,7 @@ def release(version):
     shutil.copytree(Path("MaximSDK/New_Project"), r_dir.joinpath("New_Project"), dirs_exist_ok=True)
 
     print("Copying markdown files")
-    shutil.copy("readme.md", r_dir)
+    shutil.copy("README.md", r_dir)
     shutil.copy("userguide.md", r_dir)
     shutil.copy("LICENSE.md", r_dir)
 
