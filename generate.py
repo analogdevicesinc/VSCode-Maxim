@@ -32,18 +32,31 @@
 *******************************************************************************/
 """
 
-import os
+import sys, os
 import shutil
 import stat
-from utils import *
+# from utils import *
+from . import utils
 from pathlib import Path
+from .maintain import sync
 
 # Get location of this file.
 # Need to use this so that template look-ups are decoupled from the caller's working directory 
-here = Path(__file__).parent
+if getattr(sys, 'frozen', False):
+    # https://pyinstaller.org/en/stable/runtime-information.html#run-time-information
+    # Use sys.executable if app is bundled by pyinstaller
+    here = Path(sys.executable).parent
+    _defaults = here.joinpath("VSCode/MaximSDK/Inject/.vscode/settings.json")
+    template_dir = here.joinpath("VSCode/MaximSDK/Template").resolve()
+else:
+    here = Path(__file__).parent
+    _defaults = here.joinpath("MaximSDK/Inject/.vscode/settings.json")
+    template_dir = here.joinpath("MaximSDK/Template").resolve()
 
 # Load default values for template from master "inject" folder so that we don't have to maintain multiple copies of the settings
-defaults = parse_json(here.joinpath("MaximSDK/Inject/.vscode/settings.json"))
+defaults = utils.parse_json(_defaults)
+
+synced=False
 
 whitelist = [
     "MAX32650",
@@ -61,10 +74,12 @@ whitelist = [
 ]
 
 def create_project(
-    out_path: str,
+    out_root: str,
+    out_stem: str,
     target: str,
     board: str,
     overwrite = False,
+    backup = False,
     program_file: str = defaults["PROGRAM_FILE"],
     symbol_file: str = defaults["SYMBOL_FILE"],
     m4_ocd_interface_file: str = defaults["M4_OCD_INTERFACE_FILE"],
@@ -85,10 +100,12 @@ def create_project(
     Generates Visual Studio Code project files from the VSCode-Maxim project.
     """
 
-    out_path = Path(out_path)
+    global synced
+    if not synced:
+        sync()
+        synced = True
 
-    template_dir = here.joinpath("MaximSDK/Template").resolve()
-    # Where to find the VS Code template directory relative to this script
+    out_path = Path(out_root).joinpath(out_stem)
 
     template_prefix = "template"
     # Filenames beginning with this will have substitution
@@ -168,7 +185,7 @@ def create_project(
 
                 write = True
                 if out_file.exists():
-                    if not overwrite or compare_content(content, out_file):
+                    if not overwrite or utils.compare_content(content, out_file):
                         write = False
 
                 if write:
@@ -187,10 +204,12 @@ def create_project(
                 
                 write = True
                 if out_file.exists():
-                    if not overwrite or (hash_file(in_file) == hash_file(out_file)):
+                    if not overwrite or (utils.hash_file(in_file) == utils.hash_file(out_file)):
                         write = False
 
                 if write:
+                    if backup and out_file.exists():
+                        shutil.copy(out_file, out_path.joinpath(f"{out_file.name}.backup"))
                     shutil.copy(in_file, out_path)
                     os.chmod(out_file, stat.S_IRWXU | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH)
                     if out_file not in updated:

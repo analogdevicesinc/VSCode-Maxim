@@ -32,7 +32,7 @@
 *******************************************************************************/
 """
 
-import os
+import os, sys
 from subprocess import run
 import platform
 import time
@@ -40,6 +40,17 @@ import shutil
 import argparse
 from pathlib import Path
 from datetime import date
+
+# Get location of this file.
+# Need to use this so that template look-ups are decoupled from the caller's working directory 
+if getattr(sys, 'frozen', False):
+    # https://pyinstaller.org/en/stable/runtime-information.html#run-time-information
+    # Use sys.executable if app is bundled by pyinstaller
+    here = Path(sys.executable).parent
+    _vscode_dir = here.joinpath("VSCode")
+else:
+    here = Path(__file__).parent
+    _vscode_dir = here
 
 curplatform = platform.system() # Get OS
 
@@ -74,16 +85,20 @@ def run_cmd(*args, **kwargs):
 
 def sync():
     # Inject .vscode folder into example projects
-    print("Copying from Inject folder into example project and template...")
-    for f in os.scandir("MaximSDK/Inject/.vscode"): 
-        shutil.copy(f, "MaximSDK/New_Project/.vscode/")
+    inject_dir = _vscode_dir.joinpath("MaximSDK", "Inject", ".vscode")
+    new_proj_dir = _vscode_dir.joinpath("MaximSDK", "New_Project", ".vscode")
+    template_dir = _vscode_dir.joinpath("MaximSDK", "Template", ".vscode")
+
+    # print("Syncing VSCode template...")
+    for f in os.scandir(inject_dir):
+        shutil.copy(f, new_proj_dir)
 
     # Copy files into template folder
-    shutil.copy("MaximSDK/Inject/.vscode/launch.json", "MaximSDK/Template/.vscode/")
-    shutil.copy("MaximSDK/Inject/.vscode/c_cpp_properties.json", "MaximSDK/Template/.vscode/")
-    shutil.copy("MaximSDK/Inject/.vscode/tasks.json", "MaximSDK/Template/.vscode/")
-    shutil.copy("MaximSDK/Inject/.vscode/flash.gdb", "MaximSDK/Template/.vscode/")
-    shutil.copy("readme.md", "MaximSDK/Template/.vscode/")
+    shutil.copy(inject_dir.joinpath("launch.json"), template_dir)
+    shutil.copy(inject_dir.joinpath("c_cpp_properties.json"), template_dir)
+    shutil.copy(inject_dir.joinpath("tasks.json"), template_dir)
+    shutil.copy(inject_dir.joinpath("flash.gdb"), template_dir)
+    shutil.copy(_vscode_dir.joinpath("README.md"), template_dir)
 
 def release(version):
     sync()
@@ -102,7 +117,7 @@ def release(version):
     shutil.copytree(Path("MaximSDK/New_Project"), r_dir.joinpath("New_Project"), dirs_exist_ok=True)
 
     print("Copying markdown files")
-    shutil.copy("readme.md", r_dir)
+    shutil.copy("README.md", r_dir)
     shutil.copy("userguide.md", r_dir)
     shutil.copy("LICENSE.md", r_dir)
 
@@ -243,7 +258,7 @@ def test(maxim_path, targets=None, boards=None, projects=None):
                 success = True
 
                 # Test build (make all)
-                build_cmd = f"make -r -j 8 all TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} MAKE=make"
+                build_cmd = f"make -r -j 8 TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} MAKE=make"
                 res = run_cmd(build_cmd, env=env, cwd=project, shell=True, capture_output=True, encoding="utf-8") # Run build command
 
                 # Error check build command
