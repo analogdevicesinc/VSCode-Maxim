@@ -36,7 +36,7 @@ Component.prototype.installationFinished = function()
 
         if (result == QMessageBox.Ok) {
             try {
-                QDesktopServices.openUrl(tag_url + "/readme.md#vscode-maxim");
+                QDesktopServices.openUrl(tag_url + "/README.md#vscode-maxim");
             } catch(e) {
                 console.log(e);
                 QMessageBox.warning("vscode-maxim.readmefail", "MaximSDK Installer", "Failed to open the online copy of the readme.\n\nPlease open this file manually (@TargetDir@/Tools/VSCode-Maxim/readme.md)", QMessageBox.Ok);
