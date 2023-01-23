@@ -37,7 +37,7 @@
 # in "project.mk", on the command-line, or with system environment 
 # variables.
 
-# See https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration 
+# See https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 # for more detailed instructions on how to use this system.
 
 # The detailed instructions mentioned above are easier to read than 
@@ -60,9 +60,9 @@
 
 ifeq "$(TARGET)" ""
 # Default target microcontroller
-TARGET := MAX78000
-TARGET_UC := MAX78000
-TARGET_LC := max78000
+TARGET := ##__TARGET__##
+TARGET_UC := ##__TARGET_UC__##
+TARGET_LC := ##__TARGET_LC__##
 else
 # "TARGET" has been overridden in the environment or on the command-line.
 # We need to calculate an upper and lowercase version of the part number,
@@ -72,7 +72,7 @@ TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 endif
 
 # Default board.
-BOARD ?= EvKit_V1
+BOARD ?= ##__BOARD__##
 
 # *******************************************************************************
 # Locate the MaximSDK
@@ -111,7 +111,7 @@ $(info Loaded project.mk)
 
 ifeq "$(MAXIM_PATH)" ""
 # MAXIM_PATH is still not defined...
-DEPTH := ../../../
+DEPTH := ##__DEPTH__##
 MAXIM_PATH := $(abspath $(DEPTH))
 $(warning Warning:  MAXIM_PATH is not set!  Set MAXIM_PATH in your environment or in project.mk to clear this warning.)
 $(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
@@ -166,16 +166,14 @@ export CMSIS_ROOT
 
 
 # Where to find source files for this project.
-VPATH += .
-VPATH += src
+##__VPATHS__##
 VPATH := $(VPATH)
 
 # Where to find header files for this project
-IPATH += .
-IPATH += include
+##__IPATHS__##
 IPATH := $(IPATH)
 
-AUTOSEARCH ?= 1
+AUTOSEARCH ?= ##__AUTOSEARCH__##
 ifeq ($(AUTOSEARCH), 1)
 # Auto-detect all C source files on VPATH
 SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
@@ -198,6 +196,8 @@ PROJECT ?= $(TARGET_LC)
 # Compiler options
 
 # Configuration Variables:
+# - DEBUG : Set DEBUG=1 to build explicitly for debugging.  This adds some additional
+#			symbols and sets -Og as the default optimization level.
 # - MXC_OPTIMIZE_CFLAGS : Override the default compiler optimization level.  
 #			Ex: MXC_OPTIMIZE_CFLAGS = -O2
 # - PROJ_CFLAGS : Add additional compiler flags to the build.
@@ -208,58 +208,60 @@ PROJECT ?= $(TARGET_LC)
 #			Ex: MFLOAT_ABI = hard
 # - LINKERFILE : Override the default linkerfile.
 #			Ex: LINKERFILE = customlinkerfile.ld
-
+# - LINKERPATH : Override the default search location for $(LINKERFILE)
+#			The default search location is $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
+#			If $(LINKERFILE) cannot be found at this path, then the root project
+#			directory will be used as a fallback.
 
 # Select 'GCC' or 'IAR' compiler
 ifeq "$(COMPILER)" ""
-COMPILER := GCC
+COMPILER := ##__COMPILER__##
 endif
 
 # Set default compiler optimization levels
 ifeq "$(MAKECMDGOALS)" "release"
 # Default optimization level for "release" builds (make release)
-MXC_OPTIMIZE_CFLAGS ?= -O2
+MXC_OPTIMIZE_CFLAGS ?= -O##__OLEVEL_RELEASE__##
 DEBUG = 0
 endif
 
 ifeq ($(DEBUG),1)
-# Default optimization level for debug builds (make DEBUG=1 ...)
-# gcc.mk checks for this flag to add some additional debug
-# info to the build, and should be used when you really need to
-# debug.
-MXC_OPTIMIZE_CFLAGS := -Og
-endif
-
-# Fallback default optimizes for debugging as recommended
+# Optimizes for debugging as recommended
 # by GNU for code-edit-debug cycles
 # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
-MXC_OPTIMIZE_CFLAGS ?= -Og
+MXC_OPTIMIZE_CFLAGS := -O##__OLEVEL_DEBUG__##
+endif
+
+# Default level if not building for release or explicitly for debug
+MXC_OPTIMIZE_CFLAGS ?= -O##__OLEVEL_DEFAULT__##
 
 # Set compiler flags
 PROJ_CFLAGS += -Wall # Enable warnings
-PROJ_CFLAGS += -DMXC_ASSERT_ENABLE
+##__DEFINES__##
 
 # Set hardware floating point acceleration.
 # Options are:
 # - hard
 # - soft
 # - softfp (default if MFLOAT_ABI is not set)
-MFLOAT_ABI ?= softfp
-# MFLOAT_ABI must be exported to other Makefiles, who check this too
+MFLOAT_ABI ?= ##__FLOAT_ABI__##
+# MFLOAT_ABI must be exported to other Makefiles
 export MFLOAT_ABI
-
-# Set the default linkerfile.  Since the core Makefiles later add the location of Maxim's
-# linkerfiles to VPATH, and the local project directory has also been added to VPATH, Make
-# will search both locations for the specified linkerfile if it can't find it by its path alone.
-# The result is that overriding LINKERFILE with the filename of one of Maxim's alternate linkerfiles
-# (ex: LINKERFILE=max78000_arm.ld) will work just the same as LINKERFILE=mycustom.ld 
-# even if mycustom.ld lives locally to this project.
 
 ifeq "$(RISCV_CORE)" ""
 # Default linkerfile is only specified for standard Arm-core projects.
 # Otherwise, gcc_riscv.mk sets the appropriate riscv linkerfile.
-LINKER = $(TARGET_LC).ld
-LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(LINKER)
+LINKERFILE ?= $(TARGET_LC).ld
+LINKERPATH ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
+
+# Check if linkerfile exists
+ifeq ("$(wildcard $(LINKERPATH)/$(LINKERFILE))","")
+# Doesn't exists, attempt to use root project folder.
+LINKERPATH:=.
+endif
+
+# Form full path to linkerfile.  Works around MSYS2 edge case from (see MSDK-903).
+LINKERFILE:=$(LINKERPATH)/$(LINKERFILE)
 endif
 
 # This path contains system-level intialization files for the target micro.  Add to the build.
@@ -286,7 +288,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 #					However, if there are multiple secure part #s for the target
 #					microcontroller this variable may need to be changed.
 
-SBT ?= 0
+SBT ?= ##__SBT__##
 ifeq ($(SBT), 1)
 MAXIM_SBT_DIR ?= $(MAXIM_PATH)/Tools/SBT
 MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
@@ -314,7 +316,7 @@ ifeq "$(.DEFAULT_GOAL)" ""
 ifeq ($(SBT),1)
 override .DEFAULT_GOAL := sla
 else
-override .DEFAULT_GOAL := all
+override .DEFAULT_GOAL := ##__DEFAULT_GOAL__##
 endif
 endif
 
