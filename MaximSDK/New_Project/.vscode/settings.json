@@ -35,6 +35,14 @@
     "xPack_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/${config:v_xPack_GCC}",
     "Make_path":"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin",
 
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+    "C_Cpp.codeAnalysis.clangTidy.checks.enabled": [
+        "clang-analyzer-*"
+    ],
+    "C_Cpp.default.forcedInclude": [
+        "./.vscode/workaround.h"
+    ],
+
     "C_Cpp.default.includePath": [
         "${workspaceFolder}",
         "${workspaceFolder}/**",
@@ -67,6 +75,9 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
-        "${config:board}"
+        "${config:board}",
+        "TARGET=${config:target}",
+        "TARGET_REV=0x4131",
+        "__GNUC__"
     ]
 }
