@@ -36,6 +36,7 @@
     "Make_path":"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin",
 
     "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+    "C_Cpp.codeAnalysis.runAutomatically": true,
     "C_Cpp.codeAnalysis.clangTidy.checks.enabled": [
         "clang-analyzer-*"
     ],

@@ -35,6 +35,15 @@
     "xPack_GCC_path":"##__XPACK_GCC_PATH__##",
     "Make_path":"##__MAKE_PATH__##",
 
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+    "C_Cpp.codeAnalysis.runAutomatically": true,
+    "C_Cpp.codeAnalysis.clangTidy.checks.enabled": [
+        "clang-analyzer-*"
+    ],
+    "C_Cpp.default.forcedInclude": [
+        "./.vscode/workaround.h"
+    ],
+
     "C_Cpp.default.includePath": [
         "##__I_PATHS__##"
     ],
