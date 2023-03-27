@@ -1,35 +1,35 @@
-# /*******************************************************************************
-# * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-# *
-# * Permission is hereby granted, free of charge, to any person obtaining a
-# * copy of this software and associated documentation files (the "Software"),
-# * to deal in the Software without restriction, including without limitation
-# * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-# * and/or sell copies of the Software, and to permit persons to whom the
-# * Software is furnished to do so, subject to the following conditions:
-# *
-# * The above copyright notice and this permission notice shall be included
-# * in all copies or substantial portions of the Software.
-# *
-# * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-# * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-# * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-# * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-# * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-# * OTHER DEALINGS IN THE SOFTWARE.
-# *
-# * Except as contained in this notice, the name of Maxim Integrated
-# * Products, Inc. shall not be used except as stated in the Maxim Integrated
-# * Products, Inc. Branding Policy.
-# *
-# * The mere transfer of this software does not imply any licenses
-# * of trade secrets, proprietary technology, copyrights, patents,
-# * trademarks, maskwork rights, or any other form of intellectual
-# * property whatsoever. Maxim Integrated Products, Inc. retains all
-# * ownership rights.
-# *******************************************************************************
-# */
+################################################################################
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ #
+ # Permission is hereby granted, free of charge, to any person obtaining a
+ # copy of this software and associated documentation files (the "Software"),
+ # to deal in the Software without restriction, including without limitation
+ # the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ # and/or sell copies of the Software, and to permit persons to whom the
+ # Software is furnished to do so, subject to the following conditions:
+ #
+ # The above copyright notice and this permission notice shall be included
+ # in all copies or substantial portions of the Software.
+ #
+ # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ # IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ # OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ # OTHER DEALINGS IN THE SOFTWARE.
+ #
+ # Except as contained in this notice, the name of Maxim Integrated
+ # Products, Inc. shall not be used except as stated in the Maxim Integrated
+ # Products, Inc. Branding Policy.
+ #
+ # The mere transfer of this software does not imply any licenses
+ # of trade secrets, proprietary technology, copyrights, patents,
+ # trademarks, maskwork rights, or any other form of intellectual
+ # property whatsoever. Maxim Integrated Products, Inc. retains all
+ # ownership rights.
+ #
+###############################################################################
 
 # ** Readme! **
 # Don't edit this file! This is the core Makefile for a MaximSDK 
@@ -59,10 +59,7 @@
 
 
 ifeq "$(TARGET)" ""
-# Default target microcontroller
-TARGET := ##__TARGET__##
-TARGET_UC := ##__TARGET_UC__##
-TARGET_LC := ##__TARGET_LC__##
+$(error TARGET must be specified!)
 else
 # "TARGET" has been overridden in the environment or on the command-line.
 # We need to calculate an upper and lowercase version of the part number,
@@ -71,8 +68,9 @@ TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
 TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 endif
 
-# Default board.
-BOARD ?= ##__BOARD__##
+ifeq "$(BOARD)" ""
+$(error BOARD must be specified!)
+endif
 
 # *******************************************************************************
 # Locate the MaximSDK
@@ -111,7 +109,7 @@ $(info Loaded project.mk)
 
 ifeq "$(MAXIM_PATH)" ""
 # MAXIM_PATH is still not defined...
-DEPTH := ##__DEPTH__##
+DEPTH := ../../../
 MAXIM_PATH := $(abspath $(DEPTH))
 $(warning Warning:  MAXIM_PATH is not set!  Set MAXIM_PATH in your environment or in project.mk to clear this warning.)
 $(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
@@ -166,14 +164,16 @@ export CMSIS_ROOT
 
 
 # Where to find source files for this project.
-##__VPATHS__##
+VPATH += .
+VPATH += src
 VPATH := $(VPATH)
 
 # Where to find header files for this project
-##__IPATHS__##
+IPATH += .
+IPATH += include
 IPATH := $(IPATH)
 
-AUTOSEARCH ?= ##__AUTOSEARCH__##
+AUTOSEARCH ?= 1
 ifeq ($(AUTOSEARCH), 1)
 # Auto-detect all C source files on VPATH
 SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
@@ -215,13 +215,13 @@ PROJECT ?= $(TARGET_LC)
 
 # Select 'GCC' or 'IAR' compiler
 ifeq "$(COMPILER)" ""
-COMPILER := ##__COMPILER__##
+COMPILER := GCC
 endif
 
 # Set default compiler optimization levels
 ifeq "$(MAKECMDGOALS)" "release"
 # Default optimization level for "release" builds (make release)
-MXC_OPTIMIZE_CFLAGS ?= -O##__OLEVEL_RELEASE__##
+MXC_OPTIMIZE_CFLAGS ?= -O2
 DEBUG = 0
 endif
 
@@ -229,22 +229,22 @@ ifeq ($(DEBUG),1)
 # Optimizes for debugging as recommended
 # by GNU for code-edit-debug cycles
 # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
-MXC_OPTIMIZE_CFLAGS := -O##__OLEVEL_DEBUG__##
+MXC_OPTIMIZE_CFLAGS := -Og
 endif
 
 # Default level if not building for release or explicitly for debug
-MXC_OPTIMIZE_CFLAGS ?= -O##__OLEVEL_DEFAULT__##
+MXC_OPTIMIZE_CFLAGS ?= -O2
 
 # Set compiler flags
 PROJ_CFLAGS += -Wall # Enable warnings
-##__DEFINES__##
+PROJ_CFLAGS += -DMXC_ASSERT_ENABLE
 
 # Set hardware floating point acceleration.
 # Options are:
 # - hard
 # - soft
 # - softfp (default if MFLOAT_ABI is not set)
-MFLOAT_ABI ?= ##__FLOAT_ABI__##
+MFLOAT_ABI ?= softfp
 # MFLOAT_ABI must be exported to other Makefiles
 export MFLOAT_ABI
 
@@ -288,7 +288,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 #					However, if there are multiple secure part #s for the target
 #					microcontroller this variable may need to be changed.
 
-SBT ?= ##__SBT__##
+SBT ?= 0
 ifeq ($(SBT), 1)
 MAXIM_SBT_DIR ?= $(MAXIM_PATH)/Tools/SBT
 MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
@@ -316,7 +316,7 @@ ifeq "$(.DEFAULT_GOAL)" ""
 ifeq ($(SBT),1)
 override .DEFAULT_GOAL := sla
 else
-override .DEFAULT_GOAL := ##__DEFAULT_GOAL__##
+override .DEFAULT_GOAL := all
 endif
 endif
 
@@ -327,6 +327,16 @@ endif
 # It's also necessary to explicitly set MAKECMDGOALS...
 ifeq "$(MAKECMDGOALS)" ""
 MAKECMDGOALS:=$(.DEFAULT_GOAL)
+endif
+
+# Enable colors when --sync-output is used.
+# See https://www.gnu.org/software/make/manual/make.html#Terminal-Output (section 13.2)
+ifneq ($(MAKE_TERMOUT),)
+PROJ_CFLAGS += -fdiagnostics-color=always
+endif
+
+ifneq ($(FORCE_COLOR),)
+PROJ_CFLAGS += -fdiagnostics-color=always
 endif
 
 # *******************************************************************************
