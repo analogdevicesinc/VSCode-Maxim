@@ -43,6 +43,9 @@
     ],
     "C_Cpp.default.defines": [
         "##__DEFINES__##"
+    ],
+    "C_Cpp.default.forcedInclude": [
+        "${workspaceFolder}/build/project_defines.h"
     ]
 }
 
