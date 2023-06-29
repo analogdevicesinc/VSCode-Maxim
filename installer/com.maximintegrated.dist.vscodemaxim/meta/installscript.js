@@ -5,12 +5,18 @@ function Component()
 
 Component.prototype.createOperations = function()
 {
-    component.createOperations();
-
     // // Get System info
     var kernel = systemInfo.kernelType;
     var kernel_version = systemInfo.kernelVersion;
     var arch = systemInfo.currentCpuArchitecture;
+
+    if (kernel == "darwin") {
+        // The macos VS Code configuration explicitly sources ~/.zshrc as a workaround
+        // to https://github.com/microsoft/vscode/issues/186244
+        // Touch the file to make sure it exists.
+        var home_dir = installer.value("HomeDir");
+        component.addOperation("Execute", "touch", home_dir + "/.zshrc");
+    }
 
     // Symbolic links for OpenOCD config files should be created in
     // the target package's installscript.js to resolve case sensitivity
@@ -19,11 +25,13 @@ Component.prototype.createOperations = function()
     if (component.enabled) {
         installer.finishButtonClicked.connect(this, Component.prototype.installationFinished);
     }
+
+    component.createOperations();
 }
 
 Component.prototype.installationFinished = function() 
 {
-    var tag = "v1.6.0";
+    var tag = "v1.6.1";
     var tag_url = "https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/tree/" + tag;
     var release_url = "https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases/tag/" + tag;
     
