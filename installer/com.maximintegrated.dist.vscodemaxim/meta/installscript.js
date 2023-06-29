@@ -55,7 +55,7 @@ Component.prototype.installationFinished = function()
     // Open release notes on update.
     // isUpdater() = true in update mode
     else if (installer.isUpdater() && installer.status == QInstaller.Success) {
-        var result = QMessageBox.question("vscode-maxim.finished", "MaximSDK Installer", "Visual Studio Code support for the Maxim Microcontrollers SDK (VSCode-Maxim) has been updated to" + tag + "\n\nThe release notes for this update will now be opened in your browser.", QMessageBox.Ok | QMessageBox.Cancel);
+        var result = QMessageBox.question("vscode-maxim.finished", "MaximSDK Installer", "Visual Studio Code support for the Maxim Microcontrollers SDK (VSCode-Maxim) has been updated to" + tag + "\n\n The release notes for this update will now be opened in your browser.", QMessageBox.Ok | QMessageBox.Cancel);
 
         if (result == QMessageBox.Ok) {
             try {
