@@ -1,6 +1,6 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${env:PATH}",
+        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${config:MSYS_path}/usr/bin;${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
@@ -34,6 +34,7 @@
     "ARM_GCC_path":"##__ARM_GCC_PATH__##",
     "xPack_GCC_path":"##__XPACK_GCC_PATH__##",
     "Make_path":"##__MAKE_PATH__##",
+    "MSYS_path":"##__MSYS_PATH__##",
 
     "C_Cpp.default.includePath": [
         "##__I_PATHS__##"
