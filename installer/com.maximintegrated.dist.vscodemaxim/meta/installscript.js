@@ -31,7 +31,7 @@ Component.prototype.createOperations = function()
 
 Component.prototype.installationFinished = function() 
 {
-    var tag = "v1.6.1";
+    var tag = "v1.6.2";
     var tag_url = "https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/tree/" + tag;
     var release_url = "https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/releases/tag/" + tag;
     
