@@ -128,6 +128,36 @@
                 { "text":"b main" },
                 { "text": "set $pc=Reset_Handler","ignoreFailures": false }
             ]
+        },
+        {
+            "name": "J-Link (M4)",
+            "cwd":"${workspaceRoot}",
+            "executable": "${workspaceFolder}/build/${config:program_file}",
+            "loadFiles": ["${workspaceFolder}/build/${config:program_file}"],
+            "symbolFiles": [{
+                "file": "${workspaceFolder}/build/${config:symbol_file}"
+            }],
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "jlink",
+            "linux": {
+                "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "serverpath": "${config:JLINK_PATH}/JLinkGDBServer",
+            },
+            "windows": {
+                "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
+                "serverpath": "${config:JLINK_PATH}/JLinkGDBServerCL.exe",
+            },
+            "osx": {
+                "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "serverpath": "${config:JLINK_PATH}/JLinkGDBServer",
+            },
+            "device": "${config:target}",
+            "jlinkscript": "${workspaceFolder}/.vscode/Reset.JLinkScript",
+            "interface": "swd",
+            "runToEntryPoint": "main",
+            "svdFile": "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include/${config:target}.svd",
+            "preLaunchTask": "build",
         }
     ]
 }
