@@ -2,3 +2,4 @@ build
 buildlogs*
 __pycache__
 MaximSDK/Template/.vscode/README.md
+MaximSDK/Template/.vscode/Reset.JLinkScript
