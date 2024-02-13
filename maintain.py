@@ -117,7 +117,6 @@ def sync():
     shutil.copy(inject_dir.joinpath("c_cpp_properties.json"), template_dir)
     shutil.copy(inject_dir.joinpath("tasks.json"), template_dir)
     shutil.copy(inject_dir.joinpath("flash.gdb"), template_dir)
-    shutil.copy(inject_dir.joinpath("Reset.JLinkScript"), template_dir)
     shutil.copy(_vscode_dir.joinpath("README.md"), template_dir)    
 
 def release(version):
