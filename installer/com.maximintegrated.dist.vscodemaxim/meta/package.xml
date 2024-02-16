@@ -1,7 +1,7 @@
 <Package>
     <DisplayName>Visual Studio Code Support</DisplayName>
     <Description>Project files, templates, and documentation for integrating Visual Studio Code and the MaximSDK.  Example projects come pre-populated with .vscode project folders, and this package contains information on how to use them.  It installs to "Tools/VSCode-Maxim".</Description>
-    <ReleaseDate>2024-02-13</ReleaseDate>
+    <ReleaseDate>2024-02-14</ReleaseDate>
     <Dependencies></Dependencies>
     <Script>installscript.js</Script>
     <Version>1.7.0</Version>
