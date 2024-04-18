@@ -29,14 +29,8 @@ from datetime import date
 
 # Get location of this file.
 # Need to use this so that template look-ups are decoupled from the caller's working directory 
-if getattr(sys, 'frozen', False):
-    # https://pyinstaller.org/en/stable/runtime-information.html#run-time-information
-    # Use sys.executable if app is bundled by pyinstaller
-    here = Path(sys.executable).parent
-    _vscode_dir = here.joinpath("VSCode")
-else:
-    here = Path(__file__).parent
-    _vscode_dir = here
+here = Path(__file__).parent
+_vscode_dir = here
 
 curplatform = platform.system() # Get OS
 
